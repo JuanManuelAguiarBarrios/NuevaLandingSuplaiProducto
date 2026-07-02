@@ -2,7 +2,6 @@
 
 import { m } from 'framer-motion'
 import { AGENTES } from '@/content'
-import { ContextualCopy } from '@/components/logos'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -27,23 +26,12 @@ function AgentCard({ agent }: { agent: Agent }) {
         borderColor: 'rgba(255,255,255,0.18)',
         transition: { duration: 0.22, ease },
       }}
-      className={`flex flex-col rounded-xl border bg-white/[0.04] p-6 gap-5 transition-colors ${
-        agent.live ? 'border-white/14' : 'border-white/8'
-      }`}
+      className="flex flex-col rounded-xl border border-white/8 bg-white/[0.04] p-6 gap-5 transition-colors"
     >
       <div className="flex items-start justify-between gap-3">
         <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">
           {agent.category}
         </p>
-        {agent.live && (
-          <span className="inline-flex shrink-0 items-center gap-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
-            <span
-              className="size-1.5 rounded-full bg-primary animate-pulse motion-reduce:animate-none"
-              aria-hidden="true"
-            />
-            {AGENTES.badge}
-          </span>
-        )}
       </div>
 
       <h3
@@ -54,7 +42,7 @@ function AgentCard({ agent }: { agent: Agent }) {
           letterSpacing: '-0.014em',
         }}
       >
-        <ContextualCopy text={agent.title} logoSize={18} />
+        {agent.title}
       </h3>
 
       <p className="font-sans text-[13px] font-light leading-relaxed text-white/65 flex-1">
