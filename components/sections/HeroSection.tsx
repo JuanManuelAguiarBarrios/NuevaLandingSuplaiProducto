@@ -1,4 +1,5 @@
 import { HERO } from '@/content'
+import HeroAmbient from '@/components/hero/HeroAmbient'
 
 export default function HeroSection() {
   return (
@@ -23,6 +24,9 @@ export default function HeroSection() {
         style={{ background: 'radial-gradient(ellipse, #2563EB 0%, transparent 70%)' }}
         aria-hidden="true"
       />
+
+      {/* Ambiente 3D — lazy, sólo desktop capaz; fallback = fondo estático */}
+      <HeroAmbient />
 
       {/* Bottom fade to white for smooth transition */}
       <div
