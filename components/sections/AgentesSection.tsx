@@ -27,12 +27,23 @@ function AgentCard({ agent }: { agent: Agent }) {
         borderColor: 'rgba(255,255,255,0.18)',
         transition: { duration: 0.22, ease },
       }}
-      className="flex flex-col rounded-xl border border-white/8 bg-white/[0.04] p-6 gap-5 transition-colors"
+      className={`flex flex-col rounded-xl border bg-white/[0.04] p-6 gap-5 transition-colors ${
+        agent.live ? 'border-white/14' : 'border-white/8'
+      }`}
     >
       <div className="flex items-start justify-between gap-3">
         <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">
           {agent.category}
         </p>
+        {agent.live && (
+          <span className="inline-flex shrink-0 items-center gap-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
+            <span
+              className="size-1.5 rounded-full bg-primary animate-pulse motion-reduce:animate-none"
+              aria-hidden="true"
+            />
+            {AGENTES.badge}
+          </span>
+        )}
       </div>
 
       <h3
@@ -64,6 +75,21 @@ function AgentCard({ agent }: { agent: Agent }) {
   )
 }
 
+/** Título del slot: si trae pregunta+respuesta ("¿…? …"), la respuesta va en
+ *  itálica azul de firma. Robusto: sin "?", se renderiza entero sin accent. */
+function SlotTitle({ title }: { title: string }) {
+  const idx = title.indexOf('?')
+  if (idx === -1 || idx === title.length - 1) return <>{title}</>
+  return (
+    <>
+      {title.slice(0, idx + 1)}{' '}
+      <em className="accent">{title.slice(idx + 1).trim()}</em>
+    </>
+  )
+}
+
+/** Slot vacío: borde punteado + ícono "+" — se lee como "el próximo lugar de
+ *  la grilla es tuyo". La expandibilidad como remate, no como oferta principal. */
 function ExpansionCard() {
   const { expansion } = AGENTES
   return (
@@ -71,23 +97,32 @@ function ExpansionCard() {
       variants={fadeUp}
       whileHover={{
         y: -3,
-        borderColor: 'rgba(37,99,235,0.4)',
+        borderColor: 'rgba(37,99,235,0.5)',
         transition: { duration: 0.22, ease },
       }}
-      className="flex flex-col rounded-xl border border-primary/20 bg-primary/[0.07] p-6 gap-5 transition-colors"
+      className="flex flex-col rounded-xl border border-dashed border-white/18 bg-transparent p-6 gap-5 transition-colors"
     >
+      <span
+        className="flex size-7 items-center justify-center rounded-full border border-dashed border-white/25 text-white/45"
+        aria-hidden="true"
+      >
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <path d="M6 1v10M1 6h10" />
+        </svg>
+      </span>
+
       <h3
-        className="font-editorial font-normal text-white text-wrap-balance"
+        className="font-editorial font-normal text-white/85 text-wrap-balance"
         style={{
           fontSize: 'clamp(17px, 1.7vw, 21px)',
           lineHeight: 1.22,
           letterSpacing: '-0.014em',
         }}
       >
-        {expansion.title}
+        <SlotTitle title={expansion.title} />
       </h3>
 
-      <p className="font-sans text-[13px] font-light leading-relaxed text-white/65 flex-1">
+      <p className="font-sans text-[13px] font-light leading-relaxed text-white/55 flex-1">
         {expansion.desc}
       </p>
 

@@ -82,10 +82,10 @@ export const SOLUCION = {
 
 /* ── Agentes ────────────────────────────────────────────────── */
 export const AGENTES = {
-  headline: 'Construimos el agente que tu operación',
+  headline: 'Tenemos el agente que tu operación',
   accent:   'necesita.',
   subtitle:
-    'Empezá por el cuello de botella más caro y sumá agentes con el tiempo. Cada uno se integra al sistema que ya usás.',
+    'Elegí el cuello de botella más caro y activá el agente. Cada uno se integra al sistema que ya usás.',
   badge: 'En producción',
   agents: [
     {
@@ -130,9 +130,9 @@ export const AGENTES = {
     },
   ],
   expansion: {
-    title: '¿Tu operación necesita otro?',
-    desc:  'Cada empresa opera distinto. Diseñamos el agente a medida de tus procesos — integraciones y paneles específicos para la forma en que ya trabajás.',
-    cta:   'Hablemos de tu operación',
+    title: '¿No lo ves acá? Lo construimos.',
+    desc:  'Cada operación es distinta. Si tu proceso necesita un agente que no está en la lista, lo diseñamos a medida y lo integramos igual: sin migraciones.',
+    cta:   'Contanos qué necesitás',
   },
   highlights: [
     'Diseñado para tu proceso',
