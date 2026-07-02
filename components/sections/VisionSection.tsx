@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { m } from 'framer-motion'
 import { VISION, FOOTER } from '@/content'
-import SuplaiMark from '@/components/SuplaiMark'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -115,12 +115,14 @@ export default function VisionSection() {
         <div className="mx-auto max-w-[1200px] px-6 py-10 md:px-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 
-            <div className="flex items-center gap-2.5">
-              <SuplaiMark size={22} />
-              <span className="font-sans text-[14px] font-semibold tracking-tight text-white">
-                {FOOTER.brand}
-              </span>
-            </div>
+            {/* Lockup oficial (blanco, ya incluye el wordmark) */}
+            <Image
+              src="/brand/suplai-lockup-white.png"
+              alt={FOOTER.brand}
+              width={90}
+              height={24}
+              className="h-6 w-auto"
+            />
 
             <nav aria-label="Contacto" className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
               {FOOTER.links.map((link) => (
