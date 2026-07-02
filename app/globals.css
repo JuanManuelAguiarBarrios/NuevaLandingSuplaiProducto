@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Typography ── */
+  --font-sans:      var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-editorial: var(--font-newsreader), "Newsreader", Georgia, serif;
+  --font-mono:      var(--font-geist-mono), "GeistMono", "Courier New", monospace;
+
+  /* ── Brand palette ── */
+  --color-primary:   #2563EB;
+  --color-ink:       #0A0A0A;
+  --color-muted:     #6B7280;
+  --color-surface:   #F9FAFB;
+  --color-white:     #FFFFFF;
+  --color-border:    #E5E7EB;
+  --color-accent:    #DBEAFE;
+
+  /* ── Dark surface (secciones oscuras) ── */
+  --color-dark:         #0A0A0A;
+  --color-dark-surface: #141414;
+  --color-dark-border:  rgba(255,255,255,0.08);
+
+  /* ── Aliases usados en componentes ── */
+  --color-text:         #0A0A0A;
+  --color-secondary:    #6B7280;
+  --color-card:         #FFFFFF;
+  --color-icon-bg:      #EFF6FF;
+  --color-border-light: #F3F4F6;
+}
+
+/* ────────────────────────────────────────────
+   Hero entrance (CSS-driven, no depende de JS)
+   Corre en el primer paint → no penaliza el LCP
+   ni deja el hero en blanco si el JS falla.
+──────────────────────────────────────────── */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-rise {
+  animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
