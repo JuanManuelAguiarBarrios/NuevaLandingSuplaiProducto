@@ -7,7 +7,13 @@
 /* ── Navbar ─────────────────────────────────────────────────── */
 export const NAV = {
   brand: 'Suplai',
-  cta:   'Agendá una demo',
+  links: [
+    { label: 'Solución',        href: '#solucion' },
+    { label: 'Agentes',         href: '#agentes' },
+    { label: 'Empresas',        href: '#empresas' },
+    { label: 'Cómo trabajamos', href: '#como-trabajamos' },
+  ],
+  cta: 'Agendá una demo',
 } as const
 
 /* ── Hero ───────────────────────────────────────────────────── */
