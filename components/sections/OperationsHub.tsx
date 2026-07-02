@@ -39,9 +39,19 @@ const NODES: Node[] = [
 const CENTER = 50
 const LINE_COLOR = '#BFDBFE'
 
+/**
+ * Redondea a 4 decimales. `Math.cos`/`Math.sin` difieren en el último ULP entre
+ * el motor JS del server y el del browser; sin cuantizar, las coordenadas
+ * serializan distinto y rompen la hidratación. 4 decimales borran esa diferencia
+ * (muy por encima del ULP) y dan el mismo string en ambos lados.
+ */
+function quantize(n: number): number {
+  return Math.round(n * 1e4) / 1e4
+}
+
 function polar(angleDeg: number, r: number): { dx: number; dy: number } {
   const a = (angleDeg * Math.PI) / 180
-  return { dx: Math.cos(a) * r, dy: Math.sin(a) * r }
+  return { dx: quantize(Math.cos(a) * r), dy: quantize(Math.sin(a) * r) }
 }
 
 /* ── Detección de "modo animado" ──
