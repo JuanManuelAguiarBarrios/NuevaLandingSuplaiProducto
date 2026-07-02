@@ -1,26 +1,26 @@
 'use client'
 
-import { m } from 'framer-motion'
+import { useState } from 'react'
+import { AnimatePresence, m } from 'framer-motion'
 import { EMPRESAS } from '@/content'
+import { EASE, fadeUpTight, staggerTight } from '@/lib/motion'
 
-const ease = [0.16, 1, 0.3, 1] as const
-
-const stagger = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.07 } },
-}
-
-const rowVariant = {
-  hidden: { opacity: 0, y: 10 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
-}
+/**
+ * "Hecho para tu operación" — índice editorial con spotlight.
+ *
+ * Desktop: la lista de verticales es el índice (títulos grandes en PP
+ * Editorial); hover/focus/click activan una fila y el panel derecho revela
+ * el glyph en grande + la descripción. La activa toma la itálica azul de
+ * firma. Mobile: lista apilada con la descripción visible (sin hover, sin
+ * acordeón — la info completa directa).
+ */
 
 type IconName = (typeof EMPRESAS.items)[number]['icon']
 
-function Icon({ name }: { name: IconName }) {
+function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const base = {
-    width: 18,
-    height: 18,
+    width: size,
+    height: size,
     viewBox: '0 0 20 20',
     fill: 'none' as const,
     stroke: 'currentColor',
@@ -86,43 +86,105 @@ function Icon({ name }: { name: IconName }) {
 
 type EmpresaItem = (typeof EMPRESAS.items)[number]
 
-function EmpresaRow({ item, index }: { item: EmpresaItem; index: number }) {
+function IndexRow({
+  item,
+  index,
+  isActive,
+  onActivate,
+}: {
+  item: EmpresaItem
+  index: number
+  isActive: boolean
+  onActivate: () => void
+}) {
   return (
-    <m.div
-      variants={rowVariant}
-      className="group -mx-2 flex cursor-default items-start gap-5 border-b border-white/8 px-2 py-5 transition-colors hover:bg-white/[0.03] sm:items-center"
-    >
-      {/* Index */}
-      <span className="w-5 shrink-0 pt-px font-mono text-[11px] tabular-nums text-white/35 transition-colors group-hover:text-primary sm:pt-0">
-        {String(index + 1).padStart(2, '0')}
-      </span>
-
-      {/* Icon */}
-      <span className="shrink-0 pt-px text-white/45 transition-colors group-hover:text-white/60 sm:pt-0">
-        <Icon name={item.icon} />
-      </span>
-
-      {/* Name + descriptor (mobile stacked, desktop split) */}
-      <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-center sm:gap-4">
+    <m.li variants={fadeUpTight} className="border-b border-white/8 first:border-t">
+      <button
+        type="button"
+        onMouseEnter={onActivate}
+        onFocus={onActivate}
+        onClick={onActivate}
+        aria-current={isActive || undefined}
+        className="group flex w-full items-baseline gap-5 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm lg:py-6"
+      >
         <span
-          className="font-editorial font-normal text-white/80 transition-colors group-hover:text-white sm:flex-1"
+          className={`w-6 shrink-0 font-mono text-[11px] tabular-nums transition-colors duration-300 ${
+            isActive ? 'text-primary' : 'text-white/30'
+          }`}
+          aria-hidden="true"
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span
+          className={`font-editorial font-normal transition-[color,transform] duration-300 ease-signature ${
+            isActive
+              ? 'accent lg:translate-x-1.5'
+              : 'text-white/45 group-hover:text-white/75'
+          }`}
           style={{
-            fontSize: 'clamp(15px, 1.5vw, 19px)',
-            letterSpacing: '-0.012em',
-            lineHeight: 1.25,
+            fontSize: 'clamp(21px, 2.6vw, 34px)',
+            lineHeight: 1.15,
+            letterSpacing: '-0.018em',
           }}
         >
           {item.title}
         </span>
-        <span className="mt-1 font-sans text-[12px] font-light leading-relaxed text-white/55 sm:mt-0 sm:max-w-[46%] sm:text-right">
-          {item.desc}
+      </button>
+
+      {/* Mobile: descripción siempre visible (no hay hover) */}
+      <p className="pb-5 pl-11 font-sans text-[13px] font-light leading-relaxed text-white/55 lg:hidden">
+        {item.desc}
+      </p>
+    </m.li>
+  )
+}
+
+/** Panel derecho: glyph en grande + descripción de la vertical activa. */
+function Spotlight({ item, index }: { item: EmpresaItem; index: number }) {
+  return (
+    <AnimatePresence mode="wait">
+      <m.div
+        key={item.key}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.32, ease: EASE }}
+        className="relative"
+      >
+        {/* Número fantasma — segundo plano editorial */}
+        <span
+          className="pointer-events-none absolute -top-10 right-0 select-none font-editorial text-[140px] leading-none text-white/[0.05]"
+          aria-hidden="true"
+        >
+          {String(index + 1).padStart(2, '0')}
         </span>
-      </span>
-    </m.div>
+
+        <span className="block text-primary" aria-hidden="true">
+          <Icon name={item.icon} size={92} />
+        </span>
+
+        <h3
+          className="mt-10 font-editorial font-normal text-white text-wrap-balance"
+          style={{ fontSize: 'clamp(20px, 2vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.016em' }}
+        >
+          {item.title}
+        </h3>
+
+        <p
+          className="mt-4 max-w-[38ch] font-sans font-light leading-relaxed text-white/60"
+          style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
+        >
+          {item.desc}
+        </p>
+      </m.div>
+    </AnimatePresence>
   )
 }
 
 export default function EmpresasSection() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const active = EMPRESAS.items[activeIndex] ?? EMPRESAS.items[0]
+
   return (
     <section id="empresas" className="bg-[#0A0A0A] py-28 md:py-36">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
@@ -131,8 +193,8 @@ export default function EmpresasSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.7, ease }}
-          className="mb-12 max-w-xl"
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mb-14 max-w-xl lg:mb-16"
         >
           <h2
             className="font-editorial font-normal text-white text-wrap-balance"
@@ -143,9 +205,7 @@ export default function EmpresasSection() {
             }}
           >
             {EMPRESAS.headline.plain}{' '}
-            <em style={{ fontStyle: 'italic', color: '#2563EB' }}>
-              {EMPRESAS.headline.accent}
-            </em>
+            <em className="accent">{EMPRESAS.headline.accent}</em>
           </h2>
           <p
             className="mt-4 font-sans font-light leading-relaxed text-white/65"
@@ -155,17 +215,36 @@ export default function EmpresasSection() {
           </p>
         </m.div>
 
-        <m.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.1 }}
-          className="border-t border-white/8"
-        >
-          {EMPRESAS.items.map((item, i) => (
-            <EmpresaRow key={item.key} item={item} index={i} />
-          ))}
-        </m.div>
+        <div className="lg:grid lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+          {/* Índice */}
+          <m.ul
+            variants={staggerTight}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+          >
+            {EMPRESAS.items.map((item, i) => (
+              <IndexRow
+                key={item.key}
+                item={item}
+                index={i}
+                isActive={i === activeIndex}
+                onActivate={() => setActiveIndex(i)}
+              />
+            ))}
+          </m.ul>
+
+          {/* Spotlight — sólo desktop */}
+          <m.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
+            className="hidden border-l border-white/8 pl-14 pt-2 lg:block"
+          >
+            <Spotlight item={active} index={activeIndex} />
+          </m.div>
+        </div>
 
       </div>
     </section>
