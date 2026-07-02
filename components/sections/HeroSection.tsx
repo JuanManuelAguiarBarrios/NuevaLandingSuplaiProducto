@@ -33,42 +33,45 @@ export default function HeroSection() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 flex-col justify-center px-6 py-28 md:px-10 md:py-36">
         {/* Headline — sin delay para no penalizar el LCP */}
-        <h1
-          className="hero-rise font-editorial font-normal text-white text-wrap-balance"
-          style={{
-            fontSize: 'clamp(38px, 5.4vw, 78px)',
-            lineHeight: 1.05,
-            letterSpacing: '-0.022em',
-            maxWidth: 880,
-          }}
-        >
+        <h1 className="hero-rise type-display max-w-[880px] font-editorial font-normal text-white text-wrap-balance">
           {HERO.headline.plain}{' '}
-          <em style={{ fontStyle: 'italic', color: '#2563EB' }}>
-            {HERO.headline.accent}
-          </em>
+          <em className="accent">{HERO.headline.accent}</em>
         </h1>
 
         {/* Subtítulo */}
         <p
-          className="hero-rise mt-8 font-sans font-light leading-relaxed text-white/70"
-          style={{ fontSize: 'clamp(15px, 1.55vw, 18px)', maxWidth: 540, animationDelay: '0.12s' }}
+          className="hero-rise mt-8 max-w-[540px] font-sans font-light leading-relaxed text-white/70"
+          style={{ fontSize: 'clamp(15px, 1.55vw, 18px)', animationDelay: '0.12s' }}
         >
           {HERO.subtitle}
         </p>
 
-        {/* CTA */}
+        {/* CTA — grupo con flecha que desliza en hover */}
         <div className="hero-rise mt-10" style={{ animationDelay: '0.22s' }}>
           <a
             href="mailto:admin@getsuplai.com?subject=Quiero%20una%20demo%20de%20Suplai"
-            className="inline-flex items-center rounded-full bg-primary px-7 py-3 font-sans text-[14px] font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
+            className="group inline-flex items-center gap-2 rounded-full bg-primary py-3 pl-7 pr-6 font-sans text-[14px] font-semibold text-white transition-[background-color,transform] duration-300 ease-signature hover:bg-[#1D4ED8] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
           >
             {HERO.cta}
+            <svg
+              width="14" height="14" viewBox="0 0 14 14" fill="none"
+              stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"
+              aria-hidden="true"
+              className="transition-transform duration-300 ease-signature group-hover:translate-x-0.5"
+            >
+              <path d="M2 7h9M7 3l4 4-4 4" />
+            </svg>
           </a>
         </div>
 
-        {/* Scroll hint */}
+        {/* Scroll cue — hairline vertical con punto que la recorre */}
         <div className="hero-rise mt-24 flex items-center gap-3" style={{ animationDelay: '0.32s' }}>
-          <span className="h-px w-8 bg-white/15" aria-hidden="true" />
+          <span
+            className="relative block h-8 w-px overflow-hidden bg-white/12"
+            aria-hidden="true"
+          >
+            <span className="scroll-cue-dot absolute inset-x-0 top-0 h-2 bg-white/50" />
+          </span>
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/25">
             Scroll
           </span>

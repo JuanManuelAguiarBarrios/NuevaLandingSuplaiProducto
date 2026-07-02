@@ -118,3 +118,24 @@
     animation: none;
   }
 }
+
+/* ────────────────────────────────────────────
+   Scroll cue del hero — punto que recorre una
+   hairline vertical, loop sutil. Solo transform+opacity.
+──────────────────────────────────────────── */
+@keyframes scroll-cue {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  25%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(320%); opacity: 0; }
+}
+
+.scroll-cue-dot {
+  animation: scroll-cue 2.6s var(--ease-signature) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-dot {
+    animation: none;
+  }
+}
