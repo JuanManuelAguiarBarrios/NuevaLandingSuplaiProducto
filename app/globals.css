@@ -26,6 +26,77 @@
   --color-card:         #FFFFFF;
   --color-icon-bg:      #EFF6FF;
   --color-border-light: #F3F4F6;
+
+  /* ────────────────────────────────────────────
+     Escala tipográfica (fluida, clamp)
+     Una única fuente de verdad — nada de clamp()
+     sueltos en style={{}} por componente.
+     display → hero · h1 → titulares de sección
+     h2 → sub-titulares · h3 → cards/pasos
+  ──────────────────────────────────────────── */
+  --text-display:  clamp(38px, 5.4vw, 78px);
+  --text-h1:       clamp(30px, 4.2vw, 62px);
+  --text-h2:       clamp(26px, 3.4vw, 48px);
+  --text-h3:       clamp(20px, 2.2vw, 30px);
+  --text-h4:       clamp(17px, 1.8vw, 22px);
+  --text-lead:     clamp(17px, 1.9vw, 22px);
+  --text-body:     clamp(14px, 1.4vw, 16px);
+  --text-sm:       clamp(13px, 1.2vw, 15px);
+
+  /* Tracking + interlínea de firma para los titulares editoriales */
+  --tracking-display: -0.022em;
+  --tracking-heading: -0.02em;
+  --leading-display:  1.05;
+  --leading-heading:  1.12;
+
+  /* ────────────────────────────────────────────
+     Escala de spacing de sección (padding vertical)
+     Un solo ritmo para todo el sitio.
+  ──────────────────────────────────────────── */
+  --section-py:     clamp(96px, 12vw, 160px);
+  --section-py-lg:  clamp(128px, 15vw, 200px);
+
+  /* ────────────────────────────────────────────
+     Motion — curva de firma (expo-out)
+     Compartida por CSS y por lib/motion.ts
+  ──────────────────────────────────────────── */
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Utilidades tipográficas de firma ──
+   Aplican tamaño + tracking + interlínea en una clase,
+   para no repetir style={{}} en cada titular. */
+.type-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+.type-h1 {
+  font-size: var(--text-h1);
+  line-height: 1.08;
+  letter-spacing: var(--tracking-display);
+}
+.type-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+.type-h3 {
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  letter-spacing: -0.016em;
+}
+.type-h4 {
+  font-size: var(--text-h4);
+  line-height: 1.22;
+  letter-spacing: -0.014em;
+}
+
+/* Elemento de firma: palabra clave en itálica azul (PP Editorial New).
+   Reemplaza el <em style={{ fontStyle:'italic', color:'#2563EB' }}> repetido. */
+.accent {
+  font-style: italic;
+  color: var(--color-primary);
 }
 
 /* ────────────────────────────────────────────

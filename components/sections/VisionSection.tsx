@@ -3,6 +3,7 @@
 import React from 'react'
 import { m } from 'framer-motion'
 import { VISION, FOOTER } from '@/content'
+import SuplaiMark from '@/components/SuplaiMark'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -115,7 +116,7 @@ export default function VisionSection() {
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 
             <div className="flex items-center gap-2.5">
-              <SuplaiIconSmall />
+              <SuplaiMark size={22} />
               <span className="font-sans text-[14px] font-semibold tracking-tight text-white">
                 {FOOTER.brand}
               </span>
@@ -143,17 +144,5 @@ export default function VisionSection() {
         </div>
       </footer>
     </>
-  )
-}
-
-function SuplaiIconSmall() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <rect width="28" height="28" rx="7" fill="#2563EB" />
-      <path d="M8 14C8 10.686 10.686 8 14 8C17.314 8 20 10.686 20 14"
-        stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M20 14C20 17.314 17.314 20 14 20C10.686 20 8 17.314 8 14"
-        stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeOpacity="0.4" />
-    </svg>
   )
 }

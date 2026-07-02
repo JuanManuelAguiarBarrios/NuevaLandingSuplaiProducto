@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { NAV } from '@/content'
+import SuplaiMark from '@/components/SuplaiMark'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -29,7 +30,7 @@ export default function Navbar() {
           aria-label="Suplai — ir al inicio"
           className="flex items-center gap-2.5 shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <SuplaiIcon />
+          <SuplaiMark />
           <span
             className={`font-sans font-semibold text-[15px] tracking-tight transition-colors ${
               scrolled ? 'text-ink' : 'text-white'
@@ -53,21 +54,5 @@ export default function Navbar() {
 
       </div>
     </header>
-  )
-}
-
-function SuplaiIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <rect width="28" height="28" rx="7" fill="#2563EB" />
-      <path
-        d="M8 14C8 10.686 10.686 8 14 8C17.314 8 20 10.686 20 14"
-        stroke="white" strokeWidth="2.5" strokeLinecap="round"
-      />
-      <path
-        d="M20 14C20 17.314 17.314 20 14 20C10.686 20 8 17.314 8 14"
-        stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeOpacity="0.4"
-      />
-    </svg>
   )
 }
