@@ -3,6 +3,7 @@
 import { m } from 'framer-motion'
 import { PROBLEMA } from '@/content'
 import { fadeUp, stagger, revealOnce } from '@/lib/motion'
+import { ContextualCopy } from '@/components/logos'
 
 export default function ProblemaSection() {
   return (
@@ -50,7 +51,7 @@ export default function ProblemaSection() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span className="font-sans text-[15px] font-light leading-relaxed text-ink">
-                    {item}
+                    <ContextualCopy text={item} />
                   </span>
                 </m.li>
               ))}
@@ -84,7 +85,7 @@ export default function ProblemaSection() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span className="font-sans text-[15px] font-light leading-relaxed text-ink">
-                    {item}
+                    <ContextualCopy text={item} />
                   </span>
                 </m.li>
               ))}

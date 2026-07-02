@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion'
 import { AGENTES } from '@/content'
+import { ContextualCopy } from '@/components/logos'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -42,7 +43,7 @@ function AgentCard({ agent }: { agent: Agent }) {
           letterSpacing: '-0.014em',
         }}
       >
-        {agent.title}
+        <ContextualCopy text={agent.title} logoSize={18} />
       </h3>
 
       <p className="font-sans text-[13px] font-light leading-relaxed text-white/65 flex-1">

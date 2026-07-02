@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { m, useScroll, MotionValue } from 'framer-motion'
 import { SOLUCION } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
+import OperationsHub from './OperationsHub'
+import IntegrationsStrip from './IntegrationsStrip'
 
 /**
  * Cuenta cuántos pasos están activos según el progreso del scroll-jack.
@@ -26,126 +28,7 @@ function useActiveStepCount(mv: MotionValue<number>, total: number): number {
   return count
 }
 
-/* ── Operations Hub ─────────────────────────────────────────── */
-
-const NODE_POSITIONS: { angle: number; r: number }[] = [
-  { angle: -90,  r: 38 },
-  { angle: -30,  r: 42 },
-  { angle:  30,  r: 38 },
-  { angle:  90,  r: 42 },
-  { angle: 150,  r: 38 },
-  { angle: 210,  r: 42 },
-  { angle: -120, r: 54 },
-  { angle: -60,  r: 56 },
-  { angle:  60,  r: 54 },
-  { angle: 180,  r: 56 },
-]
-
-const NODES = [
-  { key: 'whatsapp', label: 'WA'  },
-  { key: 'email',    label: '✉'   },
-  { key: 'tms',      label: 'TMS' },
-  { key: 'erp',      label: 'ERP' },
-  { key: 'wms',      label: 'WMS' },
-  { key: 'sheets',   label: 'XLS' },
-  { key: 'calls',    label: 'VOZ' },
-  { key: 'crm',      label: 'CRM' },
-  { key: 'portal',   label: 'WEB' },
-  { key: 'db',       label: 'DB'  },
-]
-
-function toXY(angle: number, r: number) {
-  const rad = (angle * Math.PI) / 180
-  return { x: Math.cos(rad) * r, y: Math.sin(rad) * r }
-}
-
-function OperationsHub() {
-  return (
-    <div
-      className="relative mx-auto flex w-full max-w-[300px] items-center justify-center sm:max-w-[380px] lg:max-w-[420px]"
-      style={{ aspectRatio: '1' }}
-      aria-hidden="true"
-    >
-      <svg viewBox="-65 -65 130 130" className="w-full h-full overflow-visible">
-        {/* Connecting lines */}
-        {NODES.map((node, i) => {
-          const pos = NODE_POSITIONS[i]
-          if (!pos) return null
-          const { x, y } = toXY(pos.angle, pos.r)
-          return (
-            <m.line
-              key={node.key}
-              x1={0} y1={0} x2={x} y2={y}
-              stroke="#BFDBFE"
-              strokeWidth="0.6"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: DURATION.slow, delay: 0.1 + i * 0.06, ease: EASE }}
-              viewport={{ once: true }}
-            />
-          )
-        })}
-
-        {/* Hub central */}
-        <circle cx={0} cy={0} r={11} fill="#2563EB" />
-        <text
-          x={0} y={1.5}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="white"
-          fontSize="3.2"
-          fontFamily="system-ui, sans-serif"
-          fontWeight="700"
-        >
-          Suplai
-        </text>
-
-        {/* Pulse rings */}
-        <m.circle
-          cx={0} cy={0} r={12}
-          fill="none" stroke="#2563EB" strokeWidth="0.7" strokeOpacity={0.4}
-          animate={{ r: [12, 22], opacity: [0.4, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut' }}
-        />
-        <m.circle
-          cx={0} cy={0} r={12}
-          fill="none" stroke="#2563EB" strokeWidth="0.4" strokeOpacity={0.2}
-          animate={{ r: [12, 28], opacity: [0.2, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: 0.8 }}
-        />
-
-        {/* Nodes */}
-        {NODES.map((node, i) => {
-          const pos = NODE_POSITIONS[i]
-          if (!pos) return null
-          const { x, y } = toXY(pos.angle, pos.r)
-          return (
-            <m.g
-              key={node.key}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.45, delay: 0.25 + i * 0.07, ease: EASE }}
-              viewport={{ once: true }}
-            >
-              <circle cx={x} cy={y} r={8} fill="white" stroke="#E5E7EB" strokeWidth="0.5" />
-              <text
-                x={x} y={y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="#0A0A0A"
-                fontSize="2.8"
-                fontFamily="system-ui, sans-serif"
-                fontWeight="600"
-              >
-                {node.label}
-              </text>
-            </m.g>
-          )
-        })}
-      </svg>
-    </div>
-  )
-}
+/* ── Operations Hub → components/sections/OperationsHub.tsx ──── */
 
 function StepRow({
   step,
@@ -262,16 +145,8 @@ export default function SolucionSection() {
                 <OperationsHub />
               </m.div>
 
-              {/* Integrations strip */}
-              <m.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: DURATION.base, delay: 0.3 }}
-                className="mt-2 text-center font-mono text-[10px] text-muted leading-relaxed"
-              >
-                {SOLUCION.integrations}
-              </m.p>
+              {/* Integrations strip → leyenda con logos reales */}
+              <IntegrationsStrip text={SOLUCION.integrations} />
             </div>
 
             {/* Derecha: pasos con rail */}
