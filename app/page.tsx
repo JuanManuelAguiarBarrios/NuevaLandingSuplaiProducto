@@ -1,5 +1,6 @@
 import HeroSection          from '@/components/sections/HeroSection'
 import ManifiestoSection    from '@/components/sections/ManifiestoSection'
+import IntegrationsMarquee  from '@/components/sections/IntegrationsMarquee'
 import ProblemaSection      from '@/components/sections/ProblemaSection'
 import SolucionSection      from '@/components/sections/SolucionSection'
 import AgentesSection       from '@/components/sections/AgentesSection'
@@ -12,6 +13,7 @@ export default function Home() {
     <main>
       <HeroSection />
       <ManifiestoSection />
+      <IntegrationsMarquee />
       <ProblemaSection />
       <SolucionSection />
       <AgentesSection />
