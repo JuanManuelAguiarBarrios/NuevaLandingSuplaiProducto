@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { AnimatePresence, m } from 'framer-motion'
 import { EMPRESAS } from '@/content'
 import { EASE, fadeUpTight, staggerTight } from '@/lib/motion'
@@ -116,10 +117,8 @@ function IndexRow({
           {String(index + 1).padStart(2, '0')}
         </span>
         <span
-          className={`font-editorial font-normal transition-[color,transform] duration-300 ease-signature ${
-            isActive
-              ? 'accent lg:translate-x-1.5'
-              : 'text-white/45 group-hover:text-white/75'
+          className={`font-editorial font-normal transition-colors duration-300 ease-signature ${
+            isActive ? 'text-primary' : 'text-white/45 group-hover:text-white/75'
           }`}
           style={{
             fontSize: 'clamp(21px, 2.6vw, 34px)',
@@ -139,51 +138,89 @@ function IndexRow({
   )
 }
 
-/** Panel derecho: glyph en grande + descripción de la vertical activa. */
-function Spotlight({ item, index }: { item: EmpresaItem; index: number }) {
+/**
+ * Panel derecho: foto de la vertical activa en duotono azul (grayscale +
+ * tinte con mix-blend) con Ken Burns sutil, y el texto debajo con crossfade.
+ * Las 6 fotos quedan montadas y se alternan por opacidad → el cambio es
+ * instantáneo (nada de esperar el fetch en cada hover).
+ */
+function Spotlight({ activeIndex }: { activeIndex: number }) {
+  const active = EMPRESAS.items[activeIndex] ?? EMPRESAS.items[0]
+
   return (
-    <AnimatePresence mode="wait">
-      <m.div
-        key={item.key}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.32, ease: EASE }}
-        className="relative"
-      >
-        {/* Número fantasma — segundo plano editorial */}
-        <span
-          className="pointer-events-none absolute -top-10 right-0 select-none font-editorial text-[140px] leading-none text-white/[0.05]"
-          aria-hidden="true"
-        >
-          {String(index + 1).padStart(2, '0')}
-        </span>
+    <div>
+      {/* Foto — stack con crossfade */}
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+        {EMPRESAS.items.map((item, i) => {
+          const isActive = i === activeIndex
+          return (
+            <div
+              key={item.key}
+              className={`absolute inset-0 transition-opacity duration-500 ease-signature ${
+                isActive ? 'opacity-100' : 'opacity-0'
+              }`}
+              aria-hidden={!isActive}
+            >
+              <Image
+                src={`/empresas/${item.key}.webp`}
+                alt={item.title}
+                fill
+                sizes="(min-width: 1024px) 460px, 100vw"
+                className={`object-cover grayscale contrast-[1.08] brightness-[0.85] ${
+                  isActive ? 'kenburns' : ''
+                }`}
+              />
+              {/* Tinte duotono azul sobre el grayscale */}
+              <div className="absolute inset-0 bg-primary/30 mix-blend-color" aria-hidden="true" />
+              {/* Fade inferior hacia el fondo de la sección */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/75 via-transparent to-transparent"
+                aria-hidden="true"
+              />
+            </div>
+          )
+        })}
 
-        <span className="block text-primary" aria-hidden="true">
-          <Icon name={item.icon} size={92} />
-        </span>
+        {/* Chip glyph + índice sobre la foto */}
+        <div className="absolute bottom-4 left-4 flex items-center gap-2.5 text-white">
+          <span className="flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm" aria-hidden="true">
+            <Icon name={active.icon} size={17} />
+          </span>
+          <span className="font-mono text-[11px] tabular-nums text-white/80" aria-hidden="true">
+            {String(activeIndex + 1).padStart(2, '0')} / {String(EMPRESAS.items.length).padStart(2, '0')}
+          </span>
+        </div>
+      </div>
 
-        <h3
-          className="mt-10 font-editorial font-normal text-white text-wrap-balance"
-          style={{ fontSize: 'clamp(20px, 2vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.016em' }}
+      {/* Texto — crossfade al cambiar */}
+      <AnimatePresence mode="wait">
+        <m.div
+          key={active.key}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.28, ease: EASE }}
         >
-          {item.title}
-        </h3>
-
-        <p
-          className="mt-4 max-w-[38ch] font-sans font-light leading-relaxed text-white/60"
-          style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
-        >
-          {item.desc}
-        </p>
-      </m.div>
-    </AnimatePresence>
+          <h3
+            className="mt-6 font-editorial font-normal text-white text-wrap-balance"
+            style={{ fontSize: 'clamp(20px, 2vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.016em' }}
+          >
+            {active.title}
+          </h3>
+          <p
+            className="mt-3 max-w-[42ch] font-sans font-light leading-relaxed text-white/60"
+            style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
+          >
+            {active.desc}
+          </p>
+        </m.div>
+      </AnimatePresence>
+    </div>
   )
 }
 
 export default function EmpresasSection() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const active = EMPRESAS.items[activeIndex] ?? EMPRESAS.items[0]
 
   return (
     <section id="empresas" className="bg-[#0A0A0A] py-28 md:py-36">
@@ -240,9 +277,9 @@ export default function EmpresasSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
-            className="hidden border-l border-white/8 pl-14 pt-2 lg:block"
+            className="hidden pt-2 lg:block"
           >
-            <Spotlight item={active} index={activeIndex} />
+            <Spotlight activeIndex={activeIndex} />
           </m.div>
         </div>
 

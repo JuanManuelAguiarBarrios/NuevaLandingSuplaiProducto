@@ -200,6 +200,26 @@
 }
 
 /* ────────────────────────────────────────────
+   Empresas — Ken Burns sutil sobre la foto activa
+   del spotlight. Solo transform; se re-dispara al
+   cambiar de vertical (la clase se re-monta).
+──────────────────────────────────────────── */
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
+
+.kenburns {
+  animation: kenburns 14s var(--ease-signature) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns {
+    animation: none;
+  }
+}
+
+/* ────────────────────────────────────────────
    Marquee de integraciones — loop infinito CSS.
    El track duplica su contenido: translateX(-50%)
    mueve exactamente una copia → loop sin costura.
