@@ -3,13 +3,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { m, useScroll, MotionValue } from 'framer-motion'
 import { SOLUCION } from '@/content'
+import { EASE, DURATION, revealOnce } from '@/lib/motion'
 
-const ease = [0.16, 1, 0.3, 1] as const
-
-function useMotionSnapshot(mv: MotionValue<number>) {
-  const [val, setVal] = useState(0)
-  useEffect(() => mv.on('change', setVal), [mv])
-  return val
+/**
+ * Cuenta cuántos pasos están activos según el progreso del scroll-jack.
+ * Solo dispara re-render cuando ese número cambia (unas pocas veces en total),
+ * no en cada frame — antes snapshoteábamos el float y React reconciliaba 60×/s.
+ */
+function useActiveStepCount(mv: MotionValue<number>, total: number): number {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    const compute = (p: number) => {
+      let c = 0
+      for (let i = 0; i < total; i++) {
+        if (p >= i / total - 0.05) c = i + 1
+      }
+      setCount((prev) => (prev === c ? prev : c))
+    }
+    compute(mv.get())
+    return mv.on('change', compute)
+  }, [mv, total])
+  return count
 }
 
 /* ── Operations Hub ─────────────────────────────────────────── */
@@ -66,7 +80,7 @@ function OperationsHub() {
               strokeWidth="0.6"
               initial={{ pathLength: 0, opacity: 0 }}
               whileInView={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.1 + i * 0.06, ease: 'easeOut' }}
+              transition={{ duration: DURATION.slow, delay: 0.1 + i * 0.06, ease: EASE }}
               viewport={{ once: true }}
             />
           )
@@ -110,7 +124,7 @@ function OperationsHub() {
               key={node.key}
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.45, delay: 0.25 + i * 0.07, ease }}
+              transition={{ duration: 0.45, delay: 0.25 + i * 0.07, ease: EASE }}
               viewport={{ once: true }}
             >
               <circle cx={x} cy={y} r={8} fill="white" stroke="#E5E7EB" strokeWidth="0.5" />
@@ -135,28 +149,22 @@ function OperationsHub() {
 
 function StepRow({
   step,
-  index,
-  progress,
-  scrollActive,
+  isActive,
 }: {
   step: (typeof SOLUCION.steps)[number]
-  index: number
-  progress: number
-  /** Solo en desktop los pasos se atenúan según el scroll; en mobile van siempre activos. */
-  scrollActive: boolean
+  /** En desktop se atenúa según el scroll; en mobile va siempre activo. */
+  isActive: boolean
 }) {
-  const active = !scrollActive || progress >= index / 3 - 0.05
-
   return (
     <m.div
-      animate={{ opacity: active ? 1 : 0.28, y: active ? 0 : 8 }}
-      transition={{ duration: 0.4, ease }}
+      animate={{ opacity: isActive ? 1 : 0.28, y: isActive ? 0 : 8 }}
+      transition={{ duration: DURATION.fast, ease: EASE }}
       className="flex items-start gap-6 py-8 border-t border-border"
     >
       <div className="shrink-0 mt-1 text-right" style={{ width: 28 }}>
         <span
           className="font-mono text-[11px] font-medium tracking-[0.12em] transition-colors duration-300"
-          style={{ color: active ? '#2563EB' : '#D1D5DB' }}
+          style={{ color: isActive ? '#2563EB' : '#D1D5DB' }}
         >
           {step.n}
         </span>
@@ -164,32 +172,44 @@ function StepRow({
       <div className="flex-1">
         <p
           className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] mb-1 transition-colors duration-300"
-          style={{ color: active ? '#6B7280' : '#D1D5DB' }}
+          style={{ color: isActive ? '#6B7280' : '#D1D5DB' }}
         >
           {step.label}
         </p>
         <h3
-          className="font-editorial font-normal text-wrap-balance transition-colors duration-300"
-          style={{
-            fontSize: 'clamp(18px, 2vw, 26px)',
-            lineHeight: 1.2,
-            letterSpacing: '-0.016em',
-            color: active ? '#0A0A0A' : '#D1D5DB',
-          }}
+          className="type-h3 font-editorial font-normal text-wrap-balance transition-colors duration-300"
+          style={{ color: isActive ? '#0A0A0A' : '#D1D5DB' }}
         >
           {step.title}
         </h3>
         <p
-          className="mt-2 font-sans font-light leading-relaxed transition-colors duration-300"
-          style={{
-            fontSize: 'clamp(13px, 1.2vw, 15px)',
-            color: active ? '#6B7280' : '#E5E7EB',
-          }}
+          className="mt-2 font-sans text-sm font-light leading-relaxed transition-colors duration-300"
+          style={{ color: isActive ? '#6B7280' : '#E5E7EB' }}
         >
           {step.desc}
         </p>
       </div>
     </m.div>
+  )
+}
+
+/** Titular con la palabra "operativa" (la categoría de Suplai) en itálica azul.
+ *  Robusto: si esa palabra no está en el copy, no acentúa nada. */
+function SolucionHeadline() {
+  const words = SOLUCION.headline.split(' ')
+  return (
+    <>
+      {words.map((word, i) => {
+        const clean = word.replace(/[.,;:]/g, '').toLowerCase()
+        const isAccent = clean === 'operativa'
+        return (
+          <span key={i} className={isAccent ? 'accent' : undefined}>
+            {word}
+            {i < words.length - 1 ? ' ' : ''}
+          </span>
+        )
+      })}
+    </>
   )
 }
 
@@ -204,7 +224,7 @@ export default function SolucionSection() {
     offset: ['start start', 'end end'],
   })
 
-  const progress = useMotionSnapshot(scrollYProgress)
+  const activeCount = useActiveStepCount(scrollYProgress, SOLUCION.steps.length)
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
@@ -227,25 +247,17 @@ export default function SolucionSection() {
             {/* Izquierda: titular + hub */}
             <div>
               <m.h2
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.7, ease }}
-                className="font-editorial font-normal text-ink text-wrap-balance mb-10"
-                style={{
-                  fontSize: 'clamp(26px, 3.2vw, 46px)',
-                  lineHeight: 1.12,
-                  letterSpacing: '-0.02em',
-                }}
+                {...revealOnce}
+                className="type-h2 font-editorial font-normal text-ink text-wrap-balance mb-10"
               >
-                {SOLUCION.headline}
+                <SolucionHeadline />
               </m.h2>
 
               <m.div
                 initial={{ opacity: 0, scale: 0.94 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease }}
+                transition={{ duration: 0.8, ease: EASE }}
               >
                 <OperationsHub />
               </m.div>
@@ -255,7 +267,7 @@ export default function SolucionSection() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: DURATION.base, delay: 0.3 }}
                 className="mt-2 text-center font-mono text-[10px] text-muted leading-relaxed"
               >
                 {SOLUCION.integrations}
@@ -274,7 +286,11 @@ export default function SolucionSection() {
 
               <div className="flex-1">
                 {SOLUCION.steps.map((step, i) => (
-                  <StepRow key={step.n} step={step} index={i} progress={progress} scrollActive={isDesktop} />
+                  <StepRow
+                    key={step.n}
+                    step={step}
+                    isActive={!isDesktop || i < activeCount}
+                  />
                 ))}
               </div>
             </div>
