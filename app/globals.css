@@ -218,25 +218,3 @@
     animation: none;
   }
 }
-
-/* ────────────────────────────────────────────
-   Marquee de integraciones — loop infinito CSS.
-   El track duplica su contenido: translateX(-50%)
-   mueve exactamente una copia → loop sin costura.
-   Solo transform. Pausa en hover; se apaga con
-   prefers-reduced-motion (queda estático).
-──────────────────────────────────────────── */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee-scroll 42s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
-  }
-}
