@@ -2,42 +2,18 @@
 
 import { m } from 'framer-motion'
 import { PROBLEMA } from '@/content'
-
-const ease = [0.16, 1, 0.3, 1] as const
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
-}
-
-const stagger = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.1 } },
-}
+import { fadeUp, stagger, revealOnce } from '@/lib/motion'
 
 export default function ProblemaSection() {
   return (
-    <section id="problema" className="bg-white py-28 md:py-36">
+    <section id="problema" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
-        {/* Frase ancla — sin eyebrow, sin producto nombrado */}
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease }}
-          className="mb-20 max-w-3xl"
-        >
-          <p
-            className="font-editorial font-normal text-ink text-wrap-balance"
-            style={{
-              fontSize: 'clamp(26px, 3.2vw, 46px)',
-              lineHeight: 1.15,
-              letterSpacing: '-0.02em',
-            }}
-          >
+        {/* Frase ancla — la segunda línea es el elemento de firma (itálica azul) */}
+        <m.div {...revealOnce} className="mb-20 max-w-3xl">
+          <p className="type-h2 font-editorial font-normal text-ink text-wrap-balance">
             {PROBLEMA.anchor.split('\n').map((line, i) => (
-              <span key={i} className={i === 0 ? 'block' : 'block text-muted'}>
+              <span key={i} className={i === 0 ? 'block' : 'block accent'}>
                 {line}
               </span>
             ))}
