@@ -141,6 +141,65 @@
 }
 
 /* ────────────────────────────────────────────
+   Hero — rutas de flujo (SVG, CSS puro).
+   Base estática tenue + dash de luz que recorre
+   el path en loop. pathLength=1000 normaliza el
+   largo → dasharray suma 1000 y el loop cierra
+   sin costura. En mobile / reduced-motion los
+   dashes se apagan (queda la base estática).
+──────────────────────────────────────────── */
+.hero-flow-base {
+  fill: none;
+  stroke: #2563EB;
+  stroke-opacity: 0.14;
+  stroke-width: 1;
+}
+
+@keyframes hero-flow {
+  to { stroke-dashoffset: 0; }
+}
+
+.hero-flow-dash {
+  fill: none;
+  stroke: #60A5FA;
+  stroke-opacity: 0.55;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 70 930;
+  stroke-dashoffset: 1000;
+  animation: hero-flow 20s linear infinite;
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .hero-flow-dash {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ────────────────────────────────────────────
+   Hero — glow que respira. Deriva y escala muy
+   lentas (ciclo ~26s, alternate). Solo transform
+   + opacity. Estático en mobile / reduced-motion.
+──────────────────────────────────────────── */
+@keyframes hero-breathe {
+  from { transform: translate(-50%, -50%) scale(1);    opacity: 0.055; }
+  to   { transform: translate(-46%, -54%) scale(1.18); opacity: 0.095; }
+}
+
+.hero-breathe {
+  transform: translate(-50%, -50%);
+  opacity: 0.07;
+  animation: hero-breathe 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .hero-breathe {
+    animation: none;
+  }
+}
+
+/* ────────────────────────────────────────────
    Marquee de integraciones — loop infinito CSS.
    El track duplica su contenido: translateX(-50%)
    mueve exactamente una copia → loop sin costura.

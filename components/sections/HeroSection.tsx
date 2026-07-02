@@ -1,5 +1,5 @@
 import { HERO } from '@/content'
-import HeroAmbient from '@/components/hero/HeroAmbient'
+import HeroFlowLines from '@/components/hero/HeroFlowLines'
 
 export default function HeroSection() {
   return (
@@ -18,15 +18,15 @@ export default function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* Radial glow — blue, very subtle */}
+      {/* Radial glow — azul, respira lento (transform+opacity vía .hero-breathe) */}
       <div
-        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[900px] rounded-full opacity-[0.07]"
+        className="hero-breathe pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] rounded-full"
         style={{ background: 'radial-gradient(ellipse, #2563EB 0%, transparent 70%)' }}
         aria-hidden="true"
       />
 
-      {/* Ambiente 3D — lazy, sólo desktop capaz; fallback = fondo estático */}
-      <HeroAmbient />
+      {/* Rutas de flujo — CSS puro; fallback estático en mobile/reduced-motion */}
+      <HeroFlowLines />
 
       {/* Bottom fade to white for smooth transition */}
       <div
