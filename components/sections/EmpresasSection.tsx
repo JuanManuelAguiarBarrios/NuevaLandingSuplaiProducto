@@ -121,9 +121,9 @@ function IndexRow({
             isActive ? 'text-primary' : 'text-white/45 group-hover:text-white/75'
           }`}
           style={{
-            fontSize: 'clamp(21px, 2.6vw, 34px)',
-            lineHeight: 1.15,
-            letterSpacing: '-0.018em',
+            fontSize: 'clamp(18px, 2.1vw, 27px)',
+            lineHeight: 1.18,
+            letterSpacing: '-0.016em',
           }}
         >
           {item.title}
