@@ -68,18 +68,6 @@ export default function HeroSection() {
           </a>
         </div>
 
-        {/* Scroll cue — hairline vertical con punto que la recorre */}
-        <div className="hero-rise mt-24 flex items-center gap-3" style={{ animationDelay: '0.32s' }}>
-          <span
-            className="relative block h-8 w-px overflow-hidden bg-white/12"
-            aria-hidden="true"
-          >
-            <span className="scroll-cue-dot absolute inset-x-0 top-0 h-2 bg-white/50" />
-          </span>
-          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/25">
-            Scroll
-          </span>
-        </div>
       </div>
     </section>
   )
