@@ -1,4 +1,4 @@
-import { HERO } from '@/content'
+import { DEMO_URL, HERO } from '@/content'
 import HeroFlowLines from '@/components/hero/HeroFlowLines'
 
 export default function HeroSection() {
@@ -53,7 +53,7 @@ export default function HeroSection() {
         {/* CTA — grupo con flecha que desliza en hover */}
         <div className="hero-rise mt-10" style={{ animationDelay: '0.22s' }}>
           <a
-            href="mailto:admin@getsuplai.com?subject=Quiero%20una%20demo%20de%20Suplai"
+            href={DEMO_URL}
             className="group inline-flex items-center gap-2 rounded-full bg-primary py-3 pl-7 pr-6 font-sans text-[14px] font-semibold text-white transition-[background-color,transform] duration-300 ease-signature hover:bg-[#1D4ED8] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
           >
             {HERO.cta}

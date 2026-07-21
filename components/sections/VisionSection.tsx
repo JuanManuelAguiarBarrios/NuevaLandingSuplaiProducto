@@ -3,7 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { m } from 'framer-motion'
-import { VISION, FOOTER } from '@/content'
+import { DEMO_URL, VISION, FOOTER } from '@/content'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -15,6 +15,13 @@ const stagger = {
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
   show:   { opacity: 1, y: 0, transition: { duration: 0.65, ease } },
+}
+
+// Reveal de cierre: además de subir, escala levemente desde adentro — le da
+// más peso de "cierre de página" que el fadeUp genérico del resto del sitio.
+const fadeUpScale = {
+  hidden: { opacity: 0, y: 18, scale: 0.98 },
+  show:   { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease } },
 }
 
 function IconLinkedIn() {
@@ -37,31 +44,9 @@ function IconMail() {
   )
 }
 
-function IconPhone() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  )
-}
-
-function IconGlobe() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  )
-}
-
 const LINK_ICONS: Record<string, React.ReactNode> = {
-  'getsuplai.com':        <IconGlobe />,
-  'LinkedIn · getsuplai': <IconLinkedIn />,
-  '+598 94412389':        <IconPhone />,
-  'admin@getsuplai.com':  <IconMail />,
+  'LinkedIn · getsuplai':   <IconLinkedIn />,
+  'contacto@getsuplai.com': <IconMail />,
 }
 
 export default function VisionSection() {
@@ -77,7 +62,7 @@ export default function VisionSection() {
           className="mx-auto max-w-[1200px] px-6 md:px-10"
         >
           <m.h2
-            variants={fadeUp}
+            variants={fadeUpScale}
             className="font-editorial font-normal text-white text-wrap-balance max-w-3xl"
             style={{
               fontSize: 'clamp(30px, 4.2vw, 62px)',
@@ -101,7 +86,7 @@ export default function VisionSection() {
 
           <m.div variants={fadeUp} className="mt-10">
             <a
-              href="mailto:admin@getsuplai.com?subject=Quiero%20una%20demo%20de%20Suplai"
+              href={DEMO_URL}
               className="inline-flex items-center rounded-full bg-primary px-7 py-3 font-sans text-[14px] font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
             >
               {VISION.cta}
@@ -113,7 +98,7 @@ export default function VisionSection() {
       {/* Footer */}
       <footer className="border-t border-white/[0.06] bg-[#0A0A0A]">
         <div className="mx-auto max-w-[1200px] px-6 py-10 md:px-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
 
             {/* Lockup oficial (blanco, ya incluye el wordmark) */}
             <Image
@@ -130,7 +115,7 @@ export default function VisionSection() {
                   key={link.href}
                   href={link.href}
                   {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="inline-flex items-center gap-2 py-1.5 font-sans text-[12px] text-white/55 transition-colors hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded"
+                  className="inline-flex items-center gap-2 py-1.5 font-sans text-[12px] text-white/65 transition-colors hover:text-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded"
                 >
                   {LINK_ICONS[link.label]}
                   {link.label}
@@ -140,7 +125,7 @@ export default function VisionSection() {
 
           </div>
 
-          <div className="mt-8 border-t border-white/[0.06] pt-6 text-center font-sans text-[11px] text-white/45">
+          <div className="mt-8 border-t border-white/[0.06] pt-6 text-center font-sans text-[11px] text-white/60">
             {FOOTER.legal.replace('{year}', String(new Date().getFullYear()))}
           </div>
         </div>

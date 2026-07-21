@@ -4,6 +4,8 @@
  * Editá acá — los componentes sólo importan desde aquí.
  */
 
+export const DEMO_URL = 'https://calendly.com/mateo-getsuplai/30min'
+
 /* ── Navbar ─────────────────────────────────────────────────── */
 export const NAV = {
   brand: 'Suplai',
@@ -25,18 +27,6 @@ export const HERO = {
   subtitle:
     'Suplai construye agentes de inteligencia artificial que coordinan tu operación conectándose a los sistemas que ya usás.',
   cta: 'Agendá una demo',
-} as const
-
-/* ── Manifiesto ─────────────────────────────────────────────── */
-export const MANIFIESTO = {
-  lines: [
-    'La logística está digitalizada.',
-    'Pero la operación sigue siendo manual.',
-  ],
-  subcopy: [
-    'Tener los datos no es suficiente.',
-    'Alguien tiene que actuar sobre ellos.',
-  ],
 } as const
 
 /* ── Problema ───────────────────────────────────────────────── */
@@ -62,7 +52,7 @@ export const PROBLEMA = {
 
 /* ── Solución ───────────────────────────────────────────────── */
 export const SOLUCION = {
-  headline: 'Una capa operativa sobre tus sistemas.',
+  headline: 'Una capa operativa de IA sobre los sistemas que ya usás.',
   integrations: 'TMS · WMS · ERP · WhatsApp · Llamadas · Excel / Sheets · CRM · y más',
   steps: [
     {
@@ -153,43 +143,49 @@ export const EMPRESAS = {
     plain:  'Hecho para',
     accent: 'tu operación.',
   },
-  subtitle: 'Sea cual sea tu operación, hay un agente para vos.',
+  subtitle: 'De distribuidoras a puertos: mismo agente, distinto cuello de botella.',
   items: [
     {
       key:   'logistica',
       title: 'Empresas de logística',
       desc:  'Coordinación entre tráfico, choferes y clientes.',
       icon:  'truck',
+      alt:   'Camiones de reparto en operación logística',
     },
     {
       key:   'distribuidoras',
       title: 'Distribuidoras',
       desc:  'Muchas entregas por día, confirmaciones que traban el cierre.',
       icon:  'package',
+      alt:   'Depósito de distribuidora con mercadería lista para despacho',
     },
     {
       key:   'importadoras',
       title: 'Importadoras',
       desc:  'Seguimiento de cargas y trámites dispersos.',
       icon:  'ship',
+      alt:   'Contenedores de carga en una operación de importación',
     },
     {
       key:   'portuarias',
       title: 'Empresas portuarias',
       desc:  'Coordinación de turnos y movimientos en tiempo real.',
       icon:  'anchor',
+      alt:   'Dársena portuaria con movimiento de contenedores',
     },
     {
       key:   'flota',
       title: 'Flota propia',
       desc:  'Control de viajes sin sumar gente al equipo.',
       icon:  'route',
+      alt:   'Flota de camiones propia en ruta',
     },
     {
       key:   'cds',
       title: 'Centros de distribución',
       desc:  'Ingreso y egreso de mercadería sin papel ni fricción.',
       icon:  'warehouse',
+      alt:   'Centro de distribución con ingreso y egreso de mercadería',
     },
   ],
 } as const
@@ -241,17 +237,15 @@ export const VISION = {
   accent:   'Construyamos esa capa juntos.',
   subtitle:
     'Queremos ser la capa que permite a las empresas ejecutar su operación de forma más eficiente, sin fricción y con capacidad de escalar.',
-  cta: 'Agendá una demo',
+  cta: 'Empecemos a construir tu agente',
 } as const
 
 /* ── Footer ─────────────────────────────────────────────────── */
 export const FOOTER = {
   brand: 'Suplai',
   links: [
-    { label: 'getsuplai.com',        href: 'https://getsuplai.com',                   external: true  },
     { label: 'LinkedIn · getsuplai', href: 'https://linkedin.com/company/getsuplai',  external: true  },
-    { label: '+598 94412389',        href: 'tel:+59894412389',                         external: false },
-    { label: 'admin@getsuplai.com',  href: 'mailto:admin@getsuplai.com',               external: false },
+    { label: 'contacto@getsuplai.com', href: 'mailto:contacto@getsuplai.com',          external: false },
   ],
   legal: '© {year} Suplai. Todos los derechos reservados.',
 } as const

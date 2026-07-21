@@ -42,7 +42,9 @@ export default function ProblemaSection() {
                 <m.li
                   key={i}
                   variants={fadeUp}
-                  className="flex items-start gap-4 border-t border-border pt-5"
+                  whileHover={{ x: 3 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="flex items-start gap-4 border-t border-border pt-5 transition-colors duration-200 hover:border-ink/30"
                 >
                   <span
                     className="mt-[5px] font-mono text-[10px] font-medium text-muted shrink-0"
@@ -76,7 +78,9 @@ export default function ProblemaSection() {
                 <m.li
                   key={i}
                   variants={fadeUp}
-                  className="flex items-start gap-4 border-t border-border pt-5"
+                  whileHover={{ x: 3 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="flex items-start gap-4 border-t border-border pt-5 transition-colors duration-200 hover:border-ink/30"
                 >
                   <span
                     className="mt-[5px] font-mono text-[10px] font-medium text-primary/50 shrink-0"

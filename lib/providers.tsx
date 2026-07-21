@@ -11,16 +11,21 @@ import Lenis from 'lenis'
  * Accesibilidad: Lenis NO respeta prefers-reduced-motion por su cuenta.
  * Si el usuario pide movimiento reducido, no inicializamos Lenis y dejamos
  * el scroll nativo del browser. También reaccionamos si el valor cambia en vivo.
+ *
+ * Performance: solo tiene sentido en desktop con mouse/trackpad (`pointer: fine`).
+ * En touch el scroll nativo ya es fluido — Lenis ahí solo suma un RAF loop
+ * permanente sin aportar nada, así que en mobile queda desactivado.
  */
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const finePointer = window.matchMedia('(pointer: fine)')
 
     let lenis: Lenis | null = null
     let raf: number | null = null
 
     const start = () => {
-      if (lenis || media.matches) return
+      if (lenis || reduceMotion.matches || !finePointer.matches) return
       lenis = new Lenis({
         duration: 1.15,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -40,13 +45,15 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       lenis = null
     }
 
-    const onChange = () => (media.matches ? stop() : start())
+    const onChange = () => (reduceMotion.matches || !finePointer.matches ? stop() : start())
 
     start()
-    media.addEventListener('change', onChange)
+    reduceMotion.addEventListener('change', onChange)
+    finePointer.addEventListener('change', onChange)
 
     return () => {
-      media.removeEventListener('change', onChange)
+      reduceMotion.removeEventListener('change', onChange)
+      finePointer.removeEventListener('change', onChange)
       stop()
     }
   }, [])

@@ -5,9 +5,11 @@ import { COMO_TRABAJAMOS } from '@/content'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+// Entrada horizontal para los 4 pasos: rompe la monotonía del fadeUp vertical
+// que usa el resto del sitio, sin salir del sistema (mismo ease/duración).
+const fadeRight = {
+  hidden: { opacity: 0, x: -14 },
+  show:   { opacity: 1, x: 0, transition: { duration: 0.6, ease } },
 }
 
 const stagger = {
@@ -17,7 +19,7 @@ const stagger = {
 
 export default function ComoTrabajamosSection() {
   return (
-    <section id="como-trabajamos" className="bg-white py-28 md:py-36">
+    <section id="como-trabajamos" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
         {/* Titular */}
@@ -45,9 +47,15 @@ export default function ComoTrabajamosSection() {
           className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
         >
           {COMO_TRABAJAMOS.steps.map((step) => (
-            <m.div key={step.n} variants={fadeUp}>
-              <p className="font-mono text-[11px] font-medium text-primary mb-4">{step.n}</p>
-              <div className="h-px w-8 bg-border mb-4" aria-hidden="true" />
+            <m.div
+              key={step.n}
+              variants={fadeRight}
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.22, ease }}
+              className="group"
+            >
+              <p className="font-mono text-[11px] font-medium text-primary mb-4 transition-colors duration-200 group-hover:text-[#1D4ED8]">{step.n}</p>
+              <div className="h-px w-8 bg-border mb-4 transition-colors duration-200 group-hover:bg-primary" aria-hidden="true" />
               <h3
                 className="font-editorial font-normal text-ink mb-3"
                 style={{

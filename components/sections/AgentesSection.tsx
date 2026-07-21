@@ -130,7 +130,7 @@ function ExpansionCard() {
 
 export default function AgentesSection() {
   return (
-    <section id="agentes" className="bg-[#0A0A0A] py-28 md:py-36">
+    <section id="agentes" className="bg-[#0A0A0A]" style={{ paddingBlock: 'var(--section-py)' }}>
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
         {/* Cabecera */}
