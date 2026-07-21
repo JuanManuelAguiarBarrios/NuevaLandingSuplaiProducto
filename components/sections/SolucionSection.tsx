@@ -28,16 +28,16 @@ function useActiveStepCount(mv: MotionValue<number>, total: number): number {
 }
 
 /**
- * Tamaño del diagrama de órbita según breakpoint (300 / sm:380 / lg:420).
- * Arranca en 300 para SSR y hace upgrade en el cliente — evita mismatch de
+ * Tamaño del diagrama de órbita según breakpoint (360 / sm:440 / lg:500).
+ * Arranca en 360 para SSR y hace upgrade en el cliente — evita mismatch de
  * hidratación.
  */
 function useOrbitSize(): number {
-  const [size, setSize] = useState(300)
+  const [size, setSize] = useState(360)
   useEffect(() => {
     const sm = window.matchMedia('(min-width: 640px)')
     const lg = window.matchMedia('(min-width: 1024px)')
-    const update = () => setSize(lg.matches ? 420 : sm.matches ? 380 : 300)
+    const update = () => setSize(lg.matches ? 500 : sm.matches ? 440 : 360)
     update()
     sm.addEventListener('change', update)
     lg.addEventListener('change', update)
