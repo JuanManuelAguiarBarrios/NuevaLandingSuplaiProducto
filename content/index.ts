@@ -53,7 +53,6 @@ export const PROBLEMA = {
 /* ── Solución ───────────────────────────────────────────────── */
 export const SOLUCION = {
   headline: 'Una capa operativa de IA sobre los sistemas que ya usás.',
-  integrations: 'TMS · WMS · ERP · WhatsApp · Llamadas · Excel / Sheets · CRM · y más',
   steps: [
     {
       n:     '01',

@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { m, useScroll, MotionValue } from 'framer-motion'
 import { SOLUCION } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
-import OperationsHub from './OperationsHub'
-import IntegrationsStrip from './IntegrationsStrip'
+import SuplaiOrbitDiagram from '@/components/SuplaiOrbitDiagram'
 
 /**
  * Cuenta cuántos pasos están activos según el progreso del scroll-jack.
@@ -28,7 +27,29 @@ function useActiveStepCount(mv: MotionValue<number>, total: number): number {
   return count
 }
 
-/* ── Operations Hub → components/sections/OperationsHub.tsx ──── */
+/**
+ * Tamaño del diagrama de órbita según breakpoint (300 / sm:380 / lg:420).
+ * Arranca en 300 para SSR y hace upgrade en el cliente — evita mismatch de
+ * hidratación.
+ */
+function useOrbitSize(): number {
+  const [size, setSize] = useState(300)
+  useEffect(() => {
+    const sm = window.matchMedia('(min-width: 640px)')
+    const lg = window.matchMedia('(min-width: 1024px)')
+    const update = () => setSize(lg.matches ? 420 : sm.matches ? 380 : 300)
+    update()
+    sm.addEventListener('change', update)
+    lg.addEventListener('change', update)
+    return () => {
+      sm.removeEventListener('change', update)
+      lg.removeEventListener('change', update)
+    }
+  }, [])
+  return size
+}
+
+/* ── Diagrama de órbita → components/SuplaiOrbitDiagram.tsx ──── */
 
 function StepRow({
   step,
@@ -108,6 +129,7 @@ export default function SolucionSection() {
   })
 
   const activeCount = useActiveStepCount(scrollYProgress, SOLUCION.steps.length)
+  const orbitSize = useOrbitSize()
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
@@ -142,11 +164,8 @@ export default function SolucionSection() {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.8, ease: EASE }}
               >
-                <OperationsHub />
+                <SuplaiOrbitDiagram size={orbitSize} className="mx-auto" />
               </m.div>
-
-              {/* Integrations strip → leyenda con logos reales */}
-              <IntegrationsStrip text={SOLUCION.integrations} />
             </div>
 
             {/* Derecha: pasos con rail */}
