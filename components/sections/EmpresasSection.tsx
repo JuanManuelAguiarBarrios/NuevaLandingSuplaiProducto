@@ -159,9 +159,18 @@ export default function EmpresasSection() {
                   >
                     {active.title}
                   </h3>
-                  <p className="mt-2 max-w-[46ch] font-sans text-[13px] font-light leading-relaxed text-white/75 md:text-[14px]">
-                    {active.desc}
-                  </p>
+                  {/* Punteo de pains — el guion azul de las cards de Agentes */}
+                  <ul className="mt-3 flex flex-col gap-1.5">
+                    {active.pains.map((pain) => (
+                      <li
+                        key={pain}
+                        className="flex items-center gap-2.5 font-sans text-[13px] font-light text-white/80 md:text-[13.5px]"
+                      >
+                        <span className="h-px w-3 shrink-0 bg-primary/70" aria-hidden="true" />
+                        {pain}
+                      </li>
+                    ))}
+                  </ul>
                 </m.div>
               </AnimatePresence>
 
@@ -196,7 +205,7 @@ export default function EmpresasSection() {
           {/* Mobile: texto debajo del lienzo — el footage queda limpio.
               min-height fija: el crossfade del autoplay no debe mover las
               tabs de abajo (CLS). */}
-          <div className="mt-4 flex min-h-[104px] items-start justify-between gap-4 sm:hidden">
+          <div className="mt-4 flex min-h-[124px] items-start justify-between gap-4 sm:hidden">
             <AnimatePresence mode="wait">
               <m.div
                 key={active.key}
@@ -208,9 +217,17 @@ export default function EmpresasSection() {
                 <h3 className="font-editorial text-[20px] font-normal leading-snug text-white text-wrap-balance">
                   {active.title}
                 </h3>
-                <p className="mt-1.5 font-sans text-[13px] font-light leading-relaxed text-white/65">
-                  {active.desc}
-                </p>
+                <ul className="mt-2 flex flex-col gap-1">
+                  {active.pains.map((pain) => (
+                    <li
+                      key={pain}
+                      className="flex items-center gap-2 font-sans text-[12.5px] font-light text-white/75"
+                    >
+                      <span className="h-px w-3 shrink-0 bg-primary/70" aria-hidden="true" />
+                      {pain}
+                    </li>
+                  ))}
+                </ul>
               </m.div>
             </AnimatePresence>
 
