@@ -1,4 +1,5 @@
 import HeroSection          from '@/components/sections/HeroSection'
+import ManifiestoSection    from '@/components/sections/ManifiestoSection'
 import ProblemaSection      from '@/components/sections/ProblemaSection'
 import SolucionSection      from '@/components/sections/SolucionSection'
 import AgentesSection       from '@/components/sections/AgentesSection'
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <main id="main-content">
       <HeroSection />
+      <ManifiestoSection />
       <ProblemaSection />
       <SolucionSection />
       <AgentesSection />

@@ -29,9 +29,15 @@ export const HERO = {
   cta: 'Agendá una demo',
 } as const
 
+/* ── Manifiesto ─────────────────────────────────────────────── */
+/* Quiebres de línea autorados: cada '\n' es una línea del reveal. */
+export const MANIFIESTO = {
+  text: 'Tener los datos no alcanza.\nAlguien tiene que actuar\nsobre ellos.',
+  accent: 'actuar',
+} as const
+
 /* ── Problema ───────────────────────────────────────────────── */
 export const PROBLEMA = {
-  anchor: 'Tener los datos no alcanza.\nAlguien tiene que actuar sobre ellos.',
   hoy: {
     label: 'Qué pasa hoy',
     items: [

@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion'
 import { PROBLEMA } from '@/content'
-import { fadeUp, stagger, revealOnce } from '@/lib/motion'
+import { fadeUp, stagger } from '@/lib/motion'
 import { ContextualCopy } from '@/components/logos'
 
 export default function ProblemaSection() {
@@ -10,18 +10,8 @@ export default function ProblemaSection() {
     <section id="problema" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
-        {/* Frase ancla — la segunda línea es el elemento de firma (itálica azul) */}
-        <m.div {...revealOnce} className="mb-20 max-w-3xl">
-          <p className="type-h2 font-editorial font-normal text-ink text-wrap-balance">
-            {PROBLEMA.anchor.split('\n').map((line, i) => (
-              <span key={i} className={i === 0 ? 'block' : 'block accent'}>
-                {line}
-              </span>
-            ))}
-          </p>
-        </m.div>
-
-        {/* Dos columnas — sin cards, layout editorial */}
+        {/* Dos columnas — sin cards, layout editorial. La frase ancla que
+            abría esta sección ahora es el Manifiesto (sección propia). */}
         <div className="grid gap-x-16 gap-y-12 md:grid-cols-2">
 
           {/* Qué pasa hoy */}
@@ -83,7 +73,7 @@ export default function ProblemaSection() {
                   className="flex items-start gap-4 border-t border-border pt-5 transition-colors duration-200 hover:border-ink/30"
                 >
                   <span
-                    className="mt-[5px] font-mono text-[10px] font-medium text-primary/50 shrink-0"
+                    className="mt-[5px] font-mono text-[10px] font-medium text-primary shrink-0"
                     aria-hidden="true"
                   >
                     {String(i + 1).padStart(2, '0')}
