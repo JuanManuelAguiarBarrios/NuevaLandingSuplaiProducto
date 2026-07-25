@@ -3,6 +3,7 @@
 import { m } from 'framer-motion'
 import { AGENTES } from '@/content'
 import { EASE, fadeUp, stagger, revealOnce } from '@/lib/motion'
+import AgentVignette from '@/components/agents/AgentVignette'
 
 type Agent = (typeof AGENTES.agents)[number]
 
@@ -21,7 +22,15 @@ function AgentCard({ agent }: { agent: Agent }) {
         <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">
           {agent.category}
         </p>
+        {agent.live && (
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/40 bg-primary/15 px-2.5 py-1 font-sans text-[10px] font-medium text-white/80">
+            <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
+            {AGENTES.badge}
+          </span>
+        )}
       </div>
+
+      <AgentVignette agentKey={agent.key} />
 
       <h3
         className="font-editorial font-normal text-white text-wrap-balance"

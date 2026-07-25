@@ -95,7 +95,7 @@ export const AGENTES = {
       title:    'Atención por WhatsApp',
       category: 'Atención al cliente',
       desc:     'Responde y deriva consultas sin fricción, con panel central y trazabilidad completa.',
-      results:  ['Atención 24/7', 'Menos carga operativa', 'Trazabilidad completa'],
+      results:  ['Responde 24/7 sin sumar personas', 'Deriva solo lo que necesita criterio humano', 'Cada conversación queda trazada en el panel'],
       live:     true,
     },
     {
@@ -103,7 +103,7 @@ export const AGENTES = {
       title:    'Voz para estado de pedidos',
       category: 'Seguimiento operativo',
       desc:     'Atiende y actualiza el estado en tiempo real, sin migrar de sistema.',
-      results:  ['Menos llamadas manuales', 'Información al instante', 'Sin fricción'],
+      results:  ['Atiende la llamada y responde con datos del sistema', 'Estado del pedido sin esperas ni transferencias', 'Libera al equipo de llamadas repetitivas'],
       live:     true,
     },
     {
@@ -111,7 +111,7 @@ export const AGENTES = {
       title:    'Coordinación con conductores',
       category: 'Operaciones',
       desc:     'Confirmaciones, demoras y entregas por voz o mensajería, sin llamadas manuales.',
-      results:  ['Menos llamadas manuales', 'Actualizaciones en tiempo real', 'Sin fricción para el conductor'],
+      results:  ['Confirma entregas sin perseguir choferes', 'Detecta demoras apenas ocurren', 'El conductor usa el canal que ya conoce'],
       live:     false,
     },
     {
@@ -119,7 +119,7 @@ export const AGENTES = {
       title:    'Agenda y turnos',
       category: 'Administración',
       desc:     'Gestión de turnos y citas sin llamadas manuales ni planillas.',
-      results:  ['Sin llamadas ni planillas', 'Confirmaciones automáticas', 'Menos errores de coordinación'],
+      results:  ['Agenda y confirma turnos sin intervención', 'Reprograma cancelaciones al instante', 'Elimina la planilla paralela'],
       live:     false,
     },
     {
@@ -127,7 +127,7 @@ export const AGENTES = {
       title:    'Seguimiento de incidencias',
       category: 'Control operativo',
       desc:     'Detecta, registra y escala excepciones operativas en tiempo real.',
-      results:  ['Detección automática', 'Escalado sin intervención manual', 'Registro completo de cada evento'],
+      results:  ['Detecta la excepción antes de que el cliente llame', 'Escala a la persona correcta, solo', 'Registro completo de cada evento'],
       live:     false,
     },
   ],
