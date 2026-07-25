@@ -1,67 +1,23 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { m, useReducedMotion, useScroll } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { COMO_TRABAJAMOS } from '@/content'
-import { EASE, DURATION, revealOnce } from '@/lib/motion'
-import { useActiveStepCount } from '@/lib/useActiveStepCount'
+import { EASE, revealOnce } from '@/lib/motion'
 import LineReveal from '@/components/LineReveal'
-import DigitRoll from '@/components/DigitRoll'
+import StepVisual from '@/components/proceso/StepVisuals'
 
 /**
- * "Así trabajamos" — split con número rotante: columna izquierda sticky con
- * el número de paso en display editorial que RUEDA como odómetro (el gesto
- * del contador del preloader, no el sticky de Solución) en sync con el paso
- * activo de la derecha. En mobile no hay número gigante: filas con eyebrow
- * numerado + rail vertical scroll-linked. Ese sync es el único momento
- * orquestado de la sección.
+ * "Así trabajamos" — tabs interactivas con panel visual (ref. Centinel):
+ * los 4 pasos como tabs numeradas; cada una abre un panel sobre fondo
+ * surface con el copy del paso a la izquierda y un visual construido en
+ * código como protagonista. Sin auto-avance: estos paneles se leen.
+ * A11y: tablist/tab/tabpanel, flechas de teclado, focus visible.
  */
 
-type Step = (typeof COMO_TRABAJAMOS.steps)[number]
-
-function StepRow({
-  step,
-  isActive,
-  onHover,
-  onHoverEnd,
-}: {
-  step: Step
-  isActive: boolean
-  onHover: () => void
-  onHoverEnd: () => void
-}) {
-  return (
-    <m.div
-      initial={false}
-      animate={{ opacity: isActive ? 1 : 0.35 }}
-      transition={{ duration: DURATION.fast, ease: EASE }}
-      onMouseEnter={onHover}
-      onMouseLeave={onHoverEnd}
-      className="border-t border-border py-8 lg:py-10"
-    >
-      {/* Eyebrow numerado solo en mobile — en desktop lo dice el número gigante */}
-      <p
-        className="mb-3 font-mono text-[11px] font-medium tracking-[0.08em] transition-colors duration-300 lg:hidden"
-        style={{ color: isActive ? '#2563EB' : '#9CA3AF' }}
-        aria-hidden="true"
-      >
-        {step.n}
-      </p>
-      <h3 className="type-h3 font-editorial font-normal text-ink text-wrap-balance">
-        {step.title}
-      </h3>
-      <p className="mt-2.5 max-w-[52ch] font-sans text-[14px] font-light leading-relaxed text-muted">
-        {step.desc}
-      </p>
-    </m.div>
-  )
-}
-
-/** Fila final "+": el gesto del slot de Agentes — lo custom siempre se
- *  marca igual. No participa del spotlight ni del conteo del número. */
 function ClosingRow() {
   return (
-    <div className="border-t border-dashed border-border py-8 lg:py-10">
+    <div className="mt-14 border-t border-dashed border-border pt-8">
       <span
         className="mb-4 flex size-7 items-center justify-center rounded-full border border-dashed border-[#D1D5DB] text-muted"
         aria-hidden="true"
@@ -89,23 +45,32 @@ function ClosingRow() {
 }
 
 export default function ComoTrabajamosSection() {
-  const stepsRef = useRef<HTMLDivElement>(null)
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
-  const prefersReducedMotion = useReducedMotion()
+  const [active, setActive] = useState(0)
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  // El paso activo avanza mientras las filas cruzan la franja de lectura.
-  const { scrollYProgress } = useScroll({
-    target: stepsRef,
-    offset: ['start 0.65', 'end 0.55'],
-  })
+  const totalTabs = COMO_TRABAJAMOS.paneles.tabs.length
+  const activeStep = COMO_TRABAJAMOS.steps[active]
 
-  const totalSteps = COMO_TRABAJAMOS.steps.length
-  const activeFromScroll = useActiveStepCount(scrollYProgress, totalSteps)
-  // 1..totalSteps — nunca 0: el número gigante siempre muestra un paso.
-  // El hover pisa al scroll mientras dura (mismo gesto que el índice de
-  // Empresas); en mobile no hay hover y manda el scroll.
-  const scrollStep = prefersReducedMotion ? 1 : Math.max(1, activeFromScroll)
-  const displayedStep = hoveredStep ?? scrollStep
+  const focusTab = (index: number) => {
+    setActive(index)
+    tabRefs.current[index]?.focus()
+  }
+
+  const onTablistKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      focusTab((active + 1) % totalTabs)
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      focusTab((active - 1 + totalTabs) % totalTabs)
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      focusTab(0)
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      focusTab(totalTabs - 1)
+    }
+  }
 
   return (
     <section id="como-trabajamos" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
@@ -114,72 +79,91 @@ export default function ComoTrabajamosSection() {
         {/* Titular */}
         <m.h2
           {...revealOnce}
-          className="type-h2 font-editorial font-normal text-ink mb-14 text-wrap-balance"
+          className="type-h2 font-editorial font-normal text-ink mb-10 text-wrap-balance"
         >
           {COMO_TRABAJAMOS.headline}
         </m.h2>
 
-        <div className="grid gap-12 lg:grid-cols-[minmax(220px,320px)_1fr] lg:gap-24">
+        {/* Tabs — scroll horizontal en mobile, 4 columnas en desktop */}
+        <div
+          role="tablist"
+          aria-label="Proceso de trabajo"
+          onKeyDown={onTablistKeyDown}
+          className="-mx-6 mb-5 flex overflow-x-auto px-6 md:mx-0 md:grid md:grid-cols-4 md:gap-1 md:px-0"
+        >
+          {COMO_TRABAJAMOS.paneles.tabs.map((tab, i) => {
+            const isActive = i === active
+            return (
+              <button
+                key={tab}
+                ref={(el) => {
+                  tabRefs.current[i] = el
+                }}
+                type="button"
+                role="tab"
+                id={`proceso-tab-${i}`}
+                aria-selected={isActive}
+                aria-controls="proceso-panel"
+                tabIndex={isActive ? 0 : -1}
+                onClick={() => setActive(i)}
+                className={`group flex min-w-[140px] flex-col gap-1.5 rounded-sm border-b-2 px-3 py-3.5 text-left transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:min-w-0 ${
+                  isActive ? 'border-primary' : 'border-border hover:border-[#D1D5DB]'
+                }`}
+              >
+                <span
+                  className={`font-mono text-[10px] tabular-nums transition-colors duration-300 ${
+                    isActive ? 'text-primary' : 'text-muted/70'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {COMO_TRABAJAMOS.steps[i].n}
+                </span>
+                <span
+                  className={`font-sans text-[13px] leading-snug transition-colors duration-300 ${
+                    isActive ? 'font-medium text-ink' : 'text-muted group-hover:text-ink/70'
+                  }`}
+                >
+                  {tab}
+                </span>
+              </button>
+            )
+          })}
+        </div>
 
-          {/* Número rotante sticky (desktop) + rail de progreso */}
-          <div className="hidden lg:block">
-            <div className="sticky top-24 flex items-stretch gap-6">
-              <div className="relative w-px bg-border" aria-hidden="true">
-                <m.div
-                  className="absolute inset-0 origin-top bg-primary"
-                  style={{ scaleY: prefersReducedMotion ? 1 : scrollYProgress }}
-                />
-              </div>
+        {/* Panel */}
+        <div
+          id="proceso-panel"
+          role="tabpanel"
+          aria-labelledby={`proceso-tab-${active}`}
+          className="rounded-2xl bg-surface p-6 md:p-10"
+        >
+          <AnimatePresence mode="wait">
+            <m.div
+              key={active}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.35, ease: EASE }}
+              className="grid gap-8 lg:grid-cols-[minmax(240px,320px)_1fr] lg:items-center lg:gap-14"
+            >
               <div>
-                <div
-                  className="select-none font-editorial font-normal leading-none"
-                  style={{ fontSize: 'clamp(140px, 15vw, 220px)' }}
-                  aria-hidden="true"
-                >
-                  <span className="text-[#E5E7EB]">
-                    <DigitRoll digit={0} transitionMs={480} width="0.56em" />
-                  </span>
-                  <span className="text-[#D1D5DB]">
-                    <DigitRoll digit={displayedStep} transitionMs={480} width="0.56em" />
-                  </span>
-                </div>
-                <p
-                  className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
-                  aria-hidden="true"
-                >
-                  Paso 0{displayedStep} / 0{totalSteps}
+                <p className="eyebrow mb-3 text-muted" aria-hidden="true">
+                  {activeStep.n} / 0{totalTabs}
+                </p>
+                <h3 className="font-sans text-[17px] font-semibold leading-snug text-ink">
+                  {activeStep.title}
+                </h3>
+                <p className="mt-2.5 font-sans text-[14px] font-light leading-relaxed text-muted">
+                  {activeStep.desc}
                 </p>
               </div>
-            </div>
-          </div>
-
-          {/* Pasos — el activo a plena opacidad, el resto atenuado */}
-          <div ref={stepsRef} className="relative">
-            {/* Rail vertical scroll-linked (mobile) */}
-            <div
-              className="absolute bottom-1 left-0 top-1 w-px bg-border lg:hidden"
-              aria-hidden="true"
-            />
-            <m.div
-              className="absolute bottom-1 left-0 top-1 w-px origin-top bg-primary lg:hidden"
-              style={{ scaleY: prefersReducedMotion ? 1 : scrollYProgress }}
-              aria-hidden="true"
-            />
-            <div className="pl-7 lg:pl-0">
-              {COMO_TRABAJAMOS.steps.map((step, i) => (
-                <StepRow
-                  key={step.n}
-                  step={step}
-                  isActive={prefersReducedMotion || i === displayedStep - 1}
-                  onHover={() => setHoveredStep(i + 1)}
-                  onHoverEnd={() => setHoveredStep(null)}
-                />
-              ))}
-              <ClosingRow />
-            </div>
-          </div>
-
+              <StepVisual index={active} />
+            </m.div>
+          </AnimatePresence>
         </div>
+
+        {/* Cierre "+": lo custom siempre se marca igual (gesto de Agentes) */}
+        <ClosingRow />
 
         {/* Compromiso incremental — remate editorial de la sección */}
         <div className="mt-20">

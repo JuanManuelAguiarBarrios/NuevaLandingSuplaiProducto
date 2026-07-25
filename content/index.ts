@@ -260,6 +260,33 @@ export const COMO_TRABAJAMOS = {
     plain:  'Empezá por un agente.\nEscalá cuando veas el resultado.',
     accent: 'un agente',
   },
+  /* Tabs del proceso + microcopy de los visuales de cada panel.
+     Los valores numéricos son ILUSTRATIVOS (UI esqueleto, no claims). */
+  paneles: {
+    tabs: ['Conocemos', 'Identificamos', 'Implementamos', 'Mejoramos'],
+    integracion: {
+      badge:    'Sin migración',
+      sistemas: ['TMS', 'ERP', 'WMS', 'Planillas'],
+    },
+    diagnostico: {
+      chip: 'Mayor impacto',
+      hallazgos: [
+        'Llamadas de seguimiento manuales',
+        'Confirmaciones sin registrar',
+        'Estados desactualizados en el sistema',
+      ],
+    },
+    operacion: {
+      chips: [
+        { texto: 'Entregas confirmadas hoy',  valor: '32', actor: 'agente' },
+        { texto: 'Excepciones para revisar',  valor: '3',  actor: 'equipo' },
+      ],
+    },
+    mejora: {
+      chip: '↑ vs. período anterior',
+      ejes: ['Mes 1', 'Mes 2', 'Mes 3'],
+    },
+  },
   closing: {
     title: 'Si tu operación lo necesita, lo construimos.',
     desc:  'Cada empresa opera distinto. Diseñamos el agente que necesités y lo moldeamos a tus procesos.',
