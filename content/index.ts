@@ -61,6 +61,15 @@ export const PROBLEMA = {
     accent: 'manual',
   },
   labels: { problema: 'Qué pasa hoy', costo: 'Qué cuesta' },
+  /* La pila de interrupciones: fragmentos genéricos de un día operativo.
+     Ilustrativos — sin nombres, empresas ni casos reales. */
+  artefactos: [
+    { canal: 'WhatsApp',        hora: '09:12', texto: '¿A qué hora llega el pedido de mañana?' },
+    { canal: 'Llamada perdida', hora: '09:40', texto: 'Conductor · Ruta 8' },
+    { canal: 'Archivo',         hora: '10:05', texto: 'planilla_entregas_v3_FINAL.xlsx' },
+    { canal: 'Mail',            hora: '11:47', texto: 'RE: RE: RE: Turno depósito jueves' },
+    { canal: 'TMS',             hora: '13:20', texto: 'Estado sin actualizar desde ayer' },
+  ],
   pares: [
     {
       problema: 'Datos repartidos entre el TMS, planillas, WhatsApp y llamadas',

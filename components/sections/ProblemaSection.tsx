@@ -4,13 +4,13 @@ import { m } from 'framer-motion'
 import { PROBLEMA } from '@/content'
 import { fadeUp, stagger } from '@/lib/motion'
 import LineReveal from '@/components/LineReveal'
-import ProblemaTangle from '@/components/ProblemaTangle'
+import ProblemaInbox from '@/components/ProblemaInbox'
 
 /**
- * Problema: el diagrama del caos (sistemas enredados alrededor de la
- * coordinación manual — espejo de la órbita ordenada de Solución) junto a
- * los pares causa→consecuencia. El momento orquestado es el dibujo del
- * enredo; los pares entran con el fadeUp estándar del sistema.
+ * Problema: la pila de interrupciones (los fragmentos del día operativo
+ * apilándose — nivel humano) junto a los pares causa→consecuencia. La
+ * órbita de Solución cuenta después el nivel sistemas: se complementan
+ * sin repetir lenguaje. El momento orquestado es el apilado de cards.
  */
 export default function ProblemaSection() {
   return (
@@ -27,8 +27,8 @@ export default function ProblemaSection() {
 
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 
-          {/* El enredo: mismos sistemas que la órbita de Solución, sin capa */}
-          <ProblemaTangle className="mx-auto max-w-[560px] lg:mx-0" />
+          {/* La pila: los fragmentos del día apilándose como notificaciones */}
+          <ProblemaInbox className="mx-auto max-w-[520px] lg:mx-0" />
 
           {/* Pares problema → costo */}
           <div>
