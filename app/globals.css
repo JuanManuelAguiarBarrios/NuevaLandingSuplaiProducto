@@ -114,6 +114,15 @@
    Hero entrance (CSS-driven, no depende de JS)
    Corre en el primer paint → no penaliza el LCP
    ni deja el hero en blanco si el JS falla.
+
+   Secuencia por tiempos (Módulo 2, ref. Terminal):
+   máscaras de línea (hero-mask), fondo que se
+   enciende (hero-bg-on), fade+rise (hero-rise) y
+   nav al final (hero-nav-fade). Todo elemento de
+   la secuencia lleva además .hero-anim: mientras
+   <html data-hero-hold> está presente (preloader
+   activo, seteado por script inline pre-paint),
+   la secuencia queda pausada.
 ──────────────────────────────────────────── */
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(24px); }
@@ -124,9 +133,56 @@
   animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes hero-mask-rise {
+  from { transform: translateY(110%); }
+  to   { transform: none; }
+}
+
+.hero-mask {
+  animation: hero-mask-rise 0.8s var(--ease-signature) both;
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hero-bg-on {
+  animation: hero-fade-in 1.4s linear both;
+}
+
+.hero-nav-fade {
+  animation: hero-fade-in 0.5s var(--ease-signature) 1.15s both;
+}
+
+/* Hold del preloader: pausa toda la secuencia y bloquea el scroll.
+   El atributo lo pone un script inline antes del primer paint (solo
+   primera visita de la sesión, nunca con reduced-motion) y lo quita
+   el preloader al terminar el wipe — con fallback de seguridad. */
+html[data-hero-hold] .hero-anim {
+  animation-play-state: paused !important;
+}
+
+html[data-hero-hold] {
+  overflow: hidden;
+}
+
+/* El overlay del preloader solo existe visualmente en primera visita
+   (pre-hidratación vía el atributo del html; luego lo gobierna el
+   componente con data-active). */
+.hero-preloader {
+  display: none;
+}
+
+html[data-hero-hold] .hero-preloader,
+.hero-preloader[data-active] {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-rise {
-    animation: none;
+  .hero-rise,
+  .hero-anim {
+    animation: none !important;
   }
 }
 

@@ -78,6 +78,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${inter.variable} ${newsreader.variable} ${GeistMono.variable}`}
     >
       <body className="font-sans bg-white text-text antialiased">
+        {/* Hold del preloader — inline y primero en el body para correr antes
+            del primer paint. Solo primera visita de la sesión, nunca con
+            reduced-motion. Fallback de 4.5s por si el bundle no hidrata. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!sessionStorage.getItem('suplai-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.setAttribute('data-hero-hold','');setTimeout(function(){d.removeAttribute('data-hero-hold')},4500)}}catch(e){}",
+          }}
+        />
         <a
           href="#main-content"
           className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-md focus-visible:bg-white focus-visible:px-4 focus-visible:py-2.5 focus-visible:text-sm focus-visible:font-medium focus-visible:text-ink focus-visible:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"

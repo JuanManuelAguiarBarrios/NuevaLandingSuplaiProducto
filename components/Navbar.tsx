@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300 ease-signature ${
+      className={`hero-anim hero-nav-fade fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300 ease-signature ${
         isSolid
           ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_0_#E5E7EB]'
           : 'bg-transparent'
