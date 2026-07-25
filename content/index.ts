@@ -214,7 +214,7 @@ export const EMPRESAS = {
     },
     {
       key:   'flota',
-      video: '/empresas/flota.mp4',
+      video: '/empresas/flota-2.mp4',
       title: 'Flota propia',
       desc:  'Control de viajes sin sumar gente al equipo.',
       icon:  'route',
