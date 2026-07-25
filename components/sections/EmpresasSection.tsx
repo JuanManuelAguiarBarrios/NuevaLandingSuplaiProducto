@@ -122,7 +122,7 @@ function Spotlight({
                   loop
                   playsInline
                   preload="none"
-                  className="absolute inset-0 h-full w-full object-cover grayscale contrast-[1.08] brightness-[0.85]"
+                  className="absolute inset-0 h-full w-full object-cover grayscale-[0.45] contrast-[1.05] brightness-[0.9]"
                 />
               ) : (
                 <Image
@@ -130,14 +130,14 @@ function Spotlight({
                   alt={item.alt}
                   fill
                   quality={65}
-                  sizes="(min-width: 1024px) 460px, 100vw"
-                  className={`object-cover grayscale contrast-[1.08] brightness-[0.85] ${
+                  sizes="(min-width: 1024px) 640px, 100vw"
+                  className={`object-cover grayscale-[0.45] contrast-[1.05] brightness-[0.9] ${
                     isActive ? 'kenburns' : ''
                   }`}
                 />
               )}
-              {/* Tinte duotono azul sobre el grayscale */}
-              <div className="absolute inset-0 bg-primary/30 mix-blend-color" aria-hidden="true" />
+              {/* Tinte azul suave — ata el footage a la marca sin apagarlo */}
+              <div className="absolute inset-0 bg-primary/15 mix-blend-color" aria-hidden="true" />
               {/* Fade inferior hacia el fondo de la sección */}
               <div
                 className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/75 via-transparent to-transparent"
@@ -261,7 +261,7 @@ export default function EmpresasSection() {
         </m.div>
 
         <div
-          className="flex flex-col lg:grid lg:grid-cols-[1.15fr_1fr] lg:gap-20"
+          className="flex flex-col lg:grid lg:grid-cols-[0.9fr_1.25fr] lg:gap-16"
           onMouseEnter={pause}
           onMouseLeave={resume}
           onTouchStart={pause}

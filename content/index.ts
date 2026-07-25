@@ -116,7 +116,7 @@ export const AGENTES = {
       category: 'Atención al cliente',
       desc:     'Responde y deriva consultas sin fricción, con panel central y trazabilidad completa.',
       results:  ['Responde 24/7 sin sumar personas', 'Deriva solo lo que necesita criterio humano', 'Cada conversación queda trazada en el panel'],
-      live:     true,
+      live:     false,
     },
     {
       key:      'voice',
@@ -124,7 +124,7 @@ export const AGENTES = {
       category: 'Seguimiento operativo',
       desc:     'Atiende y actualiza el estado en tiempo real, sin migrar de sistema.',
       results:  ['Atiende la llamada y responde con datos del sistema', 'Estado del pedido sin esperas ni transferencias', 'Libera al equipo de llamadas repetitivas'],
-      live:     true,
+      live:     false,
     },
     {
       key:      'conductores',
