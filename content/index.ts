@@ -289,10 +289,6 @@ export const COMO_TRABAJAMOS = {
       ejes: ['Mes 1', 'Mes 2', 'Mes 3'],
     },
   },
-  closing: {
-    title: 'Si tu operación lo necesita, lo construimos.',
-    desc:  'Cada empresa opera distinto. Diseñamos el agente que necesités y lo moldeamos a tus procesos.',
-  },
 } as const
 
 /* ── Control (A4) — NO RENDERIZADO: la sección se probó y se quitó.

@@ -15,35 +15,6 @@ import StepVisual from '@/components/proceso/StepVisuals'
  * A11y: tablist/tab/tabpanel, flechas de teclado, focus visible.
  */
 
-function ClosingRow() {
-  return (
-    <div className="mt-14 border-t border-dashed border-border pt-8">
-      <span
-        className="mb-4 flex size-7 items-center justify-center rounded-full border border-dashed border-[#D1D5DB] text-muted"
-        aria-hidden="true"
-      >
-        <svg
-          width="11"
-          height="11"
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        >
-          <path d="M6 1v10M1 6h10" />
-        </svg>
-      </span>
-      <h3 className="type-h3 font-editorial font-normal text-ink text-wrap-balance">
-        {COMO_TRABAJAMOS.closing.title}
-      </h3>
-      <p className="mt-2.5 max-w-xl font-sans text-[14px] font-light leading-relaxed text-muted">
-        {COMO_TRABAJAMOS.closing.desc}
-      </p>
-    </div>
-  )
-}
-
 export default function ComoTrabajamosSection() {
   const [active, setActive] = useState(0)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -161,9 +132,6 @@ export default function ComoTrabajamosSection() {
             </m.div>
           </AnimatePresence>
         </div>
-
-        {/* Cierre "+": lo custom siempre se marca igual (gesto de Agentes) */}
-        <ClosingRow />
 
         {/* Compromiso incremental — remate editorial de la sección */}
         <div className="mt-20">
