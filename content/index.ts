@@ -237,7 +237,8 @@ export const COMO_TRABAJAMOS = {
   },
 } as const
 
-/* ── Control (A4: "¿y si el agente hace algo mal?") ─────────── */
+/* ── Control (A4) — NO RENDERIZADO: la sección se probó y se quitó.
+      El copy queda disponible por si se retoma en otro formato. ── */
 export const CONTROL = {
   headline: { plain: 'Vos mantenés el', accent: 'control.' },
   items: [
