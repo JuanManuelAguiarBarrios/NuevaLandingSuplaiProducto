@@ -85,27 +85,28 @@ export const SOLUCION = {
 /* ── Panel (mockup ilustrativo — datos ficticios genéricos) ─── */
 export const PANEL = {
   eyebrow: 'El panel',
-  caption: 'Cada interacción y cada acción del agente quedan registradas.',
-  chrome:  'suplai · panel de operaciones',
-  conversaciones: {
-    label: 'Conversaciones',
-    items: [
-      { nombre: 'Distribuidora · Zona Norte', snippet: '¿A qué hora llega el pedido de mañana?',   estado: 'Respondida',   actor: 'agente' },
-      { nombre: 'Conductor · Ruta 8',         snippet: 'Confirmo entrega 14:20',                    estado: 'Registrada',   actor: 'agente' },
-      { nombre: 'Cliente · Turnos',           snippet: 'Necesito reprogramar el turno del jueves',  estado: 'Reprogramada', actor: 'agente' },
-      { nombre: 'Depósito Central',           snippet: 'Demora en dársena 3',                       estado: 'Escalada',     actor: 'equipo' },
+  caption:
+    'Diseñás el flujo del agente con sus ramas. Cada ejecución queda plasmada en el dashboard.',
+  chrome:  'suplai · constructor de flujos',
+  flujo: {
+    label:   'Flujo · Atención WhatsApp',
+    estado:  'Activo',
+    trigger: { tipo: 'Disparador', title: 'Mensaje entrante · WhatsApp' },
+    agente:  { tipo: 'Agente',     title: 'Clasifica la consulta' },
+    ramas: [
+      { cond: 'Estado de pedido',  pasos: ['Consulta el TMS', 'Responde al cliente'],   actor: 'agente' },
+      { cond: 'Reprogramar turno', pasos: ['Actualiza la agenda', 'Confirma'],          actor: 'agente' },
+      { cond: 'Fuera de guion',    pasos: ['Escala a supervisión'],                     actor: 'equipo' },
     ],
   },
-  trazabilidad: {
-    label:  'Trazabilidad',
-    envio:  'Envío #0482',
-    estado: 'En tránsito',
+  dashboard: {
+    label: 'Dashboard · Actividad',
     eventos: [
-      { hora: '09:12', evento: 'Consulta recibida por WhatsApp',      actor: 'agente' },
-      { hora: '09:12', evento: 'Estado consultado en el TMS',         actor: 'agente' },
-      { hora: '09:13', evento: 'Respuesta enviada al cliente',        actor: 'agente' },
-      { hora: '11:47', evento: 'Demora detectada en ruta',            actor: 'agente' },
-      { hora: '11:48', evento: 'Excepción escalada a supervisión',    actor: 'equipo' },
+      { hora: '11:48', rama: 'Fuera de guion',    evento: 'Escalada a supervisión',           actor: 'equipo' },
+      { hora: '11:32', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
+      { hora: '10:56', rama: 'Reprogramar turno', evento: 'Turno reprogramado y confirmado',  actor: 'agente' },
+      { hora: '10:41', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
+      { hora: '10:12', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
     ],
   },
 } as const
