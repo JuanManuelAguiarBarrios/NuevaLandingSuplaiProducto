@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { AnimatePresence, m } from 'framer-motion'
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion'
 import { COMO_TRABAJAMOS } from '@/content'
 import { EASE, revealOnce } from '@/lib/motion'
 import LineReveal from '@/components/LineReveal'
@@ -14,6 +14,72 @@ import StepVisual from '@/components/proceso/StepVisuals'
  * código como protagonista. Sin auto-avance: estos paneles se leen.
  * A11y: tablist/tab/tabpanel, flechas de teclado, focus visible.
  */
+
+/* La progresión de nodos: uno lleno (tu primer agente) y los siguientes
+   encendiéndose en cascada al entrar en viewport — el copy hecho visual. */
+const NODE_COUNT = 5
+
+const segDraw = {
+  hidden: { scaleX: 0 },
+  show: (i: number) => ({
+    scaleX: 1,
+    transition: { delay: 0.25 + i * 0.18, duration: 0.3, ease: EASE },
+  }),
+}
+
+const dotFill = {
+  hidden: { scale: 0 },
+  show: (i: number) => ({
+    scale: 1,
+    transition: { delay: 0.37 + i * 0.18, duration: 0.28, ease: EASE },
+  }),
+}
+
+function CompromisoBand() {
+  const prefersReducedMotion = useReducedMotion()
+
+  return (
+    <div className="mt-14 rounded-2xl bg-surface p-8 md:p-12">
+      <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
+        <LineReveal
+          text={COMO_TRABAJAMOS.compromiso.plain}
+          accent={COMO_TRABAJAMOS.compromiso.accent}
+          as="p"
+          className="type-h2 max-w-xl font-editorial font-normal text-ink"
+        />
+
+        <m.div
+          className="flex items-center"
+          initial={prefersReducedMotion ? undefined : 'hidden'}
+          whileInView={prefersReducedMotion ? undefined : 'show'}
+          viewport={{ once: true, amount: 0.6 }}
+          aria-hidden="true"
+        >
+          {Array.from({ length: NODE_COUNT }, (_, i) => (
+            <span key={i} className="flex items-center">
+              {i > 0 && (
+                <span className="relative h-px w-8 bg-border md:w-12">
+                  <m.span
+                    className="absolute inset-0 origin-left bg-primary/50"
+                    custom={i - 1}
+                    variants={prefersReducedMotion ? undefined : segDraw}
+                  />
+                </span>
+              )}
+              <span className="relative size-3.5 rounded-full border border-primary/40 bg-white">
+                <m.span
+                  className="absolute inset-[2px] rounded-full bg-primary"
+                  custom={i - 1}
+                  variants={i === 0 || prefersReducedMotion ? undefined : dotFill}
+                />
+              </span>
+            </span>
+          ))}
+        </m.div>
+      </div>
+    </div>
+  )
+}
 
 export default function ComoTrabajamosSection() {
   const [active, setActive] = useState(0)
@@ -133,15 +199,8 @@ export default function ComoTrabajamosSection() {
           </AnimatePresence>
         </div>
 
-        {/* Compromiso incremental — remate editorial de la sección */}
-        <div className="mt-20">
-          <LineReveal
-            text={COMO_TRABAJAMOS.compromiso.plain}
-            accent={COMO_TRABAJAMOS.compromiso.accent}
-            as="p"
-            className="type-h2 max-w-2xl font-editorial font-normal text-ink"
-          />
-        </div>
+        {/* Compromiso incremental — banda de cierre con la progresión */}
+        <CompromisoBand />
 
       </div>
     </section>
