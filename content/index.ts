@@ -21,7 +21,8 @@ export const NAV = {
 /* ── Hero ───────────────────────────────────────────────────── */
 export const HERO = {
   headline: {
-    plain:  'La capa de IA que ejecuta tu operación',
+    /* Quiebre autorado: cada '\n' es una línea del reveal de entrada. */
+    plain:  'La capa de IA que ejecuta\ntu operación',
     accent: 'logística.',
   },
   subtitle:

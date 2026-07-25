@@ -36,22 +36,46 @@ export default function HeroSection() {
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-1 flex-col justify-center px-6 py-28 md:px-10 md:py-36">
-        {/* Headline — sin delay para no penalizar el LCP */}
-        <h1 className="hero-rise type-display max-w-[880px] font-editorial font-normal text-white text-wrap-balance">
-          {HERO.headline.plain}{' '}
-          <em className="accent">{HERO.headline.accent}</em>
+        {/* Headline — reveal por línea (quiebres autorados en el copy), la
+            itálica entra última. Todo CSS: la línea 1 anima desde el primer
+            paint, sin delay, para no penalizar el LCP. */}
+        <h1 className="type-display max-w-[880px] font-editorial font-normal text-white">
+          {HERO.headline.plain.split('\n').map((line, i, lines) => {
+            const isLast = i === lines.length - 1
+            const delay = i > 0 ? { animationDelay: `${i * 0.08}s` } : undefined
+            if (!isLast) {
+              return (
+                <span key={i} className="hero-rise block" style={delay}>
+                  {line}
+                </span>
+              )
+            }
+            return (
+              <span key={i} className="block">
+                <span className="hero-rise inline-block" style={delay}>
+                  {line}
+                </span>{' '}
+                <em
+                  className="hero-rise accent inline-block"
+                  style={{ animationDelay: '0.18s' }}
+                >
+                  {HERO.headline.accent}
+                </em>
+              </span>
+            )
+          })}
         </h1>
 
         {/* Subtítulo */}
         <p
           className="hero-rise mt-8 max-w-[540px] font-sans font-light leading-relaxed text-white/70"
-          style={{ fontSize: 'clamp(15px, 1.55vw, 18px)', animationDelay: '0.12s' }}
+          style={{ fontSize: 'clamp(15px, 1.55vw, 18px)', animationDelay: '0.3s' }}
         >
           {HERO.subtitle}
         </p>
 
         {/* CTA — grupo con flecha que desliza en hover */}
-        <div className="hero-rise mt-10" style={{ animationDelay: '0.22s' }}>
+        <div className="hero-rise mt-10" style={{ animationDelay: '0.42s' }}>
           <a
             href={DEMO_URL}
             className="group inline-flex items-center gap-2 rounded-full bg-primary py-3 pl-7 pr-6 font-sans text-[14px] font-semibold text-white transition-[background-color,transform] duration-300 ease-signature hover:bg-[#1D4ED8] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
