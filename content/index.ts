@@ -82,35 +82,6 @@ export const SOLUCION = {
   ],
 } as const
 
-/* ── Panel (mockup ilustrativo — datos ficticios genéricos) ─── */
-export const PANEL = {
-  eyebrow: 'El panel',
-  caption:
-    'Diseñás el flujo del agente con sus ramas. Cada ejecución queda plasmada en el dashboard.',
-  chrome:  'suplai · constructor de flujos',
-  flujo: {
-    label:   'Flujo · Atención WhatsApp',
-    estado:  'Activo',
-    trigger: { tipo: 'Disparador', title: 'Mensaje entrante · WhatsApp' },
-    agente:  { tipo: 'Agente',     title: 'Clasifica la consulta' },
-    ramas: [
-      { cond: 'Estado de pedido',  pasos: ['Consulta el TMS', 'Responde al cliente'],   actor: 'agente' },
-      { cond: 'Reprogramar turno', pasos: ['Actualiza la agenda', 'Confirma'],          actor: 'agente' },
-      { cond: 'Fuera de guion',    pasos: ['Escala a supervisión'],                     actor: 'equipo' },
-    ],
-  },
-  dashboard: {
-    label: 'Dashboard · Actividad',
-    eventos: [
-      { hora: '11:48', rama: 'Fuera de guion',    evento: 'Escalada a supervisión',           actor: 'equipo' },
-      { hora: '11:32', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
-      { hora: '10:56', rama: 'Reprogramar turno', evento: 'Turno reprogramado y confirmado',  actor: 'agente' },
-      { hora: '10:41', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
-      { hora: '10:12', rama: 'Estado de pedido',  evento: 'Respondida con datos del TMS',     actor: 'agente' },
-    ],
-  },
-} as const
-
 /* ── Agentes ────────────────────────────────────────────────── */
 export const AGENTES = {
   headline: 'Tenemos el agente que tu operación',
