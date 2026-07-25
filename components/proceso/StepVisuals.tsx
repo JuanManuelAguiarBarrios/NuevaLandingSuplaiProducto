@@ -99,7 +99,7 @@ function VisualIntegracion() {
 /* ── 02 · Diagnóstico: hallazgos sobre un panel esqueleto ───── */
 function VisualDiagnostico() {
   const { hallazgos, chip } = paneles.diagnostico
-  const offsets = ['0%', '10%', '4%']
+  const offsets = ['0%', '9%', '3%', '12%', '6%']
   return (
     <div className="relative h-[260px] w-full md:h-[300px]" aria-hidden="true">
       <div className={`${CARD} absolute inset-y-2 left-0 hidden w-[46%] p-4 opacity-60 sm:block`}>
@@ -107,12 +107,12 @@ function VisualDiagnostico() {
         <SkeletonRows rows={5} />
       </div>
 
-      <div className="absolute inset-y-0 right-0 flex w-full flex-col justify-center gap-3 sm:w-[58%]">
+      <div className="absolute inset-y-0 right-0 flex w-full flex-col justify-center gap-2 sm:w-[58%]">
         {hallazgos.map((hallazgo, i) => (
           <div
             key={hallazgo}
-            className={`${CARD} flex items-center justify-between gap-3 px-4 py-3`}
-            style={{ marginLeft: offsets[i] }}
+            className={`${CARD} flex items-center justify-between gap-3 px-4 py-2.5`}
+            style={{ marginLeft: offsets[i % offsets.length] }}
           >
             <span className="flex items-center gap-2.5">
               <span

@@ -247,7 +247,7 @@ export const COMO_TRABAJAMOS = {
     {
       n:     '03',
       title: 'Implementamos juntos',
-      desc:  'Junto a tu equipo, sin migración: nos conectamos a lo que ya usás, sin interrumpir la operación.',
+      desc:  'Implementamos el agente que necesitás. Junto a tu equipo, sin migración: nos conectamos a lo que ya usás, sin interrumpir la operación.',
     },
     {
       n:     '04',
@@ -274,6 +274,8 @@ export const COMO_TRABAJAMOS = {
         'Llamadas de seguimiento manuales',
         'Confirmaciones sin registrar',
         'Estados desactualizados en el sistema',
+        'Facturas y remitos cargados a mano',
+        'Seguimiento de proveedores por mail y teléfono',
       ],
     },
     operacion: {
