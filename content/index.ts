@@ -251,7 +251,8 @@ export const CONTROL = {
 
 /* ── Visión ─────────────────────────────────────────────────── */
 export const VISION = {
-  headline: 'La logística evoluciona hacia una operación autónoma.',
+  /* Quiebres autorados para el reveal por línea del cierre. */
+  headline: 'La logística evoluciona\nhacia una operación autónoma.',
   accent:   'Construyamos esa capa juntos.',
   subtitle:
     'Queremos ser la capa que permite a las empresas ejecutar su operación de forma más eficiente, sin fricción y con capacidad de escalar.',

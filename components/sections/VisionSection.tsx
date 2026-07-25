@@ -4,7 +4,15 @@ import React from 'react'
 import Image from 'next/image'
 import { m } from 'framer-motion'
 import { DEMO_URL, VISION, FOOTER } from '@/content'
-import { fadeUp, fadeUpScale, stagger } from '@/lib/motion'
+import { fadeUp } from '@/lib/motion'
+import LineReveal from '@/components/LineReveal'
+
+/** Subtítulo y CTA entran después de que el headline terminó su reveal
+ *  por línea — mismo fadeUp del sistema, con arranque diferido. */
+const followUp = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.35 } },
+}
 
 function IconLinkedIn() {
   return (
@@ -34,49 +42,64 @@ const LINK_ICONS: Record<string, React.ReactNode> = {
 export default function VisionSection() {
   return (
     <>
-      {/* Visión */}
+      {/* Visión — cierre full-bleed (B7 opción B): foto de operación con
+          overlay oscuro + duotono azul, mismo tratamiento que Empresas.
+          [ASSET] La foto es un placeholder (reusa importadoras.webp) —
+          reemplazar por una imagen propia de cierre: operación logística
+          amplia, apta para overlay, horizontal, ~1920px, webp. */}
       <section
         id="vision"
-        className="bg-[#0A0A0A]"
+        className="relative isolate overflow-hidden bg-[#0A0A0A]"
         style={{ paddingBlock: 'var(--section-py-lg)' }}
       >
-        <m.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          className="mx-auto max-w-[1200px] px-6 md:px-10"
-        >
-          <m.h2
-            variants={fadeUpScale}
-            className="font-editorial font-normal text-white text-wrap-balance max-w-3xl"
-            style={{
-              fontSize: 'clamp(30px, 4.2vw, 62px)',
-              lineHeight: 1.08,
-              letterSpacing: '-0.022em',
-            }}
-          >
-            {VISION.headline}{' '}
-            <em className="accent">{VISION.accent}</em>
-          </m.h2>
+        <Image
+          src="/empresas/importadoras.webp"
+          alt=""
+          fill
+          quality={65}
+          sizes="100vw"
+          className="object-cover grayscale contrast-[1.08] brightness-[0.5]"
+          aria-hidden="true"
+        />
+        {/* Tinte duotono azul + oscurecimiento para contraste del texto */}
+        <div className="absolute inset-0 bg-primary/25 mix-blend-color" aria-hidden="true" />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/95 via-[#0A0A0A]/60 to-[#0A0A0A]/75"
+          aria-hidden="true"
+        />
 
-          <m.p
-            variants={fadeUp}
-            className="mt-7 font-sans font-light leading-relaxed text-white/65 max-w-lg"
-            style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
-          >
-            {VISION.subtitle}
-          </m.p>
+        <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-10">
+          <LineReveal
+            text={`${VISION.headline}\n${VISION.accent}`}
+            accent={VISION.accent}
+            as="h2"
+            className="type-h1 max-w-3xl font-editorial font-normal text-white"
+          />
 
-          <m.div variants={fadeUp} className="mt-10">
-            <a
-              href={DEMO_URL}
-              className="inline-flex items-center rounded-full bg-primary px-7 py-3 font-sans text-[14px] font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
+          <m.div
+            variants={followUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <m.p
+              variants={fadeUp}
+              className="mt-7 font-sans font-light leading-relaxed text-white/70 max-w-lg"
+              style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
             >
-              {VISION.cta}
-            </a>
+              {VISION.subtitle}
+            </m.p>
+
+            <m.div variants={fadeUp} className="mt-10">
+              <a
+                href={DEMO_URL}
+                className="inline-flex items-center rounded-full bg-primary px-7 py-3 font-sans text-[14px] font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
+              >
+                {VISION.cta}
+              </a>
+            </m.div>
           </m.div>
-        </m.div>
+        </div>
       </section>
 
       {/* Footer */}
