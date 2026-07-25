@@ -6,6 +6,7 @@ import { AnimatePresence, m, useInView, useReducedMotion } from 'framer-motion'
 import { EMPRESAS } from '@/content'
 import { EASE, revealOnce } from '@/lib/motion'
 import { VerticalGlyph } from '@/components/logos'
+import AutoplayVideo from '@/components/AutoplayVideo'
 
 /**
  * "Hecho para tu operación" — formato cine: el footage de cada industria es
@@ -24,6 +25,8 @@ export default function EmpresasSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [cycle, setCycle] = useState(0)
+  // Si el dispositivo bloquea el autoplay (Low Power Mode), caemos a fotos.
+  const [isVideoBlocked, setIsVideoBlocked] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { amount: 0.3 })
   const prefersReducedMotion = useReducedMotion()
@@ -98,7 +101,8 @@ export default function EmpresasSection() {
             {EMPRESAS.items.map((rawItem, i) => {
               const item: EmpresaItem = rawItem
               const isActive = i === activeIndex
-              const hasVideo = Boolean(item.video) && isActive && !prefersReducedMotion
+              const hasVideo =
+                Boolean(item.video) && isActive && !prefersReducedMotion && !isVideoBlocked
               return (
                 <div
                   key={item.key}
@@ -108,14 +112,12 @@ export default function EmpresasSection() {
                   aria-hidden={!isActive}
                 >
                   {hasVideo ? (
-                    <video
+                    <AutoplayVideo
                       src={item.video}
                       poster={`/empresas/${item.key}.webp`}
-                      autoPlay
-                      muted
                       loop
-                      playsInline
-                      preload="none"
+                      preload="auto"
+                      onAutoplayBlocked={() => setIsVideoBlocked(true)}
                       className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (

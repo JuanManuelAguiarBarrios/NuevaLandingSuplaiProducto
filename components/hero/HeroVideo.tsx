@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import type { HeroVideoConfig } from '@/content'
+import AutoplayVideo from '@/components/AutoplayVideo'
 
 /**
  * Fondo de video del hero (B1). Protege el LCP: el poster pinta de entrada
@@ -16,6 +17,9 @@ const VIDEO_MOUNT_DELAY_MS = 300
 
 export default function HeroVideo({ webm, mp4, poster }: HeroVideoConfig) {
   const [isVideoMounted, setIsVideoMounted] = useState(false)
+  // Si el dispositivo bloquea el autoplay (Low Power Mode), queda el poster
+  // limpio en vez del glyph de play del sistema.
+  const [isBlocked, setIsBlocked] = useState(false)
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
@@ -37,19 +41,17 @@ export default function HeroVideo({ webm, mp4, poster }: HeroVideoConfig) {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {isVideoMounted && (
-        <video
-          autoPlay
-          muted
+      {isVideoMounted && !isBlocked && (
+        <AutoplayVideo
           loop
-          playsInline
           preload="auto"
           poster={poster}
+          onAutoplayBlocked={() => setIsBlocked(true)}
           className="absolute inset-0 h-full w-full object-cover"
         >
           {webm && <source src={webm} type="video/webm" />}
           <source src={mp4} type="video/mp4" />
-        </video>
+        </AutoplayVideo>
       )}
 
       {/* Overlay de contraste: base + scrim lateral sobre la zona del texto */}
