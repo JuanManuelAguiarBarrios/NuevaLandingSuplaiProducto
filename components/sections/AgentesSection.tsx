@@ -19,7 +19,7 @@ function AgentCard({ agent }: { agent: Agent }) {
       className="flex flex-col rounded-xl border border-white/8 bg-white/[0.04] p-6 gap-5 transition-colors"
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">
+        <p className="eyebrow text-white/65">
           {agent.category}
         </p>
         {agent.live && (

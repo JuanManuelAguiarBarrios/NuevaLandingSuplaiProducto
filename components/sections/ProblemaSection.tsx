@@ -23,7 +23,7 @@ export default function ProblemaSection() {
           >
             <m.p
               variants={fadeUp}
-              className="mb-7 font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-muted"
+              className="eyebrow mb-7 text-muted"
             >
               {PROBLEMA.hoy.label}
             </m.p>
@@ -59,7 +59,7 @@ export default function ProblemaSection() {
           >
             <m.p
               variants={fadeUp}
-              className="mb-7 font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-primary"
+              className="eyebrow mb-7 text-primary"
             >
               {PROBLEMA.impacto.label}
             </m.p>

@@ -56,6 +56,14 @@ Rules in `.claude/rules/` apply automatically by file glob:
 - `rules/react/` — React component shape, hooks, RSC boundaries, security
 - `rules/typescript/` — types, interfaces, patterns, security
 
+## Gesto de marca (A5 — reglas de la itálica azul)
+
+- La itálica en azul (clase `.accent`, PP Editorial New/Newsreader) marca **una palabra por headline**, siempre la que carga el significado. Nunca decorativa.
+- Excepción única y deliberada: la frase completa de cierre en la sección Visión ("Construyamos esa capa juntos.").
+- Eyebrows de sección: clase `.eyebrow` (11px, semibold, uppercase, tracking 0.18em); el color lo pone el contexto — `text-muted` en fondo claro, `text-white/65` en oscuro, `text-primary` como acento.
+- Numeración editorial siempre en `font-mono` tabular (índices `01/06`, pasos, listas).
+- Quiebres de línea de headlines con reveal: autorados con `\n` en `/content/` (nunca medidos en runtime).
+
 ## Coding Conventions
 
 - Server Components by default — add `"use client"` only when needed (state, effects, browser APIs)

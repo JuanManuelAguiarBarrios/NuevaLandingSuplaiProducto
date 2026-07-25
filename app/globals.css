@@ -99,6 +99,17 @@
   color: var(--color-primary);
 }
 
+/* Eyebrow de sección (sistema editorial A5): mayúscula chica, tracking
+   amplio. El color lo pone el contexto (muted en claro, white/65 en
+   oscuro, primary como acento). */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
 /* ────────────────────────────────────────────
    Hero entrance (CSS-driven, no depende de JS)
    Corre en el primer paint → no penaliza el LCP

@@ -55,7 +55,7 @@ function StepRow({
       </div>
       <div className="flex-1">
         <p
-          className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] mb-1 transition-colors duration-300"
+          className="eyebrow mb-1 transition-colors duration-300"
           style={{ color: isActive ? '#6B7280' : '#D1D5DB' }}
         >
           {step.label}
