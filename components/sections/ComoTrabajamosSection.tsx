@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { m, useReducedMotion, useScroll } from 'framer-motion'
 import { COMO_TRABAJAMOS } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
@@ -19,12 +19,24 @@ import DigitRoll from '@/components/DigitRoll'
 
 type Step = (typeof COMO_TRABAJAMOS.steps)[number]
 
-function StepRow({ step, isActive }: { step: Step; isActive: boolean }) {
+function StepRow({
+  step,
+  isActive,
+  onHover,
+  onHoverEnd,
+}: {
+  step: Step
+  isActive: boolean
+  onHover: () => void
+  onHoverEnd: () => void
+}) {
   return (
     <m.div
       initial={false}
       animate={{ opacity: isActive ? 1 : 0.35 }}
       transition={{ duration: DURATION.fast, ease: EASE }}
+      onMouseEnter={onHover}
+      onMouseLeave={onHoverEnd}
       className="border-t border-border py-8 lg:py-10"
     >
       {/* Eyebrow numerado solo en mobile — en desktop lo dice el número gigante */}
@@ -45,8 +57,40 @@ function StepRow({ step, isActive }: { step: Step; isActive: boolean }) {
   )
 }
 
+/** Fila final "+": el gesto del slot de Agentes — lo custom siempre se
+ *  marca igual. No participa del spotlight ni del conteo del número. */
+function ClosingRow() {
+  return (
+    <div className="border-t border-dashed border-border py-8 lg:py-10">
+      <span
+        className="mb-4 flex size-7 items-center justify-center rounded-full border border-dashed border-[#D1D5DB] text-muted"
+        aria-hidden="true"
+      >
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        >
+          <path d="M6 1v10M1 6h10" />
+        </svg>
+      </span>
+      <h3 className="type-h3 font-editorial font-normal text-ink text-wrap-balance">
+        {COMO_TRABAJAMOS.closing.title}
+      </h3>
+      <p className="mt-2.5 max-w-xl font-sans text-[14px] font-light leading-relaxed text-muted">
+        {COMO_TRABAJAMOS.closing.desc}
+      </p>
+    </div>
+  )
+}
+
 export default function ComoTrabajamosSection() {
   const stepsRef = useRef<HTMLDivElement>(null)
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
   const prefersReducedMotion = useReducedMotion()
 
   // El paso activo avanza mientras las filas cruzan la franja de lectura.
@@ -58,9 +102,10 @@ export default function ComoTrabajamosSection() {
   const totalSteps = COMO_TRABAJAMOS.steps.length
   const activeFromScroll = useActiveStepCount(scrollYProgress, totalSteps)
   // 1..totalSteps — nunca 0: el número gigante siempre muestra un paso.
-  const activeStep = prefersReducedMotion
-    ? totalSteps
-    : Math.max(1, activeFromScroll)
+  // El hover pisa al scroll mientras dura (mismo gesto que el índice de
+  // Empresas); en mobile no hay hover y manda el scroll.
+  const scrollStep = prefersReducedMotion ? 1 : Math.max(1, activeFromScroll)
+  const displayedStep = hoveredStep ?? scrollStep
 
   return (
     <section id="como-trabajamos" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
@@ -76,23 +121,35 @@ export default function ComoTrabajamosSection() {
 
         <div className="grid gap-12 lg:grid-cols-[minmax(220px,320px)_1fr] lg:gap-24">
 
-          {/* Número rotante sticky (desktop) */}
+          {/* Número rotante sticky (desktop) + rail de progreso */}
           <div className="hidden lg:block">
-            <div className="sticky top-24">
-              <div
-                className="select-none font-editorial font-normal leading-none text-[#E5E7EB]"
-                style={{ fontSize: 'clamp(140px, 15vw, 220px)' }}
-                aria-hidden="true"
-              >
-                <DigitRoll digit={0} transitionMs={480} width="0.56em" />
-                <DigitRoll digit={activeStep} transitionMs={480} width="0.56em" />
+            <div className="sticky top-24 flex items-stretch gap-6">
+              <div className="relative w-px bg-border" aria-hidden="true">
+                <m.div
+                  className="absolute inset-0 origin-top bg-primary"
+                  style={{ scaleY: prefersReducedMotion ? 1 : scrollYProgress }}
+                />
               </div>
-              <p
-                className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
-                aria-hidden="true"
-              >
-                Paso 0{prefersReducedMotion ? 1 : activeStep} / 0{totalSteps}
-              </p>
+              <div>
+                <div
+                  className="select-none font-editorial font-normal leading-none"
+                  style={{ fontSize: 'clamp(140px, 15vw, 220px)' }}
+                  aria-hidden="true"
+                >
+                  <span className="text-[#E5E7EB]">
+                    <DigitRoll digit={0} transitionMs={480} width="0.56em" />
+                  </span>
+                  <span className="text-[#D1D5DB]">
+                    <DigitRoll digit={displayedStep} transitionMs={480} width="0.56em" />
+                  </span>
+                </div>
+                <p
+                  className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
+                  aria-hidden="true"
+                >
+                  Paso 0{displayedStep} / 0{totalSteps}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -113,15 +170,18 @@ export default function ComoTrabajamosSection() {
                 <StepRow
                   key={step.n}
                   step={step}
-                  isActive={prefersReducedMotion || i === activeStep - 1}
+                  isActive={prefersReducedMotion || i === displayedStep - 1}
+                  onHover={() => setHoveredStep(i + 1)}
+                  onHoverEnd={() => setHoveredStep(null)}
                 />
               ))}
+              <ClosingRow />
             </div>
           </div>
 
         </div>
 
-        {/* Compromiso incremental — remate editorial de la timeline */}
+        {/* Compromiso incremental — remate editorial de la sección */}
         <div className="mt-20">
           <LineReveal
             text={COMO_TRABAJAMOS.compromiso.plain}
@@ -130,22 +190,6 @@ export default function ComoTrabajamosSection() {
             className="type-h2 max-w-2xl font-editorial font-normal text-ink"
           />
         </div>
-
-        {/* Closing card */}
-        <m.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: DURATION.base, delay: 0.15, ease: EASE }}
-          className="mt-16 rounded-xl border border-border bg-surface p-8 md:p-10"
-        >
-          <h3 className="type-h3 font-editorial font-normal text-ink mb-3 text-wrap-balance">
-            {COMO_TRABAJAMOS.closing.title}
-          </h3>
-          <p className="font-sans text-[14px] font-light leading-relaxed text-muted max-w-xl">
-            {COMO_TRABAJAMOS.closing.desc}
-          </p>
-        </m.div>
 
       </div>
     </section>
