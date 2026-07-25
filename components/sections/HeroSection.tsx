@@ -77,7 +77,7 @@ export default function HeroSection() {
 
         {/* Subtítulo */}
         <p
-          className="hero-rise mt-8 max-w-[540px] font-sans font-light leading-relaxed text-white/70"
+          className="hero-rise mt-8 max-w-[540px] font-sans font-normal leading-relaxed text-white/90"
           style={{ fontSize: 'clamp(15px, 1.55vw, 18px)', animationDelay: '0.3s' }}
         >
           {HERO.subtitle}

@@ -53,8 +53,8 @@ export default function HeroVideo({ webm, mp4, poster }: HeroVideoConfig) {
       )}
 
       {/* Overlay de contraste: base + scrim lateral sobre la zona del texto */}
-      <div className="absolute inset-0 bg-[#0A0A0A]/55" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-[#0A0A0A]/25" />
+      <div className="absolute inset-0 bg-[#0A0A0A]/60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/90 via-[#0A0A0A]/55 to-[#0A0A0A]/30" />
     </div>
   )
 }

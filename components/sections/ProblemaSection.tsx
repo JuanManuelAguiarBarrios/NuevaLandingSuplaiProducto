@@ -41,27 +41,22 @@ export default function ProblemaSection() {
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}
             >
+              {/* Jerarquía invertida: el costo (lo que duele) en editorial
+                  grande; la causa arriba como línea chica. */}
               {PROBLEMA.pares.map((par, i) => (
-                <m.div
-                  key={i}
-                  variants={fadeUp}
-                  className="flex items-start gap-4 border-t border-border py-6"
-                >
-                  <span
-                    className="mt-[3px] font-mono text-[11px] font-medium text-muted"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div>
-                    <p className="font-sans text-[15px] font-light leading-relaxed text-ink">
-                      {par.problema}
-                    </p>
-                    <div className="my-2 h-4 w-px bg-primary/50" aria-hidden="true" />
-                    <p className="font-sans text-[15px] font-medium leading-relaxed text-ink">
-                      {par.costo}
-                    </p>
-                  </div>
+                <m.div key={i} variants={fadeUp} className="border-t border-border py-6">
+                  <p className="flex items-baseline gap-3 font-sans text-[13px] font-light leading-relaxed text-muted">
+                    <span
+                      className="font-mono text-[11px] font-medium text-primary"
+                      aria-hidden="true"
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {par.problema}
+                  </p>
+                  <p className="type-h4 mt-2.5 font-editorial font-normal text-ink text-wrap-balance">
+                    {par.costo}
+                  </p>
                 </m.div>
               ))}
             </m.div>
