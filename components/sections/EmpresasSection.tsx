@@ -1,11 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { AnimatePresence, m } from 'framer-motion'
+import { AnimatePresence, m, useInView, useReducedMotion } from 'framer-motion'
 import { EMPRESAS } from '@/content'
 import { EASE, fadeUpTight, staggerTight } from '@/lib/motion'
 import { VerticalGlyph } from '@/components/logos'
+
+/** Intervalo del autoplay — compartido por el timer y la barra de progreso. */
+const AUTOPLAY_MS = 6000
 
 /**
  * "Hecho para tu operación" — índice editorial con spotlight.
@@ -17,7 +20,11 @@ import { VerticalGlyph } from '@/components/logos'
  * acordeón — la info completa directa).
  */
 
-type EmpresaItem = (typeof EMPRESAS.items)[number]
+type EmpresaItem = (typeof EMPRESAS.items)[number] & {
+  /** [ASSET] Clip 5–8s opcional (webm/mp4 en /public). Si un item de
+   *  EMPRESAS lo trae, el spotlight lo usa con la foto como poster. */
+  video?: string
+}
 
 function IndexRow({
   item,
@@ -76,15 +83,28 @@ function IndexRow({
  * Las 6 fotos quedan montadas y se alternan por opacidad → el cambio es
  * instantáneo (nada de esperar el fetch en cada hover).
  */
-function Spotlight({ activeIndex }: { activeIndex: number }) {
+function Spotlight({
+  activeIndex,
+  isRunning,
+  barKey,
+}: {
+  activeIndex: number
+  /** true mientras el autoplay corre — la barra de progreso se pausa si no. */
+  isRunning: boolean
+  /** Re-monta la barra (reinicio) al cambiar de slide o reanudar. */
+  barKey: string
+}) {
+  const prefersReducedMotion = useReducedMotion()
   const active = EMPRESAS.items[activeIndex] ?? EMPRESAS.items[0]
 
   return (
     <div>
       {/* Foto — stack con crossfade. Aspect más bajo en mobile (foto compacta arriba del índice). */}
       <div className="relative aspect-[16/10] overflow-hidden rounded-2xl lg:aspect-[4/3]">
-        {EMPRESAS.items.map((item, i) => {
+        {EMPRESAS.items.map((rawItem, i) => {
+          const item: EmpresaItem = rawItem
           const isActive = i === activeIndex
+          const hasVideo = Boolean(item.video) && isActive && !prefersReducedMotion
           return (
             <div
               key={item.key}
@@ -93,16 +113,29 @@ function Spotlight({ activeIndex }: { activeIndex: number }) {
               }`}
               aria-hidden={!isActive}
             >
-              <Image
-                src={`/empresas/${item.key}.webp`}
-                alt={item.alt}
-                fill
-                quality={65}
-                sizes="(min-width: 1024px) 460px, 100vw"
-                className={`object-cover grayscale contrast-[1.08] brightness-[0.85] ${
-                  isActive ? 'kenburns' : ''
-                }`}
-              />
+              {hasVideo ? (
+                <video
+                  src={item.video}
+                  poster={`/empresas/${item.key}.webp`}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  className="absolute inset-0 h-full w-full object-cover grayscale contrast-[1.08] brightness-[0.85]"
+                />
+              ) : (
+                <Image
+                  src={`/empresas/${item.key}.webp`}
+                  alt={item.alt}
+                  fill
+                  quality={65}
+                  sizes="(min-width: 1024px) 460px, 100vw"
+                  className={`object-cover grayscale contrast-[1.08] brightness-[0.85] ${
+                    isActive ? 'kenburns' : ''
+                  }`}
+                />
+              )}
               {/* Tinte duotono azul sobre el grayscale */}
               <div className="absolute inset-0 bg-primary/30 mix-blend-color" aria-hidden="true" />
               {/* Fade inferior hacia el fondo de la sección */}
@@ -114,7 +147,7 @@ function Spotlight({ activeIndex }: { activeIndex: number }) {
           )
         })}
 
-        {/* Chip glyph + índice sobre la foto */}
+        {/* Chip glyph + índice + progreso del autoplay sobre la foto */}
         <div className="absolute bottom-4 left-4 flex items-center gap-2.5 text-white">
           <span className="flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm" aria-hidden="true">
             <VerticalGlyph name={active.icon} size={17} />
@@ -122,6 +155,19 @@ function Spotlight({ activeIndex }: { activeIndex: number }) {
           <span className="font-mono text-[11px] tabular-nums text-white/80" aria-hidden="true">
             {String(activeIndex + 1).padStart(2, '0')} / {String(EMPRESAS.items.length).padStart(2, '0')}
           </span>
+          {!prefersReducedMotion && (
+            <span
+              className="relative h-[2px] w-14 overflow-hidden rounded-full bg-white/20"
+              aria-hidden="true"
+            >
+              <span
+                key={barKey}
+                className="slide-progress absolute inset-0 bg-white/80"
+                data-paused={isRunning ? undefined : 'true'}
+                style={{ animationDuration: `${AUTOPLAY_MS}ms` }}
+              />
+            </span>
+          )}
         </div>
       </div>
 
@@ -154,9 +200,38 @@ function Spotlight({ activeIndex }: { activeIndex: number }) {
 
 export default function EmpresasSection() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [cycle, setCycle] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { amount: 0.3 })
+  const prefersReducedMotion = useReducedMotion()
+
+  const isAutoplaying = isInView && !isPaused && !prefersReducedMotion
+
+  // Autoplay: avanza cada AUTOPLAY_MS mientras la sección está en viewport y
+  // el usuario no interactúa. `cycle` reinicia el intervalo (y la barra de
+  // progreso) al activar una fila a mano o al reanudar tras una pausa.
+  useEffect(() => {
+    if (!isAutoplaying) return
+    const id = setInterval(() => {
+      setActiveIndex((i) => (i + 1) % EMPRESAS.items.length)
+    }, AUTOPLAY_MS)
+    return () => clearInterval(id)
+  }, [isAutoplaying, cycle])
+
+  const activate = (index: number) => {
+    setActiveIndex(index)
+    setCycle((c) => c + 1)
+  }
+
+  const pause = () => setIsPaused(true)
+  const resume = () => {
+    setIsPaused(false)
+    setCycle((c) => c + 1)
+  }
 
   return (
-    <section id="empresas" className="bg-[#0A0A0A]" style={{ paddingBlock: 'var(--section-py)' }}>
+    <section ref={sectionRef} id="empresas" className="bg-[#0A0A0A]" style={{ paddingBlock: 'var(--section-py)' }}>
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
         <m.div
@@ -185,7 +260,12 @@ export default function EmpresasSection() {
           </p>
         </m.div>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+        <div
+          className="flex flex-col lg:grid lg:grid-cols-[1.15fr_1fr] lg:gap-20"
+          onMouseEnter={pause}
+          onMouseLeave={resume}
+          onTouchStart={pause}
+        >
           {/* Spotlight — primero en mobile (foto compacta), columna derecha en desktop */}
           <m.div
             initial={{ opacity: 0 }}
@@ -194,7 +274,11 @@ export default function EmpresasSection() {
             transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
             className="mb-10 lg:order-2 lg:mb-0 lg:pt-2"
           >
-            <Spotlight activeIndex={activeIndex} />
+            <Spotlight
+              activeIndex={activeIndex}
+              isRunning={isAutoplaying}
+              barKey={`${activeIndex}-${cycle}`}
+            />
           </m.div>
 
           {/* Índice — columna izquierda en desktop */}
@@ -211,7 +295,7 @@ export default function EmpresasSection() {
                 item={item}
                 index={i}
                 isActive={i === activeIndex}
-                onActivate={() => setActiveIndex(i)}
+                onActivate={() => activate(i)}
               />
             ))}
           </m.ul>

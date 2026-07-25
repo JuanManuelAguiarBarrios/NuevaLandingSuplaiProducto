@@ -197,3 +197,29 @@
     animation: none;
   }
 }
+
+/* ────────────────────────────────────────────
+   Empresas — barra de progreso del autoplay.
+   Se re-monta (key) en cada slide; la duración
+   la fija el componente para compartir la
+   constante con el intervalo de autoplay.
+──────────────────────────────────────────── */
+@keyframes slide-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.slide-progress {
+  transform-origin: left;
+  animation: slide-progress linear both;
+}
+
+.slide-progress[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-progress {
+    animation: none;
+  }
+}
