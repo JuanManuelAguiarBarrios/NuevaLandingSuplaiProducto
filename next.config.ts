@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Assets estáticos versionados por contenido (logos, fotos) — cache agresivo.
-        source: '/:path*.(webp|png|jpg|jpeg|svg)',
+        // Assets estáticos versionados por contenido (logos, fotos, videos) — cache agresivo.
+        source: '/:path*.(webp|png|jpg|jpeg|svg|mp4|webm)',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],

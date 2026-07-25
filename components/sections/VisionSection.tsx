@@ -42,18 +42,15 @@ const LINK_ICONS: Record<string, React.ReactNode> = {
 export default function VisionSection() {
   return (
     <>
-      {/* Visión — cierre full-bleed (B7 opción B): foto de operación con
-          overlay oscuro + duotono azul, mismo tratamiento que Empresas.
-          [ASSET] La foto es un placeholder (reusa importadoras.webp) —
-          reemplazar por una imagen propia de cierre: operación logística
-          amplia, apta para overlay, horizontal, ~1920px, webp. */}
+      {/* Visión — cierre full-bleed (B7 opción B): puerto en blue hour con
+          overlay oscuro + duotono azul, mismo tratamiento que Empresas. */}
       <section
         id="vision"
         className="relative isolate overflow-hidden bg-[#0A0A0A]"
         style={{ paddingBlock: 'var(--section-py-lg)' }}
       >
         <Image
-          src="/empresas/importadoras.webp"
+          src="/cierre.webp"
           alt=""
           fill
           quality={65}

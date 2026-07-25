@@ -19,19 +19,21 @@ export const NAV = {
 } as const
 
 /* ── Hero ───────────────────────────────────────────────────── */
-/* [ASSET] Video de fondo del hero — la arquitectura ya está lista: cuando
-   existan los archivos, completá las rutas y el hero pasa a video solo
-   (poster inmediato, video montado post-first-paint, overlay de contraste,
-   estático con reduced-motion). En null, el hero usa el fondo actual. */
+/* Video de fondo del hero: poster inmediato, video montado post-first-paint,
+   overlay de contraste, estático con reduced-motion. En null, el hero vuelve
+   al fondo de grid + glow + rutas de flujo. */
 export type HeroVideoConfig = {
-  /** WebM (VP9), 1920×1080, ~3–4 MB máx. */
-  webm: string
-  /** MP4 (H.264), fallback de compatibilidad. */
+  /** WebM (VP9) opcional — si existe, se sirve con prioridad sobre el mp4. */
+  webm?: string
+  /** MP4 (H.264). */
   mp4: string
-  /** Poster liviano (webp, ~80 KB) — primer frame del loop. */
+  /** Poster liviano (webp) — primer frame del loop. */
   poster: string
 }
-export const HERO_VIDEO: HeroVideoConfig | null = null
+export const HERO_VIDEO: HeroVideoConfig | null = {
+  mp4: '/hero/hero.mp4',
+  poster: '/hero/poster.webp',
+}
 
 export const HERO = {
   headline: {
@@ -171,6 +173,7 @@ export const EMPRESAS = {
   items: [
     {
       key:   'logistica',
+      video: '/empresas/logistica.mp4',
       title: 'Empresas de logística',
       desc:  'Coordinación entre tráfico, choferes y clientes.',
       icon:  'truck',
@@ -178,6 +181,7 @@ export const EMPRESAS = {
     },
     {
       key:   'distribuidoras',
+      video: '/empresas/distribuidoras.mp4',
       title: 'Distribuidoras',
       desc:  'Muchas entregas por día, confirmaciones que traban el cierre.',
       icon:  'package',
@@ -185,6 +189,7 @@ export const EMPRESAS = {
     },
     {
       key:   'importadoras',
+      video: '/empresas/importadoras.mp4',
       title: 'Importadoras',
       desc:  'Seguimiento de cargas y trámites dispersos.',
       icon:  'ship',
@@ -192,6 +197,7 @@ export const EMPRESAS = {
     },
     {
       key:   'portuarias',
+      video: '/empresas/portuarias.mp4',
       title: 'Empresas portuarias',
       desc:  'Coordinación de turnos y movimientos en tiempo real.',
       icon:  'anchor',
@@ -199,6 +205,7 @@ export const EMPRESAS = {
     },
     {
       key:   'flota',
+      video: '/empresas/flota.mp4',
       title: 'Flota propia',
       desc:  'Control de viajes sin sumar gente al equipo.',
       icon:  'route',
@@ -206,6 +213,7 @@ export const EMPRESAS = {
     },
     {
       key:   'cds',
+      video: '/empresas/cds.mp4',
       title: 'Centros de distribución',
       desc:  'Ingreso y egreso de mercadería sin papel ni fricción.',
       icon:  'warehouse',
