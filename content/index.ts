@@ -61,7 +61,7 @@ export const PROBLEMA = {
   labels: { problema: 'Qué pasa hoy', costo: 'Qué cuesta' },
   pares: [
     {
-      problema: 'Información dispersa entre sistemas, WhatsApp y llamadas',
+      problema: 'Datos repartidos entre el TMS, planillas, WhatsApp y llamadas',
       costo:    'Errores por información incompleta o desactualizada',
     },
     {
