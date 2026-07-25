@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { m, useScroll } from 'framer-motion'
-import { SOLUCION } from '@/content'
+import { SOLUCION, PANEL } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
 import { useActiveStepCount } from '@/lib/useActiveStepCount'
 import SuplaiOrbitDiagram from '@/components/SuplaiOrbitDiagram'
+import SuplaiPanelMockup from '@/components/SuplaiPanelMockup'
 
 /**
  * Tamaño del diagrama de órbita según breakpoint (360 / sm:440 / lg:500).
@@ -98,7 +99,7 @@ function SolucionHeadline() {
 }
 
 export default function SolucionSection() {
-  const containerRef = useRef<HTMLElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   // El scroll-jack (sticky 280vh) sólo tiene sentido en desktop.
   // En mobile todo el contenido no entra en 100vh y se recortaba.
   const [isDesktop, setIsDesktop] = useState(false)
@@ -120,11 +121,10 @@ export default function SolucionSection() {
   }, [])
 
   return (
-    <section
-      ref={containerRef}
-      id="solucion"
-      className="relative bg-white lg:h-[280vh]"
-    >
+    <section id="solucion" className="relative bg-white">
+      {/* Scroll-jack: la altura vive en este wrapper (no en la sección) para
+          poder agregar contenido después del momento sticky. */}
+      <div ref={containerRef} className="relative lg:h-[280vh]">
       <div className="flex items-center py-20 lg:sticky lg:top-0 lg:h-screen lg:py-0">
         <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
@@ -171,6 +171,18 @@ export default function SolucionSection() {
 
           </div>
         </div>
+      </div>
+      </div>
+
+      {/* El panel — UI de producto (mockup ilustrativo, datos genéricos) */}
+      <div className="mx-auto w-full max-w-[1200px] px-6 pb-24 md:px-10 lg:pb-36">
+        <m.div {...revealOnce}>
+          <p className="eyebrow text-muted">{PANEL.eyebrow}</p>
+          <p className="mb-8 mt-2 max-w-md font-sans text-[14px] font-light leading-relaxed text-muted">
+            {PANEL.caption}
+          </p>
+          <SuplaiPanelMockup />
+        </m.div>
       </div>
     </section>
   )

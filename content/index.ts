@@ -82,6 +82,34 @@ export const SOLUCION = {
   ],
 } as const
 
+/* ── Panel (mockup ilustrativo — datos ficticios genéricos) ─── */
+export const PANEL = {
+  eyebrow: 'El panel',
+  caption: 'Cada interacción y cada acción del agente quedan registradas.',
+  chrome:  'suplai · panel de operaciones',
+  conversaciones: {
+    label: 'Conversaciones',
+    items: [
+      { nombre: 'Distribuidora · Zona Norte', snippet: '¿A qué hora llega el pedido de mañana?',   estado: 'Respondida',   actor: 'agente' },
+      { nombre: 'Conductor · Ruta 8',         snippet: 'Confirmo entrega 14:20',                    estado: 'Registrada',   actor: 'agente' },
+      { nombre: 'Cliente · Turnos',           snippet: 'Necesito reprogramar el turno del jueves',  estado: 'Reprogramada', actor: 'agente' },
+      { nombre: 'Depósito Central',           snippet: 'Demora en dársena 3',                       estado: 'Escalada',     actor: 'equipo' },
+    ],
+  },
+  trazabilidad: {
+    label:  'Trazabilidad',
+    envio:  'Envío #0482',
+    estado: 'En tránsito',
+    eventos: [
+      { hora: '09:12', evento: 'Consulta recibida por WhatsApp',      actor: 'agente' },
+      { hora: '09:12', evento: 'Estado consultado en el TMS',         actor: 'agente' },
+      { hora: '09:13', evento: 'Respuesta enviada al cliente',        actor: 'agente' },
+      { hora: '11:47', evento: 'Demora detectada en ruta',            actor: 'agente' },
+      { hora: '11:48', evento: 'Excepción escalada a supervisión',    actor: 'equipo' },
+    ],
+  },
+} as const
+
 /* ── Agentes ────────────────────────────────────────────────── */
 export const AGENTES = {
   headline: 'Tenemos el agente que tu operación',
