@@ -1,7 +1,7 @@
 'use client'
 
 import { m } from 'framer-motion'
-import { AGENTES } from '@/content'
+import { AGENTES, CONTACT_EMAIL } from '@/content'
 import { EASE, fadeUp, stagger, revealOnce } from '@/lib/motion'
 import AgentVignette from '@/components/agents/AgentVignette'
 
@@ -113,7 +113,7 @@ function ExpansionCard() {
       </p>
 
       <m.a
-        href="mailto:admin@getsuplai.com?subject=Hablemos%20de%20mi%20operaci%C3%B3n"
+        href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(AGENTES.expansion.mailSubject)}`}
         whileHover={{ x: 3, transition: { duration: 0.18 } }}
         className="inline-flex items-center gap-2 font-sans text-[12px] font-medium text-primary hover:text-primary/80 transition-colors mt-auto"
       >
@@ -133,14 +133,7 @@ export default function AgentesSection() {
 
         {/* Cabecera */}
         <m.div {...revealOnce} className="mb-14 max-w-2xl">
-          <h2
-            className="font-editorial font-normal text-white text-wrap-balance"
-            style={{
-              fontSize: 'clamp(28px, 3.6vw, 52px)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.022em',
-            }}
-          >
+          <h2 className="type-h2 font-editorial font-normal text-white text-wrap-balance">
             {AGENTES.headline}{' '}
             <em className="accent">{AGENTES.accent}</em>
           </h2>

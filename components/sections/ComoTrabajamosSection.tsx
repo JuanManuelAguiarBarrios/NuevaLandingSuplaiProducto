@@ -122,14 +122,7 @@ export default function ComoTrabajamosSection() {
           transition={{ duration: DURATION.base, delay: 0.15, ease: EASE }}
           className="mt-16 rounded-xl border border-border bg-surface p-8 md:p-10"
         >
-          <h3
-            className="font-editorial font-normal text-ink mb-3 text-wrap-balance"
-            style={{
-              fontSize: 'clamp(20px, 2.2vw, 30px)',
-              lineHeight: 1.2,
-              letterSpacing: '-0.016em',
-            }}
-          >
+          <h3 className="type-h3 font-editorial font-normal text-ink mb-3 text-wrap-balance">
             {COMO_TRABAJAMOS.closing.title}
           </h3>
           <p className="font-sans text-[14px] font-light leading-relaxed text-muted max-w-xl">

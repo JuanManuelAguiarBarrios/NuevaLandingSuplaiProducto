@@ -96,6 +96,8 @@ export default function HeroSection() {
         <div className="hero-rise hero-anim mt-10" style={{ animationDelay: '0.78s' }}>
           <a
             href={DEMO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 rounded-full bg-primary py-3 pl-7 pr-6 font-sans text-[14px] font-semibold text-white transition-[background-color,transform] duration-300 ease-signature hover:bg-[#1D4ED8] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
           >
             {HERO.cta}

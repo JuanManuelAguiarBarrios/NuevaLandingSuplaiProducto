@@ -91,6 +91,8 @@ export default function Navbar() {
           {/* CTA */}
           <a
             href={DEMO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className={`inline-flex shrink-0 items-center rounded-full px-5 py-2.5 font-sans text-sm font-medium transition-[background-color,color,transform] duration-300 ease-signature active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
               isSolid
                 ? 'bg-primary text-white hover:bg-[#1D4ED8]'

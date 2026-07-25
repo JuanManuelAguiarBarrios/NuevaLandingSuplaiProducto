@@ -6,6 +6,9 @@
 
 export const DEMO_URL = 'https://calendly.com/mateo-getsuplai/30min'
 
+/** Único mail de contacto público — footer y CTA de expansión salen de acá. */
+export const CONTACT_EMAIL = 'contacto@getsuplai.com'
+
 /* ── Navbar ─────────────────────────────────────────────────── */
 export const NAV = {
   brand: 'Suplai',
@@ -164,12 +167,8 @@ export const AGENTES = {
     title: '¿No lo ves acá? Lo construimos.',
     desc:  'Cada operación es distinta. Si tu proceso necesita un agente que no está en la lista, lo diseñamos a medida y lo integramos igual: sin migraciones.',
     cta:   'Contanos qué necesitás',
+    mailSubject: 'Hablemos de mi operación',
   },
-  highlights: [
-    'Diseñado para tu proceso',
-    'Integrado a tus sistemas actuales',
-    'Medido por resultados reales',
-  ],
 } as const
 
 /* ── Empresas ───────────────────────────────────────────────── */
@@ -293,8 +292,8 @@ export const VISION = {
 export const FOOTER = {
   brand: 'Suplai',
   links: [
-    { label: 'LinkedIn · getsuplai', href: 'https://linkedin.com/company/getsuplai',  external: true  },
-    { label: 'contacto@getsuplai.com', href: 'mailto:contacto@getsuplai.com',          external: false },
+    { label: 'LinkedIn · getsuplai', href: 'https://linkedin.com/company/getsuplai', external: true  },
+    { label: CONTACT_EMAIL,          href: `mailto:${CONTACT_EMAIL}`,                external: false },
   ],
   legal: '© {year} Suplai. Todos los derechos reservados.',
 } as const

@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'es_ES',
+    locale: 'es_UY',
     url: SITE_URL,
     siteName: 'Suplai',
     title: TITLE,
@@ -69,6 +69,18 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+}
+
+/* Datos estructurados (schema.org) — cómo Google entiende la marca. */
+const ORG_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Suplai',
+  url: SITE_URL,
+  logo: `${SITE_URL}/brand/suplai-lockup-black.png`,
+  email: 'contacto@getsuplai.com',
+  description: DESCRIPTION,
+  sameAs: ['https://linkedin.com/company/getsuplai'],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -101,6 +113,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
         </SmoothScrollProvider>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}
+        />
 
         {/* Google tag (gtag.js) — afterInteractive: no compite con el LCP del hero */}
         <Script

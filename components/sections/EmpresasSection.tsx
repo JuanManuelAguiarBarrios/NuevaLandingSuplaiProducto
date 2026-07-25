@@ -67,14 +67,7 @@ export default function EmpresasSection() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
         <m.div {...revealOnce} className="mb-12 max-w-xl">
-          <h2
-            className="font-editorial font-normal text-white text-wrap-balance"
-            style={{
-              fontSize: 'clamp(28px, 3.6vw, 52px)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.022em',
-            }}
-          >
+          <h2 className="type-h2 font-editorial font-normal text-white text-wrap-balance">
             {EMPRESAS.headline.plain}{' '}
             <em className="accent">{EMPRESAS.headline.accent}</em>
           </h2>
@@ -94,6 +87,12 @@ export default function EmpresasSection() {
           onMouseEnter={pause}
           onMouseLeave={resume}
           onTouchStart={pause}
+          // Pausa accesible (WCAG 2.2.2): el autoplay también se detiene al
+          // navegar con teclado dentro del bloque.
+          onFocusCapture={pause}
+          onBlurCapture={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) resume()
+          }}
         >
           {/* Lienzo cinematográfico. En mobile el aspect es 16:9 nativo del
               footage — el video se ve completo, sin recortes laterales. */}
@@ -194,8 +193,10 @@ export default function EmpresasSection() {
             </div>
           </div>
 
-          {/* Mobile: texto debajo del lienzo — el footage queda limpio */}
-          <div className="mt-4 flex items-start justify-between gap-4 sm:hidden">
+          {/* Mobile: texto debajo del lienzo — el footage queda limpio.
+              min-height fija: el crossfade del autoplay no debe mover las
+              tabs de abajo (CLS). */}
+          <div className="mt-4 flex min-h-[104px] items-start justify-between gap-4 sm:hidden">
             <AnimatePresence mode="wait">
               <m.div
                 key={active.key}
@@ -252,7 +253,7 @@ export default function EmpresasSection() {
                 >
                   <span
                     className={`font-mono text-[10px] tabular-nums transition-colors duration-300 ${
-                      isActive ? 'text-primary' : 'text-white/30'
+                      isActive ? 'text-primary' : 'text-white/50'
                     }`}
                     aria-hidden="true"
                   >
@@ -260,7 +261,7 @@ export default function EmpresasSection() {
                   </span>
                   <span
                     className={`font-sans text-[12px] leading-snug transition-colors duration-300 ${
-                      isActive ? 'text-white' : 'text-white/45 group-hover:text-white/70'
+                      isActive ? 'text-white' : 'text-white/60 group-hover:text-white/80'
                     }`}
                   >
                     {item.title}

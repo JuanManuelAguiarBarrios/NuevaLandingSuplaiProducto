@@ -24,6 +24,22 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     let lenis: Lenis | null = null
     let raf: number | null = null
 
+    // Anchors del nav: sin esto, los links #seccion saltan con el
+    // comportamiento nativo (instantáneo), incoherente con el smooth scroll
+    // del resto. El skip link queda excluido: necesita el salto nativo para
+    // mover el foco.
+    const onAnchorClick = (e: MouseEvent) => {
+      if (!lenis) return
+      const anchor = (e.target as HTMLElement).closest?.('a[href^="#"]')
+      const href = anchor?.getAttribute('href')
+      if (!href || href === '#' || href === '#main-content') return
+      const target = document.querySelector<HTMLElement>(href)
+      if (!target) return
+      e.preventDefault()
+      history.pushState(null, '', href)
+      lenis.scrollTo(target)
+    }
+
     const start = () => {
       if (lenis || reduceMotion.matches || !finePointer.matches) return
       lenis = new Lenis({
@@ -31,6 +47,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         touchMultiplier: 1.5,
       })
+      document.addEventListener('click', onAnchorClick)
       const frame = (time: number) => {
         lenis?.raf(time)
         raf = requestAnimationFrame(frame)
@@ -41,6 +58,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     const stop = () => {
       if (raf !== null) cancelAnimationFrame(raf)
       raf = null
+      document.removeEventListener('click', onAnchorClick)
       lenis?.destroy()
       lenis = null
     }

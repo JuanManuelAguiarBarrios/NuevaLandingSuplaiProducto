@@ -96,6 +96,8 @@ export default function VisionSection() {
             <m.div variants={fadeUp} className="mt-10">
               <a
                 href={DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center rounded-full bg-primary px-7 py-3 font-sans text-[14px] font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
               >
                 {VISION.cta}
