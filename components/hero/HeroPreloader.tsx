@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { m } from 'framer-motion'
 import { EASE } from '@/lib/motion'
+import DigitRoll from '@/components/DigitRoll'
 
 /**
  * Módulo 1 — Preloader con contador odómetro (ref. terminal-industries).
@@ -25,7 +26,6 @@ const MIN_MS = 800
 const CAP_MS = 2000
 const BEAT_MS = 250
 const HERO_START_AFTER_WIPE_MS = 250
-const EASE_CSS = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 function releaseHold() {
   document.documentElement.removeAttribute('data-hero-hold')
@@ -34,26 +34,6 @@ function releaseHold() {
   } catch {
     /* sessionStorage bloqueado: el preloader simplemente saldrá cada carga */
   }
-}
-
-function DigitRoll({ digit }: { digit: number }) {
-  return (
-    <span className="inline-block overflow-hidden" style={{ height: '1em', width: '0.62em' }}>
-      <span
-        className="block"
-        style={{
-          transform: `translateY(-${digit}em)`,
-          transition: `transform 320ms ${EASE_CSS}`,
-        }}
-      >
-        {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="block text-center" style={{ height: '1em', lineHeight: 1 }}>
-            {i}
-          </span>
-        ))}
-      </span>
-    </span>
-  )
 }
 
 export default function HeroPreloader() {

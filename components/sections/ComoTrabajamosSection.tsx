@@ -6,33 +6,39 @@ import { COMO_TRABAJAMOS } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
 import { useActiveStepCount } from '@/lib/useActiveStepCount'
 import LineReveal from '@/components/LineReveal'
+import DigitRoll from '@/components/DigitRoll'
 
 /**
- * "Así trabajamos" como timeline (A3 + B6): línea de progreso scroll-linked
- * que conecta los 4 pasos — horizontal en desktop, rail vertical en mobile —
- * con cada paso encendiéndose cuando la línea lo alcanza. Ese dibujo es el
- * único momento orquestado de la sección.
+ * "Así trabajamos" — split con número rotante: columna izquierda sticky con
+ * el número de paso en display editorial que RUEDA como odómetro (el gesto
+ * del contador del preloader, no el sticky de Solución) en sync con el paso
+ * activo de la derecha. En mobile no hay número gigante: filas con eyebrow
+ * numerado + rail vertical scroll-linked. Ese sync es el único momento
+ * orquestado de la sección.
  */
 
 type Step = (typeof COMO_TRABAJAMOS.steps)[number]
 
-function StepItem({ step, isActive }: { step: Step; isActive: boolean }) {
+function StepRow({ step, isActive }: { step: Step; isActive: boolean }) {
   return (
     <m.div
       initial={false}
       animate={{ opacity: isActive ? 1 : 0.35 }}
       transition={{ duration: DURATION.fast, ease: EASE }}
+      className="border-t border-border py-8 lg:py-10"
     >
+      {/* Eyebrow numerado solo en mobile — en desktop lo dice el número gigante */}
       <p
-        className="mb-4 font-mono text-[11px] font-medium tracking-[0.08em] transition-colors duration-300"
+        className="mb-3 font-mono text-[11px] font-medium tracking-[0.08em] transition-colors duration-300 lg:hidden"
         style={{ color: isActive ? '#2563EB' : '#9CA3AF' }}
+        aria-hidden="true"
       >
         {step.n}
       </p>
-      <h3 className="type-h4 font-editorial font-normal text-ink mb-3">
+      <h3 className="type-h3 font-editorial font-normal text-ink text-wrap-balance">
         {step.title}
       </h3>
-      <p className="font-sans text-[13px] font-light leading-relaxed text-muted">
+      <p className="mt-2.5 max-w-[52ch] font-sans text-[14px] font-light leading-relaxed text-muted">
         {step.desc}
       </p>
     </m.div>
@@ -40,19 +46,21 @@ function StepItem({ step, isActive }: { step: Step; isActive: boolean }) {
 }
 
 export default function ComoTrabajamosSection() {
-  const timelineRef = useRef<HTMLDivElement>(null)
+  const stepsRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
 
-  // El dibujo arranca cuando la timeline entra por abajo (85% del viewport)
-  // y completa cuando su tope llega al 30% — ~medio viewport de recorrido.
+  // El paso activo avanza mientras las filas cruzan la franja de lectura.
   const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 0.85', 'start 0.3'],
+    target: stepsRef,
+    offset: ['start 0.65', 'end 0.55'],
   })
 
   const totalSteps = COMO_TRABAJAMOS.steps.length
   const activeFromScroll = useActiveStepCount(scrollYProgress, totalSteps)
-  const activeCount = prefersReducedMotion ? totalSteps : activeFromScroll
+  // 1..totalSteps — nunca 0: el número gigante siempre muestra un paso.
+  const activeStep = prefersReducedMotion
+    ? totalSteps
+    : Math.max(1, activeFromScroll)
 
   return (
     <section id="como-trabajamos" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
@@ -66,27 +74,31 @@ export default function ComoTrabajamosSection() {
           {COMO_TRABAJAMOS.headline}
         </m.h2>
 
-        <div ref={timelineRef}>
-          {/* Línea de progreso horizontal (desktop) con un nodo por paso */}
-          <div className="relative mb-12 hidden lg:block" aria-hidden="true">
-            <div className="h-px w-full bg-border" />
-            <m.div
-              className="absolute inset-x-0 top-0 h-px origin-left bg-primary"
-              style={{ scaleX: prefersReducedMotion ? 1 : scrollYProgress }}
-            />
-            {COMO_TRABAJAMOS.steps.map((step, i) => (
-              <span
-                key={step.n}
-                className={`absolute top-1/2 size-[7px] -translate-y-1/2 rounded-full transition-colors duration-300 ${
-                  i < activeCount ? 'bg-primary' : 'bg-border'
-                }`}
-                style={{ left: `${(i / totalSteps) * 100}%` }}
-              />
-            ))}
+        <div className="grid gap-12 lg:grid-cols-[minmax(220px,320px)_1fr] lg:gap-24">
+
+          {/* Número rotante sticky (desktop) */}
+          <div className="hidden lg:block">
+            <div className="sticky top-24">
+              <div
+                className="select-none font-editorial font-normal leading-none text-[#E5E7EB]"
+                style={{ fontSize: 'clamp(140px, 15vw, 220px)' }}
+                aria-hidden="true"
+              >
+                <DigitRoll digit={0} transitionMs={480} width="0.56em" />
+                <DigitRoll digit={activeStep} transitionMs={480} width="0.56em" />
+              </div>
+              <p
+                className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
+                aria-hidden="true"
+              >
+                Paso 0{prefersReducedMotion ? 1 : activeStep} / 0{totalSteps}
+              </p>
+            </div>
           </div>
 
-          {/* Rail vertical (mobile) + pasos */}
-          <div className="relative">
+          {/* Pasos — el activo a plena opacidad, el resto atenuado */}
+          <div ref={stepsRef} className="relative">
+            {/* Rail vertical scroll-linked (mobile) */}
             <div
               className="absolute bottom-1 left-0 top-1 w-px bg-border lg:hidden"
               aria-hidden="true"
@@ -96,12 +108,17 @@ export default function ComoTrabajamosSection() {
               style={{ scaleY: prefersReducedMotion ? 1 : scrollYProgress }}
               aria-hidden="true"
             />
-            <div className="grid gap-x-8 gap-y-12 pl-7 lg:grid-cols-4 lg:pl-0">
+            <div className="pl-7 lg:pl-0">
               {COMO_TRABAJAMOS.steps.map((step, i) => (
-                <StepItem key={step.n} step={step} isActive={i < activeCount} />
+                <StepRow
+                  key={step.n}
+                  step={step}
+                  isActive={prefersReducedMotion || i === activeStep - 1}
+                />
               ))}
             </div>
           </div>
+
         </div>
 
         {/* Compromiso incremental — remate editorial de la timeline */}
