@@ -51,24 +51,28 @@ export const MANIFIESTO = {
   accent: 'actuar',
 } as const
 
-/* ── Problema ───────────────────────────────────────────────── */
+/* ── Problema (pares causa → consecuencia) ──────────────────── */
 export const PROBLEMA = {
-  hoy: {
-    label: 'Qué pasa hoy',
-    items: [
-      'Información dispersa entre sistemas, WhatsApp y llamadas',
-      'Seguimiento manual de cada envío, uno por uno',
-      'Coordinación constante entre equipos y conductores',
-    ],
+  headline: {
+    /* Quiebres autorados para el reveal por línea. */
+    text: 'Información dispersa entre sistemas.\nCoordinación manual de todos los procesos.',
+    accent: 'manual',
   },
-  impacto: {
-    label: 'Qué cuesta',
-    items: [
-      'Errores por información incompleta o desactualizada',
-      'Retrasos y menor nivel de servicio',
-      'Difícil escalar la operación sin sumar más gente',
-    ],
-  },
+  labels: { problema: 'Qué pasa hoy', costo: 'Qué cuesta' },
+  pares: [
+    {
+      problema: 'Información dispersa entre sistemas, WhatsApp y llamadas',
+      costo:    'Errores por información incompleta o desactualizada',
+    },
+    {
+      problema: 'Seguimiento manual de cada envío, uno por uno',
+      costo:    'Retrasos y menor nivel de servicio',
+    },
+    {
+      problema: 'Coordinación constante entre equipos y conductores',
+      costo:    'Difícil escalar la operación sin sumar más gente',
+    },
+  ],
 } as const
 
 /* ── Solución ───────────────────────────────────────────────── */
