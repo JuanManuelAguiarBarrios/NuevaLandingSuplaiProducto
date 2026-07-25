@@ -1,31 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { m, useScroll, MotionValue } from 'framer-motion'
+import { m, useScroll } from 'framer-motion'
 import { SOLUCION } from '@/content'
 import { EASE, DURATION, revealOnce } from '@/lib/motion'
+import { useActiveStepCount } from '@/lib/useActiveStepCount'
 import SuplaiOrbitDiagram from '@/components/SuplaiOrbitDiagram'
-
-/**
- * Cuenta cuántos pasos están activos según el progreso del scroll-jack.
- * Solo dispara re-render cuando ese número cambia (unas pocas veces en total),
- * no en cada frame — antes snapshoteábamos el float y React reconciliaba 60×/s.
- */
-function useActiveStepCount(mv: MotionValue<number>, total: number): number {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    const compute = (p: number) => {
-      let c = 0
-      for (let i = 0; i < total; i++) {
-        if (p >= i / total - 0.05) c = i + 1
-      }
-      setCount((prev) => (prev === c ? prev : c))
-    }
-    compute(mv.get())
-    return mv.on('change', compute)
-  }, [mv, total])
-  return count
-}
 
 /**
  * Tamaño del diagrama de órbita según breakpoint (360 / sm:440 / lg:500).

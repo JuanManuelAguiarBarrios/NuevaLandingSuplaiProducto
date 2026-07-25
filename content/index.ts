@@ -199,28 +199,38 @@ export const EMPRESAS = {
 /* ── Cómo trabajamos ────────────────────────────────────────── */
 export const COMO_TRABAJAMOS = {
   headline: 'Así trabajamos.',
+  /* Plazos [DATO]: placeholders visibles hasta confirmar los rangos reales. */
   steps: [
     {
       n:     '01',
+      plazo: '[DATO: Semana 1]',
       title: 'Conocemos tus herramientas',
       desc:  'Entendemos tu TMS, WMS, ERP, planillas y procesos actuales.',
     },
     {
       n:     '02',
+      plazo: '[DATO: Semana 1–2]',
       title: 'Identificamos dónde ayudar',
       desc:  'Mapeamos los cuellos de botella y el mayor impacto posible.',
     },
     {
       n:     '03',
+      plazo: '[DATO: Semana 2–4]',
       title: 'Implementamos juntos',
-      desc:  'Mínima fricción, junto a tu equipo, sin interrumpir la operación.',
+      desc:  'Junto a tu equipo, sin migración: nos conectamos a lo que ya usás, sin interrumpir la operación.',
     },
     {
       n:     '04',
+      plazo: '[DATO: Continuo]',
       title: 'Mejoramos de forma continua',
       desc:  'Evaluamos, ajustamos y optimizamos el agente con el tiempo.',
     },
   ],
+  /* Compromiso incremental — quiebre autorado para el reveal por línea. */
+  compromiso: {
+    plain:  'Empezá por un agente.\nEscalá cuando veas el resultado.',
+    accent: 'un agente',
+  },
   closing: {
     title: 'Si tu operación lo necesita, lo construimos.',
     desc:  'Cada empresa opera distinto. Diseñamos el agente que necesités y lo moldeamos a tus procesos.',
