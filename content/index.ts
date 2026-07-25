@@ -19,6 +19,20 @@ export const NAV = {
 } as const
 
 /* ── Hero ───────────────────────────────────────────────────── */
+/* [ASSET] Video de fondo del hero — la arquitectura ya está lista: cuando
+   existan los archivos, completá las rutas y el hero pasa a video solo
+   (poster inmediato, video montado post-first-paint, overlay de contraste,
+   estático con reduced-motion). En null, el hero usa el fondo actual. */
+export type HeroVideoConfig = {
+  /** WebM (VP9), 1920×1080, ~3–4 MB máx. */
+  webm: string
+  /** MP4 (H.264), fallback de compatibilidad. */
+  mp4: string
+  /** Poster liviano (webp, ~80 KB) — primer frame del loop. */
+  poster: string
+}
+export const HERO_VIDEO: HeroVideoConfig | null = null
+
 export const HERO = {
   headline: {
     /* Quiebre autorado: cada '\n' es una línea del reveal de entrada. */

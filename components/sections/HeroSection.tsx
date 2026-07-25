@@ -1,5 +1,6 @@
-import { DEMO_URL, HERO } from '@/content'
+import { DEMO_URL, HERO, HERO_VIDEO } from '@/content'
 import HeroFlowLines from '@/components/hero/HeroFlowLines'
+import HeroVideo from '@/components/hero/HeroVideo'
 
 export default function HeroSection() {
   return (
@@ -7,26 +8,34 @@ export default function HeroSection() {
       id="inicio"
       className="relative isolate flex min-h-[100dvh] flex-col overflow-hidden bg-[#0A0A0A] pt-16"
     >
-      {/* Subtle grid texture */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-        }}
-        aria-hidden="true"
-      />
+      {/* Fondo: video loop si HERO_VIDEO está configurado en content;
+          si no, el fondo actual (grid + glow + rutas de flujo). */}
+      {HERO_VIDEO ? (
+        <HeroVideo {...HERO_VIDEO} />
+      ) : (
+        <>
+          {/* Subtle grid texture */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+              backgroundSize: '64px 64px',
+            }}
+            aria-hidden="true"
+          />
 
-      {/* Radial glow — azul, respira lento (transform+opacity vía .hero-breathe) */}
-      <div
-        className="hero-breathe pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] rounded-full"
-        style={{ background: 'radial-gradient(ellipse, #2563EB 0%, transparent 70%)' }}
-        aria-hidden="true"
-      />
+          {/* Radial glow — azul, respira lento (transform+opacity vía .hero-breathe) */}
+          <div
+            className="hero-breathe pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] rounded-full"
+            style={{ background: 'radial-gradient(ellipse, #2563EB 0%, transparent 70%)' }}
+            aria-hidden="true"
+          />
 
-      {/* Rutas de flujo — CSS puro; fallback estático en mobile/reduced-motion */}
-      <HeroFlowLines />
+          {/* Rutas de flujo — CSS puro; fallback estático en mobile/reduced-motion */}
+          <HeroFlowLines />
+        </>
+      )}
 
       {/* Bottom fade to white for smooth transition */}
       <div
