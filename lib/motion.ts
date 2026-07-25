@@ -44,6 +44,20 @@ export const fadeUpTight: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: DURATION.fast, ease: EASE } },
 }
 
+/** Entrada horizontal (pasos, listas laterales): rompe la monotonía del
+ *  fadeUp vertical sin salir del sistema (mismo ease/duración). */
+export const fadeRight: Variants = {
+  hidden: { opacity: 0, x: -14 },
+  show: { opacity: 1, x: 0, transition: { duration: DURATION.base, ease: EASE } },
+}
+
+/** Reveal de cierre: además de subir, escala levemente desde adentro —
+ *  más peso de "cierre de página" que el fadeUp genérico. */
+export const fadeUpScale: Variants = {
+  hidden: { opacity: 0, y: RISE, scale: 0.98 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: DURATION.slow, ease: EASE } },
+}
+
 /** Contenedor que escalona la entrada de sus hijos. */
 export const stagger: Variants = {
   hidden: {},
@@ -58,11 +72,12 @@ export const staggerTight: Variants = {
 
 /**
  * Props de conveniencia para un reveal on-scroll de un solo elemento.
+ * Trigger al 30% del viewport, una sola vez (spec B8: 20–30%).
  * Uso: <m.h2 {...revealOnce} ... />
  */
 export const revealOnce = {
   initial: 'hidden',
   whileInView: 'show',
-  viewport: { once: true, amount: 0.4 },
+  viewport: { once: true, amount: 0.3 },
   variants: fadeUp,
 } as const

@@ -2,20 +2,7 @@
 
 import { m } from 'framer-motion'
 import { COMO_TRABAJAMOS } from '@/content'
-
-const ease = [0.16, 1, 0.3, 1] as const
-
-// Entrada horizontal para los 4 pasos: rompe la monotonía del fadeUp vertical
-// que usa el resto del sitio, sin salir del sistema (mismo ease/duración).
-const fadeRight = {
-  hidden: { opacity: 0, x: -14 },
-  show:   { opacity: 1, x: 0, transition: { duration: 0.6, ease } },
-}
-
-const stagger = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.1 } },
-}
+import { EASE, DURATION, fadeRight, stagger, revealOnce } from '@/lib/motion'
 
 export default function ComoTrabajamosSection() {
   return (
@@ -24,10 +11,7 @@ export default function ComoTrabajamosSection() {
 
         {/* Titular */}
         <m.h2
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease }}
+          {...revealOnce}
           className="font-editorial font-normal text-ink mb-14 text-wrap-balance"
           style={{
             fontSize: 'clamp(26px, 3.2vw, 46px)',
@@ -51,7 +35,7 @@ export default function ComoTrabajamosSection() {
               key={step.n}
               variants={fadeRight}
               whileHover={{ y: -3 }}
-              transition={{ duration: 0.22, ease }}
+              transition={{ duration: 0.22, ease: EASE }}
               className="group"
             >
               <p className="font-mono text-[11px] font-medium text-primary mb-4 transition-colors duration-200 group-hover:text-[#1D4ED8]">{step.n}</p>
@@ -75,10 +59,10 @@ export default function ComoTrabajamosSection() {
 
         {/* Closing card */}
         <m.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, delay: 0.15, ease }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: DURATION.base, delay: 0.15, ease: EASE }}
           className="mt-16 rounded-xl border border-border bg-surface p-8 md:p-10"
         >
           <h3

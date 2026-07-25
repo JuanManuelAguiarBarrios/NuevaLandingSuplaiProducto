@@ -4,25 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { m } from 'framer-motion'
 import { DEMO_URL, VISION, FOOTER } from '@/content'
-
-const ease = [0.16, 1, 0.3, 1] as const
-
-const stagger = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.12 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.65, ease } },
-}
-
-// Reveal de cierre: además de subir, escala levemente desde adentro — le da
-// más peso de "cierre de página" que el fadeUp genérico del resto del sitio.
-const fadeUpScale = {
-  hidden: { opacity: 0, y: 18, scale: 0.98 },
-  show:   { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease } },
-}
+import { fadeUp, fadeUpScale, stagger } from '@/lib/motion'
 
 function IconLinkedIn() {
   return (
@@ -53,7 +35,11 @@ export default function VisionSection() {
   return (
     <>
       {/* Visión */}
-      <section id="vision" className="bg-[#0A0A0A] py-32 md:py-44">
+      <section
+        id="vision"
+        className="bg-[#0A0A0A]"
+        style={{ paddingBlock: 'var(--section-py-lg)' }}
+      >
         <m.div
           variants={stagger}
           initial="hidden"
@@ -71,9 +57,7 @@ export default function VisionSection() {
             }}
           >
             {VISION.headline}{' '}
-            <em style={{ fontStyle: 'italic', color: '#2563EB' }}>
-              {VISION.accent}
-            </em>
+            <em className="accent">{VISION.accent}</em>
           </m.h2>
 
           <m.p

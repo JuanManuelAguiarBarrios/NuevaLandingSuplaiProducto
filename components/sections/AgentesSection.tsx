@@ -2,18 +2,7 @@
 
 import { m } from 'framer-motion'
 import { AGENTES } from '@/content'
-
-const ease = [0.16, 1, 0.3, 1] as const
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
-}
-
-const stagger = {
-  hidden: {},
-  show:   { transition: { staggerChildren: 0.09 } },
-}
+import { EASE, fadeUp, stagger, revealOnce } from '@/lib/motion'
 
 type Agent = (typeof AGENTES.agents)[number]
 
@@ -24,7 +13,7 @@ function AgentCard({ agent }: { agent: Agent }) {
       whileHover={{
         y: -3,
         borderColor: 'rgba(255,255,255,0.18)',
-        transition: { duration: 0.22, ease },
+        transition: { duration: 0.22, ease: EASE },
       }}
       className="flex flex-col rounded-xl border border-white/8 bg-white/[0.04] p-6 gap-5 transition-colors"
     >
@@ -86,7 +75,7 @@ function ExpansionCard() {
       whileHover={{
         y: -3,
         borderColor: 'rgba(37,99,235,0.5)',
-        transition: { duration: 0.22, ease },
+        transition: { duration: 0.22, ease: EASE },
       }}
       className="flex flex-col rounded-xl border border-dashed border-white/18 bg-transparent p-6 gap-5 transition-colors"
     >
@@ -134,13 +123,7 @@ export default function AgentesSection() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
 
         {/* Cabecera */}
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.7, ease }}
-          className="mb-14 max-w-2xl"
-        >
+        <m.div {...revealOnce} className="mb-14 max-w-2xl">
           <h2
             className="font-editorial font-normal text-white text-wrap-balance"
             style={{
@@ -150,9 +133,7 @@ export default function AgentesSection() {
             }}
           >
             {AGENTES.headline}{' '}
-            <em style={{ fontStyle: 'italic', color: '#2563EB' }}>
-              {AGENTES.accent}
-            </em>
+            <em className="accent">{AGENTES.accent}</em>
           </h2>
           <p
             className="mt-4 font-sans font-light leading-relaxed text-white/65"
