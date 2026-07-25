@@ -76,6 +76,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       className={`${inter.variable} ${newsreader.variable} ${GeistMono.variable}`}
+      // El script inline del preloader agrega data-hero-hold antes de la
+      // hidratación (solo primera visita de la sesión) — mismatch esperado
+      // y solo en los atributos de <html>.
+      suppressHydrationWarning
     >
       <body className="font-sans bg-white text-text antialiased">
         {/* Hold del preloader — inline y primero en el body para correr antes
