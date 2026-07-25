@@ -27,7 +27,7 @@ function StepItem({ step, isActive }: { step: Step; isActive: boolean }) {
         className="mb-4 font-mono text-[11px] font-medium tracking-[0.08em] transition-colors duration-300"
         style={{ color: isActive ? '#2563EB' : '#9CA3AF' }}
       >
-        {step.n} · {step.plazo}
+        {step.n}
       </p>
       <h3 className="type-h4 font-editorial font-normal text-ink mb-3">
         {step.title}
