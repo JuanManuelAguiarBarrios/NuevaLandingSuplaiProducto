@@ -47,16 +47,12 @@ const mod = (n: number, m: number) => ((n % m) + m) % m
 export default function ProblemaInbox({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { amount: 0.35 })
+  // La pila arranca al entrar en viewport y de ahí en más sigue llegando.
+  const hasEntered = useInView(containerRef, { amount: 0.35, once: true })
   const prefersReducedMotion = useReducedMotion()
 
-  // La pila arranca al entrar en viewport y de ahí en más sigue llegando.
-  const [hasEntered, setHasEntered] = useState(false)
   // tick = interrupciones llegadas en total; arranca con la pila completa.
   const [tick, setTick] = useState(COUNT)
-
-  useEffect(() => {
-    if (isInView) setHasEntered(true)
-  }, [isInView])
 
   useEffect(() => {
     if (!isInView || prefersReducedMotion) return

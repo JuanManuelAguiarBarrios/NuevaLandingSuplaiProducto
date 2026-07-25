@@ -61,13 +61,12 @@ export default function HeroPreloader() {
   const [count, setCount] = useState(0)
 
   // Al hidratar: si el script inline no puso el hold (visita repetida o
-  // reduced-motion), este componente no tiene nada que hacer.
+  // reduced-motion), este componente no tiene nada que hacer. Diferido un
+  // frame — el overlay ya está visible vía el atributo del <html>.
   useEffect(() => {
-    if (document.documentElement.hasAttribute('data-hero-hold')) {
-      setPhase('counting')
-    } else {
-      setPhase('done')
-    }
+    const held = document.documentElement.hasAttribute('data-hero-hold')
+    const id = requestAnimationFrame(() => setPhase(held ? 'counting' : 'done'))
+    return () => cancelAnimationFrame(id)
   }, [])
 
   // Contador: progreso real (fuentes + load) acotado entre MIN_MS y CAP_MS.
