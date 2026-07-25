@@ -5,6 +5,7 @@ import SolucionSection      from '@/components/sections/SolucionSection'
 import AgentesSection       from '@/components/sections/AgentesSection'
 import EmpresasSection      from '@/components/sections/EmpresasSection'
 import ComoTrabajamosSection from '@/components/sections/ComoTrabajamosSection'
+import ControlSection       from '@/components/sections/ControlSection'
 import VisionSection        from '@/components/sections/VisionSection'
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <AgentesSection />
       <EmpresasSection />
       <ComoTrabajamosSection />
+      <ControlSection />
       <VisionSection />
     </main>
   )

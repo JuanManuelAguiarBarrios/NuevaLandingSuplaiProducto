@@ -237,13 +237,14 @@ export const COMO_TRABAJAMOS = {
   },
 } as const
 
-/* ── Confianza ──────────────────────────────────────────────── */
-export const CONFIANZA = {
+/* ── Control (A4: "¿y si el agente hace algo mal?") ─────────── */
+export const CONTROL = {
+  headline: { plain: 'Vos mantenés el', accent: 'control.' },
   items: [
-    { label: 'Sin migraciones',              desc: 'Nos conectamos a lo que ya tenés.' },
-    { label: 'Se integra a lo que ya usás',  desc: 'TMS, WMS, ERP, planillas y más.' },
-    { label: 'Vos aprobás antes de ejecutar', desc: 'Control y supervisión en todo momento.' },
-    { label: 'Trazabilidad de cada acción',  desc: 'Registro completo de lo que el agente hizo.' },
+    { label: 'Vos aprobás antes de ejecutar',     desc: 'El agente no ejecuta nada que no hayas autorizado.' },
+    { label: 'Supervisión humana de excepciones', desc: 'Lo repetitivo lo resuelve el agente; lo fuera de guion escala a tu equipo.' },
+    { label: 'Reglas definidas por tu operación', desc: 'Qué puede hacer, qué no y cuándo escalar lo definís vos.' },
+    { label: 'Trazabilidad de cada acción',       desc: 'Registro completo de lo que el agente hizo y por qué.' },
   ],
 } as const
 
