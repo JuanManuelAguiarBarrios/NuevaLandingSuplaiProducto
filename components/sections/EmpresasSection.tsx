@@ -92,8 +92,9 @@ export default function EmpresasSection() {
           onMouseLeave={resume}
           onTouchStart={pause}
         >
-          {/* Lienzo cinematográfico */}
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-[21/10]">
+          {/* Lienzo cinematográfico. En mobile el aspect es 16:9 nativo del
+              footage — el video se ve completo, sin recortes laterales. */}
+          <div className="relative aspect-video overflow-hidden rounded-2xl sm:aspect-[16/10] lg:aspect-[21/10]">
             {EMPRESAS.items.map((rawItem, i) => {
               const item: EmpresaItem = rawItem
               const isActive = i === activeIndex
@@ -131,14 +132,14 @@ export default function EmpresasSection() {
               )
             })}
 
-            {/* Scrim inferior — garantiza el contraste del texto sobre el footage */}
+            {/* Scrim inferior — solo donde el texto va sobre el footage */}
             <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/85 via-[#0A0A0A]/20 to-transparent"
+              className="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-[#0A0A0A]/85 via-[#0A0A0A]/20 to-transparent sm:block"
               aria-hidden="true"
             />
 
-            {/* Texto + contador sobre el footage */}
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-6 md:p-8">
+            {/* Texto + contador sobre el footage (tablet/desktop) */}
+            <div className="absolute inset-x-0 bottom-0 hidden items-end justify-between gap-6 p-6 sm:flex md:p-8">
               <AnimatePresence mode="wait">
                 <m.div
                   key={active.key}
@@ -188,6 +189,46 @@ export default function EmpresasSection() {
                   </span>
                 )}
               </div>
+            </div>
+          </div>
+
+          {/* Mobile: texto debajo del lienzo — el footage queda limpio */}
+          <div className="mt-4 flex items-start justify-between gap-4 sm:hidden">
+            <AnimatePresence mode="wait">
+              <m.div
+                key={active.key}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.25, ease: EASE }}
+              >
+                <h3 className="font-editorial text-[20px] font-normal leading-snug text-white text-wrap-balance">
+                  {active.title}
+                </h3>
+                <p className="mt-1.5 font-sans text-[13px] font-light leading-relaxed text-white/65">
+                  {active.desc}
+                </p>
+              </m.div>
+            </AnimatePresence>
+
+            <div className="flex shrink-0 flex-col items-end gap-2 pt-1">
+              <span className="font-mono text-[11px] tabular-nums text-white/70" aria-hidden="true">
+                {String(activeIndex + 1).padStart(2, '0')} /{' '}
+                {String(EMPRESAS.items.length).padStart(2, '0')}
+              </span>
+              {!prefersReducedMotion && (
+                <span
+                  className="relative h-[2px] w-12 overflow-hidden rounded-full bg-white/20"
+                  aria-hidden="true"
+                >
+                  <span
+                    key={`m-${activeIndex}-${cycle}`}
+                    className="slide-progress absolute inset-0 bg-white/80"
+                    data-paused={isAutoplaying ? undefined : 'true'}
+                    style={{ animationDuration: `${AUTOPLAY_MS}ms` }}
+                  />
+                </span>
+              )}
             </div>
           </div>
 
