@@ -67,6 +67,12 @@ export default function VisionSection() {
           className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/95 via-[#0A0A0A]/60 to-[#0A0A0A]/75"
           aria-hidden="true"
         />
+        {/* Scrim lateral: protege la zona izquierda donde vive el texto,
+            dejando la foto legible a la derecha */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/85 via-[#0A0A0A]/40 to-transparent"
+          aria-hidden="true"
+        />
 
         <div className="relative z-10 mx-auto max-w-[1200px] px-6 md:px-10">
           <LineReveal
@@ -84,7 +90,7 @@ export default function VisionSection() {
           >
             <m.p
               variants={fadeUp}
-              className="mt-7 font-sans font-light leading-relaxed text-white/70 max-w-lg"
+              className="mt-7 font-sans font-light leading-relaxed text-white/85 max-w-lg"
               style={{ fontSize: 'clamp(14px, 1.5vw, 17px)' }}
             >
               {VISION.subtitle}
