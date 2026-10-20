@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Suplai — Automatización logística con agentes de IA'
+export const alt = 'Suplai, automatización logística con agentes de IA'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -14,7 +14,7 @@ export default function OpengraphImage() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          background: '#0A0A0A',
+          background: '#0E1230', // --brand-night (ImageResponse no lee CSS)
           padding: '80px',
         }}
       >
@@ -25,7 +25,7 @@ export default function OpengraphImage() {
               width: 56,
               height: 56,
               borderRadius: 14,
-              background: '#2563EB',
+              background: '#2C44CC',
               display: 'flex',
             }}
           />
@@ -45,11 +45,11 @@ export default function OpengraphImage() {
           }}
         >
           La capa de IA que ejecuta tu operación&nbsp;
-          <span style={{ color: '#2563EB', fontStyle: 'italic' }}>logística.</span>
+          <span style={{ color: '#72AFFF', fontStyle: 'italic' }}>logística.</span>
         </div>
 
         {/* Footer line */}
-        <div style={{ color: '#9CA3AF', fontSize: 28 }}>
+        <div style={{ color: '#BCC1DE', fontSize: 28 }}>
           Agentes que coordinan tu operación sobre los sistemas que ya usás.
         </div>
       </div>

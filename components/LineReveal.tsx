@@ -1,30 +1,30 @@
 'use client'
 
-import { m, useReducedMotion } from 'framer-motion'
-import { fadeUp, stagger } from '@/lib/motion'
+import { m } from 'framer-motion'
+import { lineUp, stagger, VIEWPORT } from '@/lib/motion'
 
 /**
- * Reveal por línea para titulares. Las líneas se autoran con '\n' en el copy
- * (content/) — no medimos líneas en runtime: el quiebre es editorial, no se
- * rompe con `text-wrap: balance` y no causa reflow.
- *
- * Spec B8: trigger al 30% del viewport, una sola vez, stagger ~90ms entre
- * líneas (vía `stagger` de lib/motion). Con prefers-reduced-motion el texto
- * se renderiza estático, sin animación de ningún tipo.
+ * Reveal por línea para titulares: cada línea sube desde una máscara
+ * (overflow hidden), escalonada. Las líneas se autoran con '\n' en
+ * content/ — no se miden en runtime. Con prefers-reduced-motion,
+ * MotionConfig (reducedMotion="user") hace el reveal instantáneo; la
+ * estructura no cambia, así no hay hydration mismatch.
  */
 
 type LineRevealElement = 'h1' | 'h2' | 'h3' | 'p'
 
-type LineRevealProps = {
-  /** Texto con quiebres autorados vía '\n' — cada línea revela por separado. */
+interface LineRevealProps {
+  /** Texto con quiebres autorados vía '\n'. */
   text: string
-  /** Subcadena que va en itálica azul de firma (<em class="accent">). */
+  /** Palabra que va en Newsreader itálica (clase .accent). */
   accent?: string
   as?: LineRevealElement
   className?: string
+  /** Revela al montar en vez de al entrar en viewport. */
+  immediate?: boolean
 }
 
-function LineContent({ line, accent }: { line: string; accent?: string }) {
+export function LineContent({ line, accent }: { line: string; accent?: string }) {
   if (!accent) return <>{line}</>
   const idx = line.indexOf(accent)
   if (idx === -1) return <>{line}</>
@@ -37,41 +37,31 @@ function LineContent({ line, accent }: { line: string; accent?: string }) {
   )
 }
 
+/* El padding/margen negativo evita que la máscara corte descendentes e itálicas. */
+const MASK = 'block overflow-hidden pb-[0.12em] -mb-[0.12em]'
+
 export default function LineReveal({
   text,
   accent,
   as = 'h2',
   className,
+  immediate = false,
 }: LineRevealProps) {
-  const prefersReducedMotion = useReducedMotion()
   const lines = text.split('\n')
 
-  if (prefersReducedMotion) {
-    const Tag = as
-    return (
-      <Tag className={className}>
-        {lines.map((line, i) => (
-          <span key={i} className="block">
-            <LineContent line={line} accent={accent} />
-          </span>
-        ))}
-      </Tag>
-    )
-  }
-
   const MotionTag = m[as]
+  const trigger = immediate
+    ? { animate: 'show' }
+    : { whileInView: 'show', viewport: VIEWPORT }
+
   return (
-    <MotionTag
-      variants={stagger}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.3 }}
-      className={className}
-    >
+    <MotionTag variants={stagger} initial="hidden" {...trigger} className={className}>
       {lines.map((line, i) => (
-        <m.span key={i} variants={fadeUp} className="block">
-          <LineContent line={line} accent={accent} />
-        </m.span>
+        <span key={i} className={MASK}>
+          <m.span variants={lineUp} className="block">
+            <LineContent line={line} accent={accent} />
+          </m.span>
+        </span>
       ))}
     </MotionTag>
   )

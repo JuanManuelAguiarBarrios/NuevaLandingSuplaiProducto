@@ -3,23 +3,16 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * <video> de fondo con autoplay confiable en iOS. React no siempre baja el
- * atributo `muted` al DOM (issue conocido) y Safari lo exige para permitir
- * autoplay, así que acá se fuerza imperativamente y se llama a play()
- * explícito. Si el dispositivo bloquea igual (p. ej. Low Power Mode),
- * `onAutoplayBlocked` permite al padre caer a una imagen en vez de dejar
- * el glyph de play del sistema.
+ * <video> de fondo con autoplay, muted, loop y playsinline, sin poster: se
+ * ve desde el primer frame. React no siempre baja el atributo `muted` al
+ * DOM (issue conocido) y Safari lo exige para el autoplay, así que se fuerza
+ * imperativamente antes de llamar a play(). Con prefers-reduced-motion el
+ * video queda quieto en su primer frame.
  */
 
-type AutoplayVideoProps = React.ComponentPropsWithoutRef<'video'> & {
-  onAutoplayBlocked?: () => void
-}
+type AutoplayVideoProps = React.ComponentPropsWithoutRef<'video'>
 
-export default function AutoplayVideo({
-  onAutoplayBlocked,
-  children,
-  ...props
-}: AutoplayVideoProps) {
+export default function AutoplayVideo({ children, ...props }: AutoplayVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -28,9 +21,14 @@ export default function AutoplayVideo({
     el.muted = true
     el.setAttribute('muted', '')
     el.playsInline = true
-    const attempt = el.play()
-    if (attempt) attempt.catch(() => onAutoplayBlocked?.())
-  }, [onAutoplayBlocked])
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.pause()
+      return
+    }
+    // Si el dispositivo bloquea el autoplay (p. ej. Low Power Mode) queda el
+    // primer frame, que ya está cargado por preload="auto".
+    el.play()?.catch(() => undefined)
+  }, [])
 
   return (
     <video ref={videoRef} muted playsInline autoPlay {...props}>

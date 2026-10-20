@@ -5,6 +5,13 @@ import { LazyMotion, MotionConfig, domAnimation } from 'framer-motion'
 import Lenis from 'lenis'
 
 /**
+ * Instancia activa de Lenis (null en touch / reduced-motion). La usa el menú
+ * overlay para frenar el scroll de fondo mientras está abierto.
+ */
+let activeLenis: Lenis | null = null
+export const getLenis = (): Lenis | null => activeLenis
+
+/**
  * Habilita smooth scroll en toda la app.
  * Wrapeá en el layout del root — sólo client side.
  *
@@ -37,7 +44,9 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       if (!target) return
       e.preventDefault()
       history.pushState(null, '', href)
-      lenis.scrollTo(target)
+      // force: el menú overlay frena Lenis mientras está abierto y el click
+      // en un ítem dispara el scroll en el mismo tick en que se cierra.
+      lenis.scrollTo(target, { force: true })
     }
 
     const start = () => {
@@ -47,6 +56,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         touchMultiplier: 1.5,
       })
+      activeLenis = lenis
       document.addEventListener('click', onAnchorClick)
       const frame = (time: number) => {
         lenis?.raf(time)
@@ -61,6 +71,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       document.removeEventListener('click', onAnchorClick)
       lenis?.destroy()
       lenis = null
+      activeLenis = null
     }
 
     const onChange = () => (reduceMotion.matches || !finePointer.matches ? stop() : start())

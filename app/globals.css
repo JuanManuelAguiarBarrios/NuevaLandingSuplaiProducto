@@ -1,292 +1,206 @@
 @import "tailwindcss";
 
+/* ────────────────────────────────────────────
+   Primitivas de marca. No se usan directo en
+   componentes: todo pasa por los tokens
+   semánticos de @theme.
+──────────────────────────────────────────── */
+:root {
+  --brand-navy:  #242A5A;
+  --brand-blue:  #2C44CC;
+  --brand-sky:   #72AFFF;
+  --brand-night: #0E1230;
+  --brand-paper: #F5F4EF;
+}
+
 @theme {
-  /* ── Typography ── */
-  --font-sans:      var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
-  --font-editorial: var(--font-newsreader), "Newsreader", Georgia, serif;
-  --font-mono:      var(--font-geist-mono), "GeistMono", "Courier New", monospace;
+  /* ── Tipografía ── */
+  --font-sans:  var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-newsreader), "Newsreader", Georgia, serif;
+  --font-mono:  var(--font-geist-mono), "GeistMono", ui-monospace, monospace;
 
-  /* ── Brand palette ── */
-  --color-primary:   #2563EB;
-  --color-ink:       #0A0A0A;
-  --color-muted:     #6B7280;
-  --color-surface:   #F9FAFB;
-  --color-white:     #FFFFFF;
-  --color-border:    #E5E7EB;
-  --color-accent:    #DBEAFE;
+  /* ── Superficies ── */
+  --color-paper:        var(--brand-paper);  /* fondo claro */
+  --color-white:        #FFFFFF;
+  --color-night:        var(--brand-night);  /* fondo oscuro principal */
+  --color-night-raised: #151A42;             /* fondo oscuro alternativo */
 
-  /* ── Dark surface (secciones oscuras) ── */
-  --color-dark:         #0A0A0A;
-  --color-dark-surface: #141414;
-  --color-dark-border:  rgba(255,255,255,0.08);
+  /* ── Texto ── */
+  --color-ink:                var(--brand-navy);  /* titulares y texto fuerte sobre claro */
+  --color-ink-muted:          #555A7A;            /* cuerpo secundario sobre claro (AA) */
+  --color-ink-inverse:        #F3F4FA;            /* texto sobre oscuro */
+  --color-ink-inverse-muted:  #BCC1DE;            /* cuerpo sobre oscuro (AA) */
+  --color-caption:            #9097C4;            /* eyebrows y captions sobre oscuro (AA) */
 
-  /* ── Aliases usados en componentes ── */
-  --color-text:         #0A0A0A;
-  --color-secondary:    #6B7280;
-  --color-card:         #FFFFFF;
-  --color-icon-bg:      #EFF6FF;
-  --color-border-light: #F3F4F6;
+  /* ── Acentos ── */
+  --color-accent:         var(--brand-blue);  /* CTAs, links, énfasis sobre claro */
+  --color-accent-strong:  #2236A8;            /* hover del acento */
+  --color-accent-inverse: var(--brand-sky);   /* énfasis y detalles sobre oscuro */
 
-  /* ────────────────────────────────────────────
-     Escala tipográfica (fluida, clamp)
-     Una única fuente de verdad — nada de clamp()
-     sueltos en style={{}} por componente.
-     display → hero · h1 → titulares de sección
-     h2 → sub-titulares · h3 → cards/pasos
-  ──────────────────────────────────────────── */
-  --text-display:  clamp(38px, 5.4vw, 78px);
-  --text-h1:       clamp(30px, 4.2vw, 62px);
-  --text-h2:       clamp(26px, 3.4vw, 48px);
-  --text-h3:       clamp(20px, 2.2vw, 30px);
-  --text-h4:       clamp(17px, 1.8vw, 22px);
-  --text-lead:     clamp(17px, 1.9vw, 22px);
-  --text-body:     clamp(14px, 1.4vw, 16px);
-  --text-sm:       clamp(13px, 1.2vw, 15px);
+  /* ── Hairlines ── */
+  --color-line:         rgb(36 42 90 / 0.14);    /* sobre claro */
+  --color-line-inverse: rgb(188 193 222 / 0.18); /* sobre oscuro */
 
-  /* Tracking + interlínea de firma para los titulares editoriales */
-  --tracking-display: -0.022em;
-  --tracking-heading: -0.02em;
-  --leading-display:  1.05;
-  --leading-heading:  1.12;
+  --color-focus: var(--brand-sky);
 
-  /* ────────────────────────────────────────────
-     Escala de spacing de sección (padding vertical)
-     Un solo ritmo para todo el sitio.
-  ──────────────────────────────────────────── */
-  --section-py:     clamp(96px, 12vw, 160px);
-  --section-py-lg:  clamp(128px, 15vw, 200px);
+  /* ── Estados de Suplai Control (punto + etiqueta) ── */
+  --color-state-running:   #2563EB; /* En curso */
+  --color-state-resolved:  #059669; /* Resuelto */
+  --color-state-escalated: #7C3AED; /* Escalación */
 
-  /* ────────────────────────────────────────────
-     Motion — curva de firma (expo-out)
-     Compartida por CSS y por lib/motion.ts
-  ──────────────────────────────────────────── */
+  /* ── Escala tipográfica fluida ── */
+  --text-display: clamp(2.75rem, 6.2vw, 6.25rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.045em;
+
+  --text-h1: clamp(1.625rem, 0.75rem + 3.9vw, 4.75rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.04em;
+
+  --text-h2: clamp(1.75rem, 3vw, 3rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.03em;
+
+  --text-h3: clamp(1.375rem, 2vw, 2rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.025em;
+
+  --text-lead: clamp(1.0625rem, 1.3vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+
+  /* ── Motion ── (espejo de lib/motion.ts) */
+  --ease-editorial: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Utilidades tipográficas de firma ──
-   Aplican tamaño + tracking + interlínea en una clase,
-   para no repetir style={{}} en cada titular. */
-.type-display {
-  font-size: var(--text-display);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-}
-.type-h1 {
-  font-size: var(--text-h1);
-  line-height: 1.08;
-  letter-spacing: var(--tracking-display);
-}
-.type-h2 {
-  font-size: var(--text-h2);
-  line-height: var(--leading-heading);
-  letter-spacing: var(--tracking-heading);
-}
-.type-h3 {
-  font-size: var(--text-h3);
-  line-height: 1.2;
-  letter-spacing: -0.016em;
-}
-.type-h4 {
-  font-size: var(--text-h4);
-  line-height: 1.22;
-  letter-spacing: -0.014em;
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  [data-tone="light"] :focus-visible {
+    outline-color: var(--color-accent);
+  }
 }
 
-/* Elemento de firma: palabra clave en itálica azul (PP Editorial New).
-   Reemplaza el <em style={{ fontStyle:'italic', color:'#2563EB' }}> repetido. */
-.accent {
-  font-style: italic;
-  color: var(--color-primary);
-}
+/* En @layer components para que las utilidades de Tailwind puedan pisarlos. */
+@layer components {
+  /* Énfasis editorial: una palabra por titular, Newsreader itálica.
+     El color lo define el tono de la sección. */
+  .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    /* Las métricas de Newsreader son más altas que las de Inter: sin esto la
+       línea con la palabra en itálica queda más alta que las demás. */
+    line-height: 0;
+    color: var(--color-accent);
+  }
 
-/* Eyebrow de sección (sistema editorial A5): mayúscula chica, tracking
-   amplio. El color lo pone el contexto (muted en claro, white/65 en
-   oscuro, primary como acento). */
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  [data-tone="dark"] .accent {
+    color: var(--color-accent-inverse);
+  }
+
+  /* Eyebrow: mayúscula chica con tracking amplio. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  /* Link editorial con hairline que se completa en hover. */
+  .link-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 3px;
+    transition: background-size 0.5s var(--ease-editorial);
+  }
+
+  .link-line:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
 }
 
 /* ────────────────────────────────────────────
-   Hero entrance (CSS-driven, no depende de JS)
-   Corre en el primer paint → no penaliza el LCP
-   ni deja el hero en blanco si el JS falla.
-
-   Secuencia por tiempos (Módulo 2, ref. Terminal):
-   máscaras de línea (hero-mask), fondo que se
-   enciende (hero-bg-on), fade+rise (hero-rise) y
-   nav al final (hero-nav-fade). Todo elemento de
-   la secuencia lleva además .hero-anim: mientras
-   <html data-hero-hold> está presente (preloader
-   activo, seteado por script inline pre-paint),
-   la secuencia queda pausada.
+   Entrada del hero (CSS: corre en el primer
+   paint, no depende de la hidratación).
 ──────────────────────────────────────────── */
-@keyframes hero-rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: none; }
+@keyframes intro-line {
+  from { opacity: 0; transform: translateY(55%); }
 }
 
-.hero-rise {
-  animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(0.75rem); }
 }
 
-@keyframes hero-mask-rise {
-  from { transform: translateY(110%); }
-  to   { transform: none; }
-}
-
-.hero-mask {
-  animation: hero-mask-rise 0.8s var(--ease-signature) both;
-}
-
-@keyframes hero-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.hero-bg-on {
-  animation: hero-fade-in 1.4s linear both;
-}
-
-.hero-nav-fade {
-  animation: hero-fade-in 0.5s var(--ease-signature) 1.15s both;
-}
-
-/* Hold del preloader: pausa toda la secuencia y bloquea el scroll.
-   El atributo lo pone un script inline antes del primer paint (solo
-   primera visita de la sesión, nunca con reduced-motion) y lo quita
-   el preloader al terminar el wipe — con fallback de seguridad. */
-html[data-hero-hold] .hero-anim {
-  animation-play-state: paused !important;
-}
-
-html[data-hero-hold] {
-  overflow: hidden;
-}
-
-/* El overlay del preloader solo existe visualmente en primera visita
-   (pre-hidratación vía el atributo del html; luego lo gobierna el
-   componente con data-active). */
-.hero-preloader {
-  display: none;
-}
-
-html[data-hero-hold] .hero-preloader,
-.hero-preloader[data-active] {
+.intro-line {
   display: block;
+  animation: intro-line 1.1s var(--ease-editorial) both;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-rise,
-  .hero-anim {
-    animation: none !important;
-  }
+.intro {
+  animation: intro-rise 0.9s var(--ease-editorial) both;
 }
 
-/* ────────────────────────────────────────────
-   Hero — rutas de flujo (SVG, CSS puro).
-   Base estática tenue + dash de luz que recorre
-   el path en loop. pathLength=1000 normaliza el
-   largo → dasharray suma 1000 y el loop cierra
-   sin costura. En mobile / reduced-motion los
-   dashes se apagan (queda la base estática).
-──────────────────────────────────────────── */
-.hero-flow-base {
-  fill: none;
-  stroke: #2563EB;
-  stroke-opacity: 0.14;
-  stroke-width: 1;
+/* Pulso de los puntos del mapa. */
+@keyframes pin-pulse {
+  0%   { opacity: 0.7; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(3.2); }
 }
 
-@keyframes hero-flow {
-  to { stroke-dashoffset: 0; }
+.pin-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pin-pulse 2.4s var(--ease-signature) infinite;
 }
 
-.hero-flow-dash {
-  fill: none;
-  stroke: #60A5FA;
-  stroke-opacity: 0.55;
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-dasharray: 70 930;
-  stroke-dashoffset: 1000;
-  animation: hero-flow 20s linear infinite;
+/* Marquee: la pista contiene el contenido duplicado; -50% cierra el loop. */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
 }
 
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
-  .hero-flow-dash {
-    animation: none;
-    opacity: 0;
-  }
+.marquee-track {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
 }
 
-/* ────────────────────────────────────────────
-   Hero — glow que respira. Deriva y escala muy
-   lentas (ciclo ~26s, alternate). Solo transform
-   + opacity. Estático en mobile / reduced-motion.
-──────────────────────────────────────────── */
-@keyframes hero-breathe {
-  from { transform: translate(-50%, -50%) scale(1);    opacity: 0.055; }
-  to   { transform: translate(-46%, -54%) scale(1.18); opacity: 0.095; }
-}
-
-.hero-breathe {
-  transform: translate(-50%, -50%);
-  opacity: 0.07;
-  animation: hero-breathe 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
-}
-
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
-  .hero-breathe {
-    animation: none;
-  }
-}
-
-/* ────────────────────────────────────────────
-   Empresas — Ken Burns sutil sobre la foto activa
-   del spotlight. Solo transform; se re-dispara al
-   cambiar de vertical (la clase se re-monta).
-──────────────────────────────────────────── */
-@keyframes kenburns {
-  from { transform: scale(1); }
-  to   { transform: scale(1.08); }
-}
-
-.kenburns {
-  animation: kenburns 14s var(--ease-signature) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .kenburns {
-    animation: none;
-  }
-}
-
-/* ────────────────────────────────────────────
-   Empresas — barra de progreso del autoplay.
-   Se re-monta (key) en cada slide; la duración
-   la fija el componente para compartir la
-   constante con el intervalo de autoplay.
-──────────────────────────────────────────── */
-@keyframes slide-progress {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-.slide-progress {
-  transform-origin: left;
-  animation: slide-progress linear both;
-}
-
-.slide-progress[data-paused="true"] {
+.marquee[data-paused="true"] .marquee-track,
+.marquee:hover .marquee-track {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide-progress {
+  .intro,
+  .intro-line,
+  .pin-pulse,
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+/* Menú overlay: loop del ítem activo (label + imagen en píldora). */
+.menu-marquee {
+  animation: marquee 14s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-marquee {
     animation: none;
   }
 }

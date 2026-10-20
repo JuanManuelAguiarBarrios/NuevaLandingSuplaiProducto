@@ -1,177 +1,61 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { m, useScroll } from 'framer-motion'
+import { useState } from 'react'
+import { m } from 'framer-motion'
+import LineReveal from '@/components/LineReveal'
+import PlanesDiagram from '@/components/solucion/PlanesDiagram'
 import { SOLUCION } from '@/content'
-import { EASE, DURATION, revealOnce } from '@/lib/motion'
-import { useActiveStepCount } from '@/lib/useActiveStepCount'
-import SuplaiOrbitDiagram from '@/components/SuplaiOrbitDiagram'
+import type { PlaneKey } from '@/content'
+import { fadeUp, stagger, VIEWPORT } from '@/lib/motion'
 
 /**
- * Tamaño del diagrama de órbita según breakpoint (360 / sm:440 / lg:500).
- * Arranca en 360 para SSR y hace upgrade en el cliente — evita mismatch de
- * hidratación.
+ * Posicionamiento: diagrama de tres planos (canales, Suplai, sistemas) a la
+ * izquierda; titular y los tres pasos a la derecha. Al pasar por un paso se
+ * resalta su plano en el diagrama.
  */
-function useOrbitSize(): number {
-  const [size, setSize] = useState(360)
-  useEffect(() => {
-    const sm = window.matchMedia('(min-width: 640px)')
-    const lg = window.matchMedia('(min-width: 1024px)')
-    const update = () => setSize(lg.matches ? 500 : sm.matches ? 440 : 360)
-    update()
-    sm.addEventListener('change', update)
-    lg.addEventListener('change', update)
-    return () => {
-      sm.removeEventListener('change', update)
-      lg.removeEventListener('change', update)
-    }
-  }, [])
-  return size
-}
-
-/* ── Diagrama de órbita → components/SuplaiOrbitDiagram.tsx ──── */
-
-function StepRow({
-  step,
-  isActive,
-}: {
-  step: (typeof SOLUCION.steps)[number]
-  /** En desktop se atenúa según el scroll; en mobile va siempre activo. */
-  isActive: boolean
-}) {
-  return (
-    <m.div
-      animate={{ opacity: isActive ? 1 : 0.28, y: isActive ? 0 : 8 }}
-      transition={{ duration: DURATION.fast, ease: EASE }}
-      className="flex items-start gap-6 py-8 border-t border-border"
-    >
-      <div className="shrink-0 mt-1 text-right" style={{ width: 28 }}>
-        <span
-          className="font-mono text-[11px] font-medium tracking-[0.12em] transition-colors duration-300"
-          style={{ color: isActive ? '#2563EB' : '#D1D5DB' }}
-        >
-          {step.n}
-        </span>
-      </div>
-      <div className="flex-1">
-        <p
-          className="eyebrow mb-1 transition-colors duration-300"
-          style={{ color: isActive ? '#6B7280' : '#D1D5DB' }}
-        >
-          {step.label}
-        </p>
-        <h3
-          className="type-h3 font-editorial font-normal text-wrap-balance transition-colors duration-300"
-          style={{ color: isActive ? '#0A0A0A' : '#D1D5DB' }}
-        >
-          {step.title}
-        </h3>
-        <p
-          className="mt-2 font-sans text-sm font-light leading-relaxed transition-colors duration-300"
-          style={{ color: isActive ? '#6B7280' : '#E5E7EB' }}
-        >
-          {step.desc}
-        </p>
-      </div>
-    </m.div>
-  )
-}
-
-/** Titular con la palabra "operativa" (la categoría de Suplai) en itálica azul.
- *  Robusto: si esa palabra no está en el copy, no acentúa nada. */
-function SolucionHeadline() {
-  const words = SOLUCION.headline.split(' ')
-  return (
-    <>
-      {words.map((word, i) => {
-        const clean = word.replace(/[.,;:]/g, '').toLowerCase()
-        const isAccent = clean === 'operativa'
-        return (
-          <span key={i} className={isAccent ? 'accent' : undefined}>
-            {word}
-            {i < words.length - 1 ? ' ' : ''}
-          </span>
-        )
-      })}
-    </>
-  )
-}
-
 export default function SolucionSection() {
-  const containerRef = useRef<HTMLElement>(null)
-  // El scroll-jack (sticky 280vh) sólo tiene sentido en desktop.
-  // En mobile todo el contenido no entra en 100vh y se recortaba.
-  const [isDesktop, setIsDesktop] = useState(false)
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  })
-
-  const activeCount = useActiveStepCount(scrollYProgress, SOLUCION.steps.length)
-  const orbitSize = useOrbitSize()
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px)')
-    const onChange = () => setIsDesktop(mq.matches)
-    onChange()
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
+  const [activePlane, setActivePlane] = useState<PlaneKey | null>(null)
 
   return (
     <section
-      ref={containerRef}
       id="solucion"
-      className="relative bg-white lg:h-[280vh]"
+      data-tone="light"
+      aria-labelledby="solucion-title"
+      className="overflow-hidden bg-paper py-24 text-ink lg:py-32"
     >
-      <div className="flex items-center py-20 lg:sticky lg:top-0 lg:h-screen lg:py-0">
-        <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
-
-            {/* Izquierda: titular + hub */}
-            <div>
-              <m.h2
-                {...revealOnce}
-                className="type-h2 font-editorial font-normal text-ink text-wrap-balance mb-10"
-              >
-                <SolucionHeadline />
-              </m.h2>
-
-              <m.div
-                initial={{ opacity: 0, scale: 0.94 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease: EASE }}
-              >
-                <SuplaiOrbitDiagram size={orbitSize} className="mx-auto" />
-              </m.div>
-            </div>
-
-            {/* Derecha: pasos con rail */}
-            <div className="flex gap-5">
-              {/* Rail de progreso */}
-              <div className="relative w-px flex-none self-stretch bg-border">
-                <m.div
-                  className="absolute top-0 left-0 w-full bg-primary origin-top"
-                  style={{ scaleY: isDesktop ? scrollYProgress : 1, height: '100%' }}
-                />
-              </div>
-
-              <div className="flex-1">
-                {SOLUCION.steps.map((step, i) => (
-                  <StepRow
-                    key={step.n}
-                    step={step}
-                    isActive={!isDesktop || i < activeCount}
-                  />
-                ))}
-              </div>
-            </div>
-
+      <div className="grid gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12">
+        <div className="lg:col-span-6">
+          <p className="eyebrow text-ink-muted">{SOLUCION.eyebrow}</p>
+          <div className="mt-8 max-w-[40rem] lg:mt-10">
+            <PlanesDiagram active={activePlane} />
           </div>
         </div>
+
+        <div className="lg:col-span-5 lg:col-start-8 lg:self-center">
+          <div id="solucion-title">
+            <LineReveal text={SOLUCION.headline.text} accent={SOLUCION.headline.accent} className="text-h2 font-semibold" />
+          </div>
+          <m.ol variants={stagger} initial="hidden" whileInView="show" viewport={VIEWPORT} className="mt-10">
+            {SOLUCION.steps.map((step) => (
+              <m.li
+                key={step.n}
+                variants={fadeUp}
+                onMouseEnter={() => setActivePlane(step.plane)}
+                onMouseLeave={() => setActivePlane(null)}
+                className="grid grid-cols-[3rem_1fr] gap-4 border-t border-line py-6"
+              >
+                <span className="font-mono text-[11px] text-ink-muted tabular-nums">{step.n}</span>
+                <div>
+                  <p className="eyebrow text-accent">{step.label}</p>
+                  <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
+                  <p className="mt-2 text-ink-muted">{step.body}</p>
+                </div>
+              </m.li>
+            ))}
+          </m.ol>
+        </div>
       </div>
+
     </section>
   )
 }

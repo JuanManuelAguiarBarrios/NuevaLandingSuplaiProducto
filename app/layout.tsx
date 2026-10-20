@@ -28,16 +28,13 @@ const newsreader = Newsreader({
 })
 
 const SITE_URL = 'https://getsuplai.com'
-const TITLE = 'Suplai — Automatización logística con agentes de IA'
+const TITLE = 'Suplai, automatización logística con agentes de IA'
 const DESCRIPTION =
-  'Suplai es la capa operativa que conecta a tus sistemas actuales y automatiza la coordinación logística con agentes de IA. Sin migraciones, sin cambios en tu flujo.'
+  'Suplai es la capa operativa que conecta a tus sistemas actuales y automatiza la coordinación logística con agentes de IA. Sin migraciones, sin cambiar tu forma de trabajar.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: TITLE,
-    template: '%s · Suplai',
-  },
+  title: TITLE,
   description: DESCRIPTION,
   applicationName: 'Suplai',
   keywords: [
@@ -88,24 +85,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       className={`${inter.variable} ${newsreader.variable} ${GeistMono.variable}`}
-      // El script inline del preloader agrega data-hero-hold antes de la
-      // hidratación (solo primera visita de la sesión) — mismatch esperado
-      // y solo en los atributos de <html>.
-      suppressHydrationWarning
     >
-      <body className="font-sans bg-white text-text antialiased">
-        {/* Hold del preloader — inline y primero en el body para correr antes
-            del primer paint. Solo primera visita de la sesión, nunca con
-            reduced-motion. Fallback de 4.5s por si el bundle no hidrata. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(!sessionStorage.getItem('suplai-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.setAttribute('data-hero-hold','');setTimeout(function(){d.removeAttribute('data-hero-hold')},4500)}}catch(e){}",
-          }}
-        />
+      <body className="bg-paper font-sans text-ink antialiased">
         <a
           href="#main-content"
-          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-md focus-visible:bg-white focus-visible:px-4 focus-visible:py-2.5 focus-visible:text-sm focus-visible:font-medium focus-visible:text-ink focus-visible:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-md focus-visible:bg-white focus-visible:px-4 focus-visible:py-2.5 focus-visible:text-sm focus-visible:font-medium focus-visible:text-ink"
         >
           Saltar al contenido principal
         </a>
@@ -119,7 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}
         />
 
-        {/* Google tag (gtag.js) — afterInteractive: no compite con el LCP del hero */}
+        {/* Google tag (gtag.js) con afterInteractive, para no competir con el LCP del hero */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-MP07NLY22V"
           strategy="afterInteractive"

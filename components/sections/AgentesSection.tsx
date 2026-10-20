@@ -1,165 +1,142 @@
 'use client'
 
-import { m } from 'framer-motion'
-import { AGENTES, CONTACT_EMAIL } from '@/content'
-import { EASE, fadeUp, stagger, revealOnce } from '@/lib/motion'
+import { useEffect, useRef, useState } from 'react'
+import { m, useScroll } from 'framer-motion'
 import AgentVignette from '@/components/agents/AgentVignette'
+import LineReveal from '@/components/LineReveal'
+import { AGENTES, DEMO_URL } from '@/content'
+import type { Agent } from '@/content'
+import { fadeUp, stagger } from '@/lib/motion'
+import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
-type Agent = (typeof AGENTES.agents)[number]
+/**
+ * Agentes: 6 cards numeradas. En desktop la sección queda fija y el scroll
+ * vertical desplaza la pista en horizontal, con una barra de progreso
+ * abajo. En mobile / reduced-motion las cards se apilan.
+ */
 
 function AgentCard({ agent }: { agent: Agent }) {
   return (
-    <m.article
-      variants={fadeUp}
-      whileHover={{
-        y: -3,
-        borderColor: 'rgba(255,255,255,0.18)',
-        transition: { duration: 0.22, ease: EASE },
-      }}
-      className="flex flex-col rounded-xl border border-white/8 bg-white/[0.04] p-6 gap-5 transition-colors"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <p className="eyebrow text-white/65">
-          {agent.category}
-        </p>
-        {agent.live && (
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/40 bg-primary/15 px-2.5 py-1 font-sans text-[10px] font-medium text-white/80">
-            <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
-            {AGENTES.badge}
-          </span>
-        )}
+    <article className="flex w-full max-w-[860px] shrink-0 flex-col group-data-[motion=on]/agentes:w-[min(52vw,820px)]">
+      <div className="relative aspect-[16/9] overflow-hidden border border-line-inverse bg-night-raised group-data-[motion=on]/agentes:aspect-auto group-data-[motion=on]/agentes:h-[32svh]">
+        <span
+          aria-hidden="true"
+          className="absolute top-5 left-6 font-sans text-[clamp(4rem,8vw,7.5rem)] leading-none font-light tracking-[-0.04em] text-transparent [-webkit-text-stroke:1px_var(--color-caption)]"
+        >
+          {agent.n}
+        </span>
+        <div className="absolute right-[8%] bottom-[14%] w-[44%]">
+          <AgentVignette agentKey={agent.key} />
+        </div>
       </div>
 
-      <AgentVignette agentKey={agent.key} />
-
-      <h3
-        className="font-editorial font-normal text-white text-wrap-balance"
-        style={{
-          fontSize: 'clamp(17px, 1.7vw, 21px)',
-          lineHeight: 1.22,
-          letterSpacing: '-0.014em',
-        }}
-      >
-        {agent.title}
-      </h3>
-
-      <p className="font-sans text-[13px] font-light leading-relaxed text-white/65 flex-1">
-        {agent.desc}
-      </p>
-
-      {agent.results.length > 0 && (
-        <ul className="flex flex-col gap-2 pt-1 border-t border-white/8">
-          {agent.results.map((r, i) => (
-            <li key={i} className="flex items-center gap-2 font-sans text-[12px] text-white/65">
-              <span className="h-px w-3 bg-primary/60 shrink-0" aria-hidden="true" />
-              {r}
-            </li>
-          ))}
-        </ul>
-      )}
-    </m.article>
-  )
-}
-
-/** Título del slot: si trae pregunta+respuesta ("¿…? …"), la respuesta va en
- *  itálica azul de firma. Robusto: sin "?", se renderiza entero sin accent. */
-function SlotTitle({ title }: { title: string }) {
-  const idx = title.indexOf('?')
-  if (idx === -1 || idx === title.length - 1) return <>{title}</>
-  return (
-    <>
-      {title.slice(0, idx + 1)}{' '}
-      <em className="accent">{title.slice(idx + 1).trim()}</em>
-    </>
-  )
-}
-
-/** Slot vacío: borde punteado + ícono "+" — se lee como "el próximo lugar de
- *  la grilla es tuyo". La expandibilidad como remate, no como oferta principal. */
-function ExpansionCard() {
-  const { expansion } = AGENTES
-  return (
-    <m.div
-      variants={fadeUp}
-      whileHover={{
-        y: -3,
-        borderColor: 'rgba(37,99,235,0.5)',
-        transition: { duration: 0.22, ease: EASE },
-      }}
-      className="flex flex-col rounded-xl border border-dashed border-white/18 bg-transparent p-6 gap-5 transition-colors"
-    >
-      <span
-        className="flex size-7 items-center justify-center rounded-full border border-dashed border-white/25 text-white/45"
-        aria-hidden="true"
-      >
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-          <path d="M6 1v10M1 6h10" />
-        </svg>
-      </span>
-
-      <h3
-        className="font-editorial font-normal text-white/85 text-wrap-balance"
-        style={{
-          fontSize: 'clamp(17px, 1.7vw, 21px)',
-          lineHeight: 1.22,
-          letterSpacing: '-0.014em',
-        }}
-      >
-        <SlotTitle title={expansion.title} />
-      </h3>
-
-      <p className="font-sans text-[13px] font-light leading-relaxed text-white/55 flex-1">
-        {expansion.desc}
-      </p>
-
-      <m.a
-        href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(AGENTES.expansion.mailSubject)}`}
-        whileHover={{ x: 3, transition: { duration: 0.18 } }}
-        className="inline-flex items-center gap-2 font-sans text-[12px] font-medium text-primary hover:text-primary/80 transition-colors mt-auto"
-      >
-        {expansion.cta}
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
-          <path d="M2 6h8M6 2l4 4-4 4" />
-        </svg>
-      </m.a>
-    </m.div>
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 sm:gap-8">
+        <h3 className="text-h3 font-semibold text-ink-inverse">{agent.name}</h3>
+        <div>
+          <ul className="space-y-2 text-ink-inverse-muted">
+            {agent.bullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+          <a
+            href={DEMO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-line mt-6 inline-block text-sm font-medium text-ink-inverse"
+          >
+            {agent.link} <span aria-hidden="true">→</span>
+            <span className="sr-only"> sobre {agent.name}</span>
+          </a>
+        </div>
+      </div>
+    </article>
   )
 }
 
 export default function AgentesSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const isScrollMotion = useScrollMotion()
+  const [distance, setDistance] = useState(0)
+
+  const { scrollYProgress: p } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
+  const x = useScrollRange(p, [0, 1], [0, -distance])
+  const progress = useScrollRange(p, [0, 1], [0, 1])
+
+  // Distancia horizontal a recorrer = ancho de la pista − ancho visible.
+  useEffect(() => {
+    if (!isScrollMotion) return
+    const track = trackRef.current
+    if (!track) return
+    const measure = () => setDistance(Math.max(0, track.scrollWidth - window.innerWidth))
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(track)
+    window.addEventListener('resize', measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [isScrollMotion])
+
+  const pinnedHeight = isScrollMotion ? { height: `calc(100svh + ${distance}px)` } : undefined
+
   return (
-    <section id="agentes" className="bg-[#0A0A0A]" style={{ paddingBlock: 'var(--section-py)' }}>
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+    <section
+      ref={sectionRef}
+      id="agentes"
+      data-tone="dark"
+      aria-labelledby="agentes-title"
+      data-motion={isScrollMotion ? 'on' : 'off'}
+      style={pinnedHeight}
+      className="group/agentes relative bg-night text-ink-inverse"
+    >
+      <div className="group-data-[motion=on]/agentes:sticky group-data-[motion=on]/agentes:top-0 group-data-[motion=on]/agentes:flex group-data-[motion=on]/agentes:h-svh group-data-[motion=on]/agentes:flex-col group-data-[motion=on]/agentes:justify-between group-data-[motion=on]/agentes:overflow-hidden">
+        <header className="grid gap-8 px-5 pt-24 sm:px-8 lg:grid-cols-12 lg:px-12">
+          <div className="lg:col-span-7">
+            <p className="eyebrow text-caption">{AGENTES.eyebrow}</p>
+            <div id="agentes-title">
+              <LineReveal
+                text={AGENTES.headline.text}
+                accent={AGENTES.headline.accent}
+                className="mt-5 text-h1 font-semibold"
+              />
+            </div>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9 lg:self-end">
+            <p className="text-ink-inverse-muted">{AGENTES.subtitle}</p>
+            <a
+              href={DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-line mt-5 inline-block text-sm font-medium"
+            >
+              {AGENTES.allLink} <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </header>
 
-        {/* Cabecera */}
-        <m.div {...revealOnce} className="mb-14 max-w-2xl">
-          <h2 className="type-h2 font-editorial font-normal text-white text-wrap-balance">
-            {AGENTES.headline}{' '}
-            <em className="accent">{AGENTES.accent}</em>
-          </h2>
-          <p
-            className="mt-4 font-sans font-light leading-relaxed text-white/65"
-            style={{ fontSize: 'clamp(14px, 1.4vw, 16px)' }}
-          >
-            {AGENTES.subtitle}
-          </p>
-
-        </m.div>
-
-        {/* Grid */}
         <m.div
+          ref={trackRef}
+          style={isScrollMotion ? { x } : undefined}
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-16 flex flex-col gap-16 px-5 pb-24 sm:px-8 lg:px-12 group-data-[motion=on]/agentes:mt-10 group-data-[motion=on]/agentes:w-max group-data-[motion=on]/agentes:flex-row group-data-[motion=on]/agentes:gap-10 group-data-[motion=on]/agentes:pb-10"
         >
-          {AGENTES.agents.map((agent) => (
-            <AgentCard key={agent.key} agent={agent} />
+          {AGENTES.items.map((agent) => (
+            <m.div key={agent.key} variants={fadeUp}>
+              <AgentCard agent={agent} />
+            </m.div>
           ))}
-          <ExpansionCard />
         </m.div>
 
+        <div className="hidden px-12 pb-8 group-data-[motion=on]/agentes:block" aria-hidden="true">
+          <div className="h-px bg-line-inverse">
+            <m.div style={{ scaleX: progress }} className="h-px origin-left bg-accent-inverse" />
+          </div>
+        </div>
       </div>
     </section>
   )

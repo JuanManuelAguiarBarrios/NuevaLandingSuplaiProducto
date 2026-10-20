@@ -1,208 +1,181 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { AnimatePresence, m, useReducedMotion } from 'framer-motion'
-import { COMO_TRABAJAMOS } from '@/content'
-import { EASE, revealOnce } from '@/lib/motion'
+import Image from 'next/image'
+import { m, useMotionValueEvent, useScroll } from 'framer-motion'
+import type { MotionValue } from 'framer-motion'
 import LineReveal from '@/components/LineReveal'
-import StepVisual from '@/components/proceso/StepVisuals'
+import { COMO_TRABAJAMOS, DEMO_URL } from '@/content'
+import { fadeUp, VIEWPORT } from '@/lib/motion'
+import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
 /**
- * "Así trabajamos" — tabs interactivas con panel visual (ref. Centinel):
- * los 4 pasos como tabs numeradas; cada una abre un panel sobre fondo
- * surface con el copy del paso a la izquierda y un visual construido en
- * código como protagonista. Sin auto-avance: estos paneles se leen.
- * A11y: tablist/tab/tabpanel, flechas de teclado, focus visible.
+ * Cómo trabajamos: 4 pasos a pantalla completa. En desktop el escenario
+ * queda fijo; cada paso nuevo entra con un wipe de abajo hacia arriba
+ * (clip-path) sobre el anterior, con la imagen en parallax, y el contador
+ * de abajo a la derecha sigue al paso activo. En mobile / reduced-motion
+ * los pasos se apilan.
  */
 
-/* La progresión de nodos: uno lleno (tu primer agente) y los siguientes
-   encendiéndose en cascada al entrar en viewport — el copy hecho visual. */
-const NODE_COUNT = 5
+type Step = (typeof COMO_TRABAJAMOS)['steps'][number]
 
-const segDraw = {
-  hidden: { scaleX: 0 },
-  show: (i: number) => ({
-    scaleX: 1,
-    transition: { delay: 0.25 + i * 0.18, duration: 0.3, ease: EASE },
-  }),
+const STEPS = COMO_TRABAJAMOS.steps
+const TRANSITIONS = STEPS.length - 1
+/** Parte del recorrido que ocupan las transiciones; el resto es pausa final. */
+const TRAVEL = 0.88
+
+/** Ventana de scroll [inicio, fin] en la que entra el paso i (i ≥ 1). */
+function windowFor(i: number): [number, number] {
+  const end = (i / TRANSITIONS) * TRAVEL
+  const start = end - (TRAVEL / TRANSITIONS) * 0.75
+  return [start, end]
 }
 
-const dotFill = {
-  hidden: { scale: 0 },
-  show: (i: number) => ({
-    scale: 1,
-    transition: { delay: 0.37 + i * 0.18, duration: 0.28, ease: EASE },
-  }),
+function StepContent({ step }: { step: Step }) {
+  const titleId = `paso-${step.n}`
+  return (
+    <div className="relative z-10 max-w-3xl px-5 pb-16 sm:px-8 lg:px-12 lg:pb-20">
+      <p className="eyebrow flex gap-4 text-accent-inverse">
+        <span className="tabular-nums">{step.n}</span>
+        <span>{step.label}</span>
+      </p>
+      <h3 id={titleId} className="mt-5 text-h1 font-semibold text-ink-inverse">
+        {step.title.split('\n').map((line) => (
+          <span key={line} className="block">
+            {line}
+          </span>
+        ))}
+      </h3>
+      <p className="mt-6 max-w-md text-lead text-ink-inverse-muted">{step.body}</p>
+      <a
+        href={DEMO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link-line mt-8 inline-block text-sm font-medium text-ink-inverse"
+      >
+        {COMO_TRABAJAMOS.cta} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  )
 }
 
-function CompromisoBand() {
-  const prefersReducedMotion = useReducedMotion()
+function StepMedia({ step, sizes }: { step: Step; sizes: string }) {
+  return (
+    <>
+      <Image src={step.image.src} alt={step.image.alt} fill sizes={sizes} className="object-cover" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-night/90 via-night/55 to-night/10" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/80 to-transparent" />
+    </>
+  )
+}
+
+function PinnedStep({ step, index, progress }: { step: Step; index: number; progress: MotionValue<number> }) {
+  const [start, end] = index === 0 ? [-1, 0] : windowFor(index)
+  const clip = useScrollRange(progress, [start, end], ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)'])
+  const imageScale = useScrollRange(progress, [start, end + 0.2], [1.12, 1])
+  const imageY = useScrollRange(progress, [start, 1], ['0%', '-6%'])
+  const contentOpacity = useScrollRange(progress, [end - 0.04, end + 0.04], [0, 1])
+  const contentY = useScrollRange(progress, [end - 0.04, end + 0.06], [48, 0])
 
   return (
-    <div className="mt-14 rounded-2xl bg-surface p-8 md:p-12">
-      <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto] lg:gap-16">
-        <LineReveal
-          text={COMO_TRABAJAMOS.compromiso.plain}
-          accent={COMO_TRABAJAMOS.compromiso.accent}
-          as="p"
-          className="type-h2 max-w-xl font-editorial font-normal text-ink"
-        />
+    <m.article
+      aria-labelledby={`paso-${step.n}`}
+      style={index === 0 ? undefined : { clipPath: clip }}
+      className="absolute inset-0 isolate flex items-end overflow-hidden"
+    >
+      <m.div style={{ scale: imageScale, y: imageY }} className="absolute inset-0">
+        <StepMedia step={step} sizes="100vw" />
+      </m.div>
+      <m.div style={index === 0 ? undefined : { opacity: contentOpacity, y: contentY }}>
+        <StepContent step={step} />
+      </m.div>
+    </m.article>
+  )
+}
 
-        <m.div
-          className="flex items-center"
-          initial={prefersReducedMotion ? undefined : 'hidden'}
-          whileInView={prefersReducedMotion ? undefined : 'show'}
-          viewport={{ once: true, amount: 0.6 }}
-          aria-hidden="true"
-        >
-          {Array.from({ length: NODE_COUNT }, (_, i) => (
-            <span key={i} className="flex items-center">
-              {i > 0 && (
-                <span className="relative h-px w-8 bg-border md:w-12">
-                  <m.span
-                    className="absolute inset-0 origin-left bg-primary/50"
-                    custom={i - 1}
-                    variants={prefersReducedMotion ? undefined : segDraw}
-                  />
-                </span>
-              )}
-              <span className="relative size-3.5 rounded-full border border-primary/40 bg-white">
-                <m.span
-                  className="absolute inset-[2px] rounded-full bg-primary"
-                  custom={i - 1}
-                  variants={i === 0 || prefersReducedMotion ? undefined : dotFill}
-                />
-              </span>
-            </span>
-          ))}
-        </m.div>
+function StepCounter({ active, progress }: { active: number; progress: MotionValue<number> }) {
+  const step = STEPS[active]
+  const scaleX = useScrollRange(progress, [0, TRAVEL], [1 / STEPS.length, 1])
+  return (
+    <div aria-hidden="true" className="absolute right-12 bottom-20 z-20 w-56 text-right">
+      <p className="font-sans text-[clamp(3rem,5vw,4.5rem)] leading-none font-light tracking-[-0.04em] text-ink-inverse tabular-nums">
+        {step.n}
+        <span className="ml-1 align-top font-mono text-xs tracking-normal text-caption">
+          de {String(STEPS.length).padStart(2, '0')}
+        </span>
+      </p>
+      <div className="mt-4 h-px bg-line-inverse">
+        <m.div style={{ scaleX }} className="h-px origin-left bg-accent-inverse" />
       </div>
+      <p className="mt-3 text-sm text-caption">{step.label}</p>
     </div>
   )
 }
 
 export default function ComoTrabajamosSection() {
+  const stageRef = useRef<HTMLDivElement>(null)
+  const isScrollMotion = useScrollMotion()
   const [active, setActive] = useState(0)
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  const totalTabs = COMO_TRABAJAMOS.paneles.tabs.length
-  const activeStep = COMO_TRABAJAMOS.steps[active]
+  const { scrollYProgress: p } = useScroll({ target: stageRef, offset: ['start start', 'end end'] })
 
-  const focusTab = (index: number) => {
-    setActive(index)
-    tabRefs.current[index]?.focus()
-  }
-
-  const onTablistKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      e.preventDefault()
-      focusTab((active + 1) % totalTabs)
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault()
-      focusTab((active - 1 + totalTabs) % totalTabs)
-    } else if (e.key === 'Home') {
-      e.preventDefault()
-      focusTab(0)
-    } else if (e.key === 'End') {
-      e.preventDefault()
-      focusTab(totalTabs - 1)
-    }
-  }
+  // El contador cambia de paso a mitad de cada wipe (solo re-render en el umbral).
+  useMotionValueEvent(p, 'change', (v) => {
+    const next = STEPS.reduce((acc, _, i) => (i > 0 && v >= windowFor(i)[0] + (TRAVEL / TRANSITIONS) * 0.4 ? i : acc), 0)
+    if (next !== active) setActive(next)
+  })
 
   return (
-    <section id="como-trabajamos" className="bg-white" style={{ paddingBlock: 'var(--section-py)' }}>
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
-
-        {/* Titular */}
-        <m.h2
-          {...revealOnce}
-          className="type-h2 font-editorial font-normal text-ink mb-10 text-wrap-balance"
-        >
-          {COMO_TRABAJAMOS.headline}
-        </m.h2>
-
-        {/* Tabs — scroll horizontal en mobile, 4 columnas en desktop */}
-        <div
-          role="tablist"
-          aria-label="Proceso de trabajo"
-          onKeyDown={onTablistKeyDown}
-          className="-mx-6 mb-5 flex overflow-x-auto px-6 md:mx-0 md:grid md:grid-cols-4 md:gap-1 md:px-0"
-        >
-          {COMO_TRABAJAMOS.paneles.tabs.map((tab, i) => {
-            const isActive = i === active
-            return (
-              <button
-                key={tab}
-                ref={(el) => {
-                  tabRefs.current[i] = el
-                }}
-                type="button"
-                role="tab"
-                id={`proceso-tab-${i}`}
-                aria-selected={isActive}
-                aria-controls="proceso-panel"
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => setActive(i)}
-                className={`group flex min-w-[140px] flex-col gap-1.5 rounded-sm border-b-2 px-3 py-3.5 text-left transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:min-w-0 ${
-                  isActive ? 'border-primary' : 'border-border hover:border-[#D1D5DB]'
-                }`}
-              >
-                <span
-                  className={`font-mono text-[10px] tabular-nums transition-colors duration-300 ${
-                    isActive ? 'text-primary' : 'text-muted/70'
-                  }`}
-                  aria-hidden="true"
-                >
-                  {COMO_TRABAJAMOS.steps[i].n}
-                </span>
-                <span
-                  className={`font-sans text-[13px] leading-snug transition-colors duration-300 ${
-                    isActive ? 'font-medium text-ink' : 'text-muted group-hover:text-ink/70'
-                  }`}
-                >
-                  {tab}
-                </span>
-              </button>
-            )
-          })}
+    <section id="como-trabajamos" data-tone="dark" aria-labelledby="como-title" className="bg-night text-ink-inverse">
+      <header className="grid gap-8 px-5 pt-24 pb-16 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-36 lg:pb-20">
+        <div className="lg:col-span-7">
+          <p className="eyebrow text-caption">{COMO_TRABAJAMOS.eyebrow}</p>
+          <div id="como-title">
+            <LineReveal
+              text={COMO_TRABAJAMOS.headline.text}
+              accent={COMO_TRABAJAMOS.headline.accent}
+              className="mt-5 text-display font-semibold"
+            />
+          </div>
         </div>
-
-        {/* Panel */}
-        <div
-          id="proceso-panel"
-          role="tabpanel"
-          aria-labelledby={`proceso-tab-${active}`}
-          className="rounded-2xl bg-surface p-6 md:p-10"
+        <m.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="max-w-sm text-ink-inverse-muted lg:col-span-4 lg:col-start-9 lg:self-end"
         >
-          <AnimatePresence mode="wait">
-            <m.div
-              key={active}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.35, ease: EASE }}
-              className="grid gap-8 lg:grid-cols-[minmax(240px,320px)_1fr] lg:items-center lg:gap-14"
+          {COMO_TRABAJAMOS.intro}
+        </m.p>
+      </header>
+
+      {isScrollMotion ? (
+        <div ref={stageRef} style={{ height: `${STEPS.length * 100 + 40}svh` }} className="relative">
+          <div className="sticky top-0 h-svh overflow-hidden">
+            {STEPS.map((step, i) => (
+              <PinnedStep key={step.n} step={step} index={i} progress={p} />
+            ))}
+            <StepCounter active={active} progress={p} />
+          </div>
+        </div>
+      ) : (
+        <div ref={stageRef}>
+          {STEPS.map((step) => (
+            <article
+              key={step.n}
+              aria-labelledby={`paso-${step.n}`}
+              className="relative isolate flex min-h-[86svh] items-end overflow-hidden"
             >
-              <div>
-                <p className="eyebrow mb-3 text-muted" aria-hidden="true">
-                  {activeStep.n} / 0{totalTabs}
-                </p>
-                <h3 className="font-sans text-[17px] font-semibold leading-snug text-ink">
-                  {activeStep.title}
-                </h3>
-                <p className="mt-2.5 font-sans text-[14px] font-light leading-relaxed text-muted">
-                  {activeStep.desc}
-                </p>
+              <div className="absolute inset-0">
+                <StepMedia step={step} sizes="100vw" />
               </div>
-              <StepVisual index={active} />
-            </m.div>
-          </AnimatePresence>
+              <m.div variants={fadeUp} initial="hidden" whileInView="show" viewport={VIEWPORT}>
+                <StepContent step={step} />
+              </m.div>
+            </article>
+          ))}
         </div>
-
-        {/* Compromiso incremental — banda de cierre con la progresión */}
-        <CompromisoBand />
-
-      </div>
+      )}
     </section>
   )
 }

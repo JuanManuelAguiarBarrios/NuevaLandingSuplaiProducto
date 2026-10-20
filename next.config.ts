@@ -4,8 +4,9 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Requerido a partir de Next 16 para el quality={65} de las fotos de Empresas.
-    qualities: [65],
+    // Calidad alta para todas las fotos (el default de Next es 75). Next genera
+    // srcset 1x/2x y variantes AVIF/WebP; nunca escala por encima del original.
+    qualities: [90],
   },
   async headers() {
     return [
