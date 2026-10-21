@@ -61,7 +61,7 @@ export const HERO = {
   statement: {
     /** Entrada fija, en tamaño medio; la palabra rotativa va debajo, grande y en celeste. */
     fixed: 'Inteligencia operativa para',
-    /** Las industrias de la sección Industrias, y al final "tu operación". */
+    /** Las industrias de la sección Industrias, y al final "tu equipo". */
     rotating: [
       'empresas de logística.',
       'distribuidoras.',
@@ -69,10 +69,10 @@ export const HERO = {
       'empresas portuarias.',
       'flotas propias.',
       'centros de distribución.',
-      'tu operación.',
+      'tu equipo.',
     ],
     /** Versión completa para lectores de pantalla. */
-    label: 'Inteligencia operativa para empresas de logística, distribuidoras, importadoras, empresas portuarias, flotas propias, centros de distribución y tu operación.',
+    label: 'Inteligencia operativa para empresas de logística, distribuidoras, importadoras, empresas portuarias, flotas propias, centros de distribución y tu equipo.',
   },
   intro:
     'Agentes de IA que atienden WhatsApp, llamadas y mails, y dejan todo cargado en tus sistemas. Sin migrar nada.',
