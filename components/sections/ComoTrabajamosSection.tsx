@@ -35,8 +35,10 @@ function windowFor(i: number): [number, number] {
   return [start, end]
 }
 
+/** El CTA va solo en el último paso: repetido en los cuatro no suma. */
 function StepContent({ step }: { step: Step }) {
   const titleId = `paso-${step.n}`
+  const isLastStep = step === STEPS[STEPS.length - 1]
   return (
     <div className="relative z-10 max-w-3xl px-5 pb-16 sm:px-8 lg:px-12 lg:pb-20">
       <p className="eyebrow flex gap-4 text-caption">
@@ -51,14 +53,16 @@ function StepContent({ step }: { step: Step }) {
         ))}
       </h3>
       <p className="mt-6 max-w-md text-lead text-ink-inverse-muted">{step.body}</p>
-      <a
-        href={DEMO_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="link-line mt-8 inline-block text-sm font-medium text-ink-inverse"
-      >
-        {COMO_TRABAJAMOS.cta} <span aria-hidden="true">→</span>
-      </a>
+      {isLastStep && (
+        <a
+          href={DEMO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-line mt-8 inline-block text-sm font-medium text-ink-inverse"
+        >
+          {COMO_TRABAJAMOS.cta} <span aria-hidden="true">→</span>
+        </a>
+      )}
     </div>
   )
 }
