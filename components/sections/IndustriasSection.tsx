@@ -128,7 +128,7 @@ export default function IndustriasSection() {
 
       {/* Desktop: pestañas a la izquierda, panel a la derecha. */}
       <div className="mt-24 hidden gap-8 lg:grid lg:grid-cols-12">
-        <div role="tablist" aria-label={INDUSTRIAS.eyebrow} aria-orientation="vertical" className="col-span-5 border-b border-line">
+        <div role="tablist" aria-label={INDUSTRIAS.eyebrow} aria-orientation="vertical" className="col-span-5 self-start border-b border-line">
           {ITEMS.map((industry, i) => {
             const isActive = i === active
             return (
