@@ -10,7 +10,7 @@ Next.js 15 (App Router) landing page for **Suplai** — a logistics AI platform.
 - **Language**: TypeScript (`.tsx` / `.ts`)
 - **Styling**: Tailwind CSS v4 (CSS-first, `@theme` en `app/globals.css`)
 - **Animation**: Framer Motion (`m` + `LazyMotion`) para las secciones · entrada del hero por CSS (`.intro`, y `.intro-solid` sin opacidad para el titular, que es el LCP) · smooth scroll con Lenis
-- **Fonts**: `next/font/google` (Inter, Newsreader solo en itálica como fallback de PP Editorial New, Geist Mono sin precarga)
+- **Fonts**: `next/font/google` (Geist variable, única familia)
 - **Package manager**: npm
 
 ## File Layout
@@ -60,12 +60,17 @@ Rules in `.claude/rules/` apply automatically by file glob:
 - `rules/react/` — React component shape, hooks, RSC boundaries, security
 - `rules/typescript/` — types, interfaces, patterns, security
 
-## Gesto de marca (A5 — reglas de la itálica azul)
+## Sistema de marca (manual v2, kit Premium-Suplai)
 
-- La itálica en azul (clase `.accent`, PP Editorial New/Newsreader) marca **una palabra por headline**, siempre la que carga el significado. Nunca decorativa.
-- Excepción única y deliberada: la frase completa de cierre en la sección Visión ("Construyamos esa capa juntos.").
-- Eyebrows de sección: clase `.eyebrow` (11px, semibold, uppercase, tracking 0.18em); el color lo pone el contexto — `text-muted` en fondo claro, `text-white/65` en oscuro, `text-primary` como acento.
-- Numeración editorial siempre en `font-mono` tabular (índices `01/06`, pasos, listas).
+- **Tipografía**: Geist es la única familia. Titulares en peso 460 (`font-headline`), etiquetas en Medium, texto en Regular. Sin serif, sin itálica y sin fuente mono.
+- **Titulares en dos tonos**: la primera parte en pleno y la segunda en un tono más bajo (clase `.tone-low`, Piedra sobre claro y Lavanda sobre oscuro). Se autora con `lowFrom` en `/content/`: el índice de la primera línea que baja de tono. No se usa color para enfatizar.
+- **Color**: Hueso es el fondo principal y Lino el de apoyo. Noche es la tinta y el fondo de las piezas oscuras (hero, Cómo trabajamos, cierre). Azul Suplai es acción (botón principal). El acento solo informa estado: Azul o Celeste para Resuelto, Lavanda para En curso, Baliza para Escalado. Baliza nunca es fondo ni texto largo.
+- **Botón principal**: clase `.btn-primary`, Azul Suplai con la esquina inferior derecha en chaflán.
+- **Chaflán**: clase `.chamfer`, recorta las fotos con la silueta del isotipo.
+- **Etiquetas**: clase `.eyebrow` (12px, Medium, uppercase, tracking 0.14em); el color lo pone el contexto.
+- **Estados**: `StatusPill`, punto de color y texto en mayúscula chica dentro de una caja de línea fina.
+- **Línea de ejecución**: `ExecutionLine`, siempre canal, sistema y estado en ese orden. Solo canales, sistemas y estados que existen en el producto.
+- Numeración en la misma familia, con `tabular-nums`.
 - Quiebres de línea de headlines con reveal: autorados con `\n` en `/content/` (nunca medidos en runtime).
 
 ## Coding Conventions

@@ -28,8 +28,8 @@ Sobrio, experto, concreto. No hype, no emojis, no claims vagos. Habla como algui
 
 1. **Beneficio antes que feature.** Cada titular arranca desde el dolor o el resultado, no desde la descripción del producto.
 2. **Concreto antes que genérico.** Nombrá los sistemas (TMS, WMS, ERP, planillas), los canales (WhatsApp, voz), las acciones reales. Evitá "automatización inteligente" sin contexto.
-3. **Un sistema de tokens, cero colores sueltos.** Todo color se deriva de los cinco tokens. La identidad visual se lee como sistema, no como suma de decisiones.
-4. **El elemento firma con restricción.** La itálica editorial en azul es el sello — máximo una o dos palabras por sección, no el tratamiento principal de todos los titulares.
+3. **Un sistema de tokens, cero colores sueltos.** Todo color sale de la paleta del manual de marca (Hueso, Noche, Azul Suplai, Celeste, Lino, Arena, Piedra, Marino, Lavanda y Baliza). La identidad visual se lee como sistema, no como suma de decisiones.
+4. **La firma es el chaflán y la línea de ejecución.** El chaflán del isotipo recorta las fotos y la esquina del botón; la línea de ejecución muestra canal, sistema y estado. Los titulares van en dos tonos, sin itálica, serif ni color para enfatizar.
 5. **El premium viene del espacio y la tipografía.** Menos elementos, más aire. Los mockups de UI reemplazan las imágenes stock. Las secciones oscuras son momentos de producto, no decoración.
 
 ## Accessibility & Inclusion
