@@ -114,6 +114,7 @@ export default function Navbar() {
           alt=""
           width={LOGO_W}
           height={LOGO_H}
+          quality={90}
           priority
           className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${isDark ? 'opacity-100' : 'opacity-0'}`}
         />
@@ -122,6 +123,7 @@ export default function Navbar() {
           alt=""
           width={LOGO_W}
           height={LOGO_H}
+          quality={90}
           className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${isDark ? 'opacity-0' : 'opacity-100'}`}
         />
       </a>

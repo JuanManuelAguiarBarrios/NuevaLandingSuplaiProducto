@@ -21,7 +21,7 @@ export default function CierreSection() {
       className="relative overflow-hidden bg-night text-ink-inverse"
     >
       <div className="absolute inset-0">
-        <ParallaxImage src={CIERRE.image.src} alt={CIERRE.image.alt} sizes="100vw" reveal={false} className="h-full" />
+        <ParallaxImage src={CIERRE.image.src} alt={CIERRE.image.alt} sizes="100vw" reveal={false} quality={75} className="h-full" />
       </div>
       <div aria-hidden="true" className="absolute inset-0 bg-night/55" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night via-night/40 to-night/20" />

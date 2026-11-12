@@ -87,7 +87,7 @@ function StepMedia({ step, sizes }: { step: Step; sizes: string }) {
   if ('mockup' in step) return <div aria-hidden="true" className="absolute inset-0 bg-night-raised" />
   return (
     <>
-      <Image src={step.image.src} alt={step.image.alt} fill sizes={sizes} className="object-cover" />
+      <Image src={step.image.src} alt={step.image.alt} fill sizes={sizes} quality={75} className="object-cover" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-night/90 via-night/55 to-night/10" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night/80 to-transparent" />
     </>

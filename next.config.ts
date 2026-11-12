@@ -7,9 +7,11 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Calidad alta para todas las fotos (el default de Next es 75). Next genera
-    // srcset 1x/2x y variantes AVIF/WebP; nunca escala por encima del original.
-    qualities: [90],
+    // 90 para las fotos que se ven limpias; 75 para las que van debajo de una
+    // capa oscura, donde la diferencia no se nota y el archivo pesa menos.
+    // Next genera srcset 1x/2x y variantes AVIF/WebP; nunca escala por encima
+    // del original.
+    qualities: [75, 90],
   },
   async headers() {
     return [

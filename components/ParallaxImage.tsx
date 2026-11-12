@@ -21,6 +21,8 @@ interface ParallaxImageProps {
   /** Revela con clip-path al entrar en viewport. */
   reveal?: boolean
   priority?: boolean
+  /** Calidad de next/image. Por defecto, la alta. */
+  quality?: 75 | 90
 }
 
 export default function ParallaxImage({
@@ -30,6 +32,7 @@ export default function ParallaxImage({
   className = '',
   reveal = true,
   priority = false,
+  quality = 90,
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -48,7 +51,7 @@ export default function ParallaxImage({
     >
       <m.div variants={reveal ? clipUp : undefined} className="absolute inset-0 overflow-hidden">
         <m.div style={prefersReducedMotion ? undefined : { y }} className="absolute -inset-y-[8%] inset-x-0">
-          <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className="object-cover" />
+          <Image src={src} alt={alt} fill sizes={sizes} priority={priority} quality={quality} className="object-cover" />
         </m.div>
       </m.div>
     </m.div>

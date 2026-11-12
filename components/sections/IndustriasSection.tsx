@@ -42,7 +42,7 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
               transition={{ duration: DURATION.slow * 1.6, ease: EASE }}
               className="absolute inset-0"
             >
-              <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+              <Image src={item.image.src} alt={item.image.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" quality={90} className="object-cover" />
             </m.div>
           </m.div>
         </AnimatePresence>

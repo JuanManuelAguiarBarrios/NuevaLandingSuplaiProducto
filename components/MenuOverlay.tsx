@@ -37,6 +37,7 @@ function ItemMarquee({ item }: { item: MenuItem }) {
               width={160}
               height={72}
               sizes="160px"
+              quality={90}
               loading="eager"
               className="shrink-0 h-[clamp(2.4rem,4.6vw,4.4rem)] w-[clamp(5.5rem,10vw,10rem)] rounded-full object-cover"
             />

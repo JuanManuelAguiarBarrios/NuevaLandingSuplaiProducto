@@ -22,7 +22,7 @@ type ControlPanelProps = {
 function Sidebar() {
   return (
     <aside className="hidden w-44 shrink-0 border-r border-line bg-paper/60 px-3 py-4 md:block">
-      <Image src="/brand/suplai-lockup-black.png" alt="" width={74} height={20} className="h-5 w-auto" />
+      <Image src="/brand/suplai-lockup-black.png" alt="" width={74} height={20} quality={90} className="h-5 w-auto" />
       <ul className="mt-5 space-y-0.5 text-xs">
         {C.nav.map((item) => (
           <li
