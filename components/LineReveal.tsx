@@ -60,6 +60,8 @@ export default function LineReveal({
         <span key={i} className={MASK}>
           <m.span variants={lineUp} className="block">
             <LineContent line={line} accent={accent} />
+            {/* Espacio entre líneas: sin él, el texto plano del titular queda pegado. */}
+            {i < lines.length - 1 && ' '}
           </m.span>
         </span>
       ))}
