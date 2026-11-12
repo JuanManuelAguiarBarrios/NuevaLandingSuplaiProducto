@@ -142,8 +142,18 @@
   from { opacity: 0; transform: translateY(0.75rem); }
 }
 
+/* Sin opacidad: el texto se pinta en el primer frame y cuenta como LCP.
+   Un elemento que arranca en opacity 0 no es candidato a LCP en Chrome. */
+@keyframes intro-slide {
+  from { transform: translateY(0.75rem); }
+}
+
 .intro {
   animation: intro-rise 0.9s var(--ease-editorial) both;
+}
+
+.intro-solid {
+  animation: intro-slide 0.9s var(--ease-editorial) both;
 }
 
 /* Pulso de los puntos del mapa. */
@@ -174,6 +184,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .intro,
+  .intro-solid,
   .pin-pulse,
   .marquee-track {
     animation: none !important;

@@ -114,14 +114,14 @@ export default function HeroSection() {
               </p>
               {/* Tamaño relativo al ancho de la columna (cqw): en desktop la línea más
                   larga del titular entra entera; en mobile el texto fluye sin cortes fijos. */}
-              <h1 className="intro mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance text-ink-inverse [animation-delay:240ms] lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
+              <h1 className="intro-solid mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance text-ink-inverse lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
                 {propositionLines.map((line) => (
                   <span key={line} className="lg:block">
                     <LineContent line={line} accent={HERO.proposition.accent} />{' '}
                   </span>
                 ))}
               </h1>
-              <p className="intro mt-6 max-w-md text-lead text-ink-inverse-muted [animation-delay:380ms] lg:mt-8">
+              <p className="intro-solid mt-6 max-w-md text-lead text-ink-inverse-muted lg:mt-8">
                 {HERO.intro}
               </p>
               <div className="intro mt-8 flex flex-wrap items-center gap-6 [animation-delay:460ms]">
