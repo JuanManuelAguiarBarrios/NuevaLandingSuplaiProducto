@@ -5,6 +5,7 @@ import { Newsreader } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import Navbar from '@/components/Navbar'
+import { CONTACT_EMAIL, LINKEDIN_URL, POSITIONING } from '@/content'
 import { SmoothScrollProvider } from '@/lib/providers'
 
 const inter = Inter({
@@ -28,9 +29,9 @@ const newsreader = Newsreader({
 })
 
 const SITE_URL = 'https://getsuplai.com'
-const TITLE = 'Suplai, automatización logística con agentes de IA'
-const DESCRIPTION =
-  'Suplai es la capa operativa que conecta a tus sistemas actuales y automatiza la coordinación logística con agentes de IA. Sin migraciones, sin cambiar tu forma de trabajar.'
+// Mismo posicionamiento que el hero y la imagen Open Graph (content/index.ts).
+const TITLE = POSITIONING.title
+const DESCRIPTION = POSITIONING.description
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -40,8 +41,9 @@ export const metadata: Metadata = {
   keywords: [
     'logística',
     'agentes de IA',
+    'WhatsApp',
+    'atención de llamadas',
     'automatización logística',
-    'coordinación operativa',
     'TMS',
     'WMS',
     'ERP',
@@ -75,15 +77,15 @@ const ORG_SCHEMA = {
   name: 'Suplai',
   url: SITE_URL,
   logo: `${SITE_URL}/brand/suplai-lockup-black.png`,
-  email: 'contacto@getsuplai.com',
+  email: CONTACT_EMAIL,
   description: DESCRIPTION,
-  sameAs: ['https://linkedin.com/company/getsuplai'],
+  sameAs: [LINKEDIN_URL],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="es"
+      lang="es-UY"
       className={`${inter.variable} ${newsreader.variable} ${GeistMono.variable}`}
     >
       <body className="bg-paper font-sans text-ink antialiased">

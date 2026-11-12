@@ -13,7 +13,8 @@ import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
 /**
  * Hero en dos actos.
- *  1. Intro: frase grande que rota, bajada, lista de países y mapa del Cono Sur.
+ *  1. Intro: la propuesta como titular (h1), con la industria que rota como
+ *     línea secundaria arriba, bajada, lista de países y mapa del Cono Sur.
  *  2. Operación: al scrollear, el mapa hace zoom hacia Uruguay y el video
  *     se abre en un círculo desde ese punto (clip-path); después suben las
  *     dos líneas del titular.
@@ -75,6 +76,7 @@ export default function HeroSection() {
     return () => window.removeEventListener('resize', measure)
   }, [isScrollMotion])
 
+  const propositionLines = HERO.proposition.text.split('\n')
   const lines = HERO.headline.text.split('\n')
   const lineStyles = [line1Y, line2Y]
 
@@ -98,26 +100,26 @@ export default function HeroSection() {
             className="relative z-10 flex flex-col justify-between gap-12 lg:col-span-7"
           >
             {/* my-auto: centra el bloque de textos en el espacio libre sobre la lista de países. */}
-            <div className="lg:my-auto">
+            <div className="@container lg:my-auto">
               <p
                 onMouseEnter={() => setIsStatementHovered(true)}
                 onMouseLeave={() => setIsStatementHovered(false)}
-                className="@container font-semibold text-ink-inverse lg:mt-4"
+                className="intro text-[clamp(1rem,1.5vw,1.375rem)] font-medium tracking-[-0.01em] text-ink-inverse-muted [animation-delay:120ms] lg:mt-4"
               >
                 <span className="sr-only">{HERO.statement.label}</span>
-                <span
-                  aria-hidden="true"
-                  className="intro-line text-[clamp(1.375rem,2.4vw,2.5rem)] leading-tight tracking-[-0.03em] [animation-delay:120ms]"
-                >
-                  {HERO.statement.fixed}
-                </span>
-                {/* Tamaño relativo al ancho de la columna (cqw): la frase más larga,
-                    "centros de distribución." (10,3 em), siempre entra en una línea. */}
-                <span className="intro-line mt-1 text-[9.6cqw] leading-[0.95] tracking-[-0.05em] text-accent-inverse [animation-delay:240ms]">
-                  <RotatingWords words={HERO.statement.rotating} isPaused={isStatementHovered} />
-                </span>
+                <span aria-hidden="true">{HERO.statement.fixed} </span>
+                <RotatingWords words={HERO.statement.rotating} isPaused={isStatementHovered} className="text-ink-inverse" />
               </p>
-              <p className="intro mt-8 max-w-md text-lead text-ink-inverse-muted [animation-delay:380ms]">
+              {/* Tamaño relativo al ancho de la columna (cqw): en desktop la línea más
+                  larga del titular entra entera; en mobile el texto fluye sin cortes fijos. */}
+              <h1 className="intro mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance text-ink-inverse [animation-delay:240ms] lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
+                {propositionLines.map((line) => (
+                  <span key={line} className="lg:block">
+                    <LineContent line={line} accent={HERO.proposition.accent} />{' '}
+                  </span>
+                ))}
+              </h1>
+              <p className="intro mt-6 max-w-md text-lead text-ink-inverse-muted [animation-delay:380ms] lg:mt-8">
                 {HERO.intro}
               </p>
               <div className="intro mt-8 flex flex-wrap items-center gap-6 [animation-delay:460ms]">
@@ -192,7 +194,7 @@ export default function HeroSection() {
           </m.div>
 
           <div className="absolute inset-x-0 bottom-0 grid gap-8 px-5 pb-10 sm:px-8 lg:grid-cols-12 lg:items-end lg:px-12 lg:pb-14">
-            <m.h1
+            <m.h2
               variants={stagger}
               initial={isScrollMotion ? false : 'hidden'}
               whileInView={isScrollMotion ? undefined : 'show'}
@@ -210,7 +212,7 @@ export default function HeroSection() {
                   </m.span>
                 </span>
               ))}
-            </m.h1>
+            </m.h2>
 
             <m.div
               style={isScrollMotion ? { opacity: restOpacity, y: restY } : undefined}

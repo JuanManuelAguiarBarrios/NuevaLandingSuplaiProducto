@@ -56,15 +56,33 @@ export const NAV = {
   ] satisfies MenuItem[],
 }
 
+/* ── Posicionamiento ────────────────────────── */
+
+/**
+ * Una sola propuesta para el hero, el <title>, la description y la imagen
+ * Open Graph. Si cambia, cambia acá y en todos lados a la vez.
+ */
+export const POSITIONING = {
+  headline: {
+    text: 'Agentes de IA que atienden\nWhatsApp, llamadas y mails,\ny dejan todo cargado\nen tus sistemas.',
+    accent: 'sistemas',
+  } satisfies Headline,
+  support: 'Se conectan a tu TMS, WMS, ERP y planillas. Sin migrar nada.',
+  title: 'Suplai, agentes de IA que atienden WhatsApp, llamadas y mails',
+  description:
+    'Agentes de IA que atienden WhatsApp, llamadas y mails, y dejan todo cargado en tus sistemas. Se conectan a tu TMS, WMS, ERP y planillas. Sin migrar nada.',
+}
+
 /* ── Hero ───────────────────────────────────── */
 
 export type PinKey = 'uruguay' | 'argentina' | 'chile' | 'paraguay'
 
 export const HERO = {
-  /** Frase del hero: entrada fija y palabra que rota. */
+  /** Titular principal: la propuesta. Es lo primero que se lee. */
+  proposition: POSITIONING.headline,
+  /** Línea secundaria sobre el titular: entrada fija y la industria que rota. */
   statement: {
-    /** Entrada fija, en tamaño medio; la palabra rotativa va debajo, grande y en celeste. */
-    fixed: 'Inteligencia operativa para',
+    fixed: 'Para',
     /** Las industrias de la sección Industrias, y al final "tu equipo". */
     rotating: [
       'empresas de logística.',
@@ -76,10 +94,9 @@ export const HERO = {
       'tu equipo.',
     ],
     /** Versión completa para lectores de pantalla. */
-    label: 'Inteligencia operativa para empresas de logística, distribuidoras, importadoras, empresas portuarias, flotas propias, centros de distribución y tu equipo.',
+    label: 'Para empresas de logística, distribuidoras, importadoras, empresas portuarias, flotas propias, centros de distribución y tu equipo.',
   },
-  intro:
-    'Agentes de IA que atienden WhatsApp, llamadas y mails, y dejan todo cargado en tus sistemas. Sin migrar nada.',
+  intro: POSITIONING.support,
   countries: [
     { n: '01', name: 'Uruguay', note: 'Sede', pin: 'uruguay' },
     { n: '02', name: 'Argentina', pin: 'argentina' },
@@ -87,6 +104,7 @@ export const HERO = {
     { n: '04', name: 'Paraguay', pin: 'paraguay' },
   ] satisfies { n: string; name: string; note?: string; pin: PinKey }[],
   scrollHint: 'Desplazá para entrar en la operación',
+  /** Titular del segundo acto, sobre el video. */
   headline: { text: 'Mientras tu equipo opera,\nlos agentes responden.', accent: 'responden' },
   subtitle: 'Atienden consultas, confirman entregas y agendan turnos todo el día.',
   ctaPrimary: 'Agendá una demo',

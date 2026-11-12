@@ -34,4 +34,4 @@ Sobrio, experto, concreto. No hype, no emojis, no claims vagos. Habla como algui
 
 ## Accessibility & Inclusion
 
-WCAG AA mínimo. `prefers-reduced-motion` respetado en todas las animaciones (ya implementado). Contraste 4.5:1 en texto de cuerpo, 3:1 en display grande. Foco de teclado visible. HTML semántico (`section`, `article`, `nav`, `header`, `footer`). Idioma: `lang="es"`.
+WCAG AA mínimo. `prefers-reduced-motion` respetado en todas las animaciones (ya implementado). Contraste 4.5:1 en texto de cuerpo, 3:1 en display grande. Foco de teclado visible. HTML semántico (`section`, `article`, `nav`, `header`, `footer`). Idioma: `lang="es-UY"`.

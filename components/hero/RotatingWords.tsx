@@ -93,7 +93,7 @@ export default function RotatingWords({ words, isPaused, className = '' }: Rotat
   }, [word, prefersReducedMotion])
 
   return (
-    <span ref={nodeRef} aria-hidden="true" className={`block whitespace-nowrap ${className}`}>
+    <span ref={nodeRef} aria-hidden="true" className={`whitespace-nowrap ${className}`}>
       {words[0]}
     </span>
   )

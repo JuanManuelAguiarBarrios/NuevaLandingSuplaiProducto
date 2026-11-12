@@ -1,10 +1,25 @@
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
+import { POSITIONING } from '@/content'
 
-export const alt = 'Suplai, automatización logística con agentes de IA'
+export const alt = POSITIONING.title
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OpengraphImage() {
+/** Lockup real de la marca (public/brand), 426×116. */
+const LOGO = { path: 'public/brand/suplai-lockup-white.png', width: 220, height: 60 }
+
+/** ImageResponse no lee CSS: espejo de las primitivas de marca de globals.css. */
+const COLOR = { night: '#0E1230', white: '#FFFFFF', sky: '#72AFFF', muted: '#BCC1DE' }
+
+export default async function OpengraphImage() {
+  const logo = await readFile(join(process.cwd(), LOGO.path))
+  const logoSrc = `data:image/png;base64,${logo.toString('base64')}`
+  const { text, accent } = POSITIONING.headline
+  // Misma propuesta que el hero, con sus quiebres de línea y su palabra en acento.
+  const lines = text.split('\n')
+
   return new ImageResponse(
     (
       <div
@@ -14,44 +29,36 @@ export default function OpengraphImage() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          background: '#0E1230', // --brand-night (ImageResponse no lee CSS)
+          background: COLOR.night,
           padding: '80px',
         }}
       >
-        {/* Brand */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              background: '#2C44CC',
-              display: 'flex',
-            }}
-          />
-          <div style={{ color: '#FFFFFF', fontSize: 34, fontWeight: 600 }}>Suplai</div>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse solo admite <img> */}
+        <img src={logoSrc} width={LOGO.width} height={LOGO.height} alt="" />
 
-        {/* Headline */}
         <div
           style={{
             display: 'flex',
-            flexWrap: 'wrap',
-            color: '#FFFFFF',
-            fontSize: 72,
-            lineHeight: 1.05,
+            flexDirection: 'column',
+            color: COLOR.white,
+            fontSize: 66,
+            lineHeight: 1.08,
             letterSpacing: '-0.03em',
-            maxWidth: 900,
           }}
         >
-          La capa de IA que ejecuta tu operación&nbsp;
-          <span style={{ color: '#72AFFF', fontStyle: 'italic' }}>logística.</span>
+          {lines.map((line) => {
+            const [before, after] = line.split(accent)
+            return (
+              <div key={line} style={{ display: 'flex', whiteSpace: 'pre' }}>
+                {before}
+                {after !== undefined && <span style={{ color: COLOR.sky }}>{accent}</span>}
+                {after}
+              </div>
+            )
+          })}
         </div>
 
-        {/* Footer line */}
-        <div style={{ color: '#BCC1DE', fontSize: 28 }}>
-          Agentes que coordinan tu operación sobre los sistemas que ya usás.
-        </div>
+        <div style={{ color: COLOR.muted, fontSize: 28 }}>{POSITIONING.support}</div>
       </div>
     ),
     { ...size },
