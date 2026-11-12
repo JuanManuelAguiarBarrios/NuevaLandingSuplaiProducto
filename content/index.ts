@@ -5,7 +5,8 @@
  *  - Español rioplatense con voseo.
  *  - Nunca: "agéntico", "LLM", "Studio", "Runtime", "flujo".
  *  - Quiebres de línea de titulares autorados con '\n' (nunca medidos en runtime).
- *  - `accent`: la palabra del titular que va en Newsreader itálica.
+ *  - `lowFrom`: línea del titular desde la que el texto baja de tono. Los
+ *    titulares van en dos tonos; no se usa itálica, serif ni color para enfatizar.
  *  - Sin dos puntos, guiones, punto y coma ni separadores tipo "·" en el
  *    texto visible. Cada frase se escribe para leerse bien sin ellos.
  *  - Datos sin verificar quedan como placeholder entre corchetes:
@@ -40,7 +41,8 @@ export const WHATSAPP = {
 
 export interface Headline {
   text: string
-  accent?: string
+  /** Índice de la primera línea que va en el tono bajo. */
+  lowFrom?: number
 }
 
 export interface MediaImage {
@@ -80,7 +82,7 @@ export const NAV = {
 export const POSITIONING = {
   headline: {
     text: 'Agentes de IA que atienden\nWhatsApp, llamadas y mails,\ny dejan todo cargado\nen tus sistemas.',
-    accent: 'sistemas',
+    lowFrom: 2,
   } satisfies Headline,
   support: 'Se conectan a tu TMS, WMS, ERP y planillas. Sin migrar nada.',
   title: 'Suplai, agentes de IA que atienden WhatsApp, llamadas y mails',
@@ -120,7 +122,7 @@ export const HERO = {
   ] satisfies { n: string; name: string; note?: string; pin: PinKey }[],
   scrollHint: 'Desplazá para entrar en la operación',
   /** Titular del segundo acto, sobre el video. */
-  headline: { text: 'Mientras tu equipo opera,\nlos agentes responden.', accent: 'responden' },
+  headline: { text: 'Mientras tu equipo opera,\nlos agentes responden.', lowFrom: 1 } satisfies Headline,
   subtitle: 'Atienden consultas, confirman entregas y agendan turnos todo el día.',
   ctaPrimary: 'Agendá una demo',
   ctaWhatsapp: WHATSAPP.cta,
@@ -167,7 +169,7 @@ export const PROBLEMA = {
   eyebrow: 'El problema',
   headline: {
     text: 'Tu equipo pasa el día\nrespondiendo lo mismo.',
-    accent: 'mismo',
+    lowFrom: 1,
   } satisfies Headline,
   intro: 'Consultas por WhatsApp, llamadas de choferes y datos que alguien pasa a mano de un sistema a otro.',
   labels: { problema: 'Qué pasa hoy', costo: 'Qué cuesta' },
@@ -208,7 +210,7 @@ export function agentWhatsappUrl(agent: Agent): string {
 
 export const AGENTES = {
   eyebrow: 'Agentes',
-  headline: { text: 'Un agente para cada\nproceso.', accent: 'agente' } satisfies Headline,
+  headline: { text: 'Un agente\npara cada proceso.', lowFrom: 1 } satisfies Headline,
   subtitle:
     'Elegí el proceso que más te cuesta y empezá por ese agente.',
   allLink: 'Agendá una demo',
@@ -380,7 +382,7 @@ export type ProcessStep = { n: string; label: string; title: string; body: strin
 
 export const COMO_TRABAJAMOS = {
   eyebrow: 'Cómo trabajamos',
-  headline: { text: 'Tu primer agente,\nsin frenar\ntu operación.', accent: 'operación' } satisfies Headline,
+  headline: { text: 'Tu primer agente,\nsin frenar\ntu operación.', lowFrom: 1 } satisfies Headline,
   intro: 'Arrancamos por un proceso, lo ponemos a funcionar y después sumamos más.',
   cta: 'Agendá una demo',
   steps: [
@@ -442,7 +444,7 @@ export const SOLUCION = {
   eyebrow: 'Solución',
   headline: {
     text: 'Entre tus canales\ny tus sistemas,\nSuplai opera.',
-    accent: 'opera',
+    lowFrom: 2,
   } satisfies Headline,
   /** Diagrama de tres planos apilados (canales, Suplai, sistemas). */
   diagram: {
@@ -512,7 +514,7 @@ export const SOLUCION = {
 
 export const INDUSTRIAS = {
   eyebrow: 'Industrias',
-  headline: { text: 'Lo que resolvemos\nen tu industria.', accent: 'industria' } satisfies Headline,
+  headline: { text: 'Lo que resolvemos\nen tu industria.', lowFrom: 1 } satisfies Headline,
   subtitle: 'Elegí la tuya y mirá qué resuelve primero.',
   painsLabel: 'Dónde duele hoy',
   /** Etiqueta del agente con el que conviene empezar en cada industria. */
@@ -566,7 +568,7 @@ export const INDUSTRIAS = {
 /* ── Principios ─────────────────────────────── */
 
 export const PRINCIPIOS = {
-  headline: { text: 'Automatizar\ntambién es\nacompañar.', accent: 'acompañar' } satisfies Headline,
+  headline: { text: 'Automatizar\ntambién es\nacompañar.', lowFrom: 1 } satisfies Headline,
   items: [
     {
       title: 'Sin migraciones',
@@ -595,7 +597,7 @@ export const PRINCIPIOS = {
  */
 export const FAQ = {
   eyebrow: 'Preguntas frecuentes',
-  headline: { text: 'Lo que conviene saber\nantes de arrancar.', accent: 'arrancar' } satisfies Headline,
+  headline: { text: 'Lo que conviene saber\nantes de arrancar.', lowFrom: 1 } satisfies Headline,
   items: [
     {
       question: '¿Con qué sistemas se integra?',
@@ -638,9 +640,7 @@ export const isPlaceholder = (text: string): boolean => text.trim().startsWith('
 /* ── Cierre y contacto ────────────────────── */
 
 export const CIERRE = {
-  headline: 'Empezá por un proceso.',
-  /** Única línea entera en itálica de la landing. */
-  accentLine: 'El resto lo sumamos juntos.',
+  headline: { text: 'Empezá por un proceso.\nEl resto lo sumamos juntos.', lowFrom: 1 } satisfies Headline,
   subtitle: 'En 30 minutos miramos tu operación y te decimos por dónde arrancaría el primer agente.',
   ctaPrimary: 'Agendá 30 minutos',
   ctaWhatsapp: WHATSAPP.cta,

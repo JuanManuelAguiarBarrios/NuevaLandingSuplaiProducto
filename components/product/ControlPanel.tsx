@@ -70,7 +70,7 @@ export default function ControlPanel({ isCompact = false, className }: ControlPa
                       <span className="block text-[11px] text-ink-muted">{keepCodesTogether(item.detail)}</span>
                     </span>
                     <StatusPill state={item.state} />
-                    <span className="hidden font-mono text-[10px] text-ink-muted tabular-nums sm:block">{item.time}</span>
+                    <span className="hidden text-[10px] text-ink-muted tabular-nums sm:block">{item.time}</span>
                   </li>
                 ))}
               </ul>

@@ -39,7 +39,7 @@ export default function FaqSection() {
         <div className="lg:col-span-5">
           <p className="eyebrow text-ink-muted">{FAQ.eyebrow}</p>
           <div id="preguntas-title">
-            <LineReveal text={FAQ.headline.text} accent={FAQ.headline.accent} className="mt-5 text-h2 font-semibold" />
+            <LineReveal text={FAQ.headline.text} lowFrom={FAQ.headline.lowFrom} className="mt-5 text-h2 font-headline" />
           </div>
         </div>
 
@@ -47,10 +47,10 @@ export default function FaqSection() {
           {FAQ.items.map((item, i) => (
             <details key={item.question} name={GROUP} open={i === 0} className="group border-t border-line">
               <summary className="flex cursor-pointer list-none items-baseline gap-5 py-6 [&::-webkit-details-marker]:hidden">
-                <span aria-hidden="true" className="font-mono text-[11px] text-ink-muted tabular-nums">
+                <span aria-hidden="true" className="text-xs text-ink-muted tabular-nums">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 className="flex-1 text-lg font-semibold lg:text-xl">{item.question}</h3>
+                <h3 className="flex-1 text-lg font-headline lg:text-xl">{item.question}</h3>
                 <span
                   aria-hidden="true"
                   className="text-xl leading-none font-light text-ink-muted transition-transform duration-300 ease-editorial group-open:rotate-45"

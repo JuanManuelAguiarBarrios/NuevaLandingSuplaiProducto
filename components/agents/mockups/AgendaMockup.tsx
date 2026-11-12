@@ -13,7 +13,7 @@ export default function AgendaMockup({ className }: { className?: string }) {
       <ul className="divide-y divide-line">
         {agenda.slots.map((slot) => (
           <li key={slot.time} className="flex items-center gap-3 px-3 py-2.5">
-            <span className="font-mono text-[11px] text-ink-muted tabular-nums">{slot.time}</span>
+            <span className="text-[11px] text-ink-muted tabular-nums">{slot.time}</span>
             <span className="min-w-0 flex-1">
               <span className="block text-xs font-medium">{slot.title}</span>
               <span className="block text-[10px] text-ink-muted">{slot.who}</span>
@@ -22,7 +22,7 @@ export default function AgendaMockup({ className }: { className?: string }) {
           </li>
         ))}
         <li className="flex items-center gap-3 px-3 py-2.5">
-          <span className="font-mono text-[11px] text-ink-muted tabular-nums">{agenda.free.time}</span>
+          <span className="text-[11px] text-ink-muted tabular-nums">{agenda.free.time}</span>
           <span className="flex-1 rounded-md border border-dashed border-line px-2 py-1.5 text-[11px] text-ink-muted">
             {agenda.free.title}
           </span>

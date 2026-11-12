@@ -4,13 +4,12 @@ import { m } from 'framer-motion'
 import LineReveal from '@/components/LineReveal'
 import ParallaxImage from '@/components/ParallaxImage'
 import { CIERRE, CONTACT_EMAIL, DEMO_URL, WHATSAPP, whatsappUrl } from '@/content'
-import { fadeUp, lineUp, VIEWPORT } from '@/lib/motion'
+import { fadeUp, VIEWPORT } from '@/lib/motion'
 
 /**
  * Cierre y contacto en un solo bloque: imagen full-bleed con parallax,
  * titular, bajada y las dos vías de contacto (demo y WhatsApp), con el
- * email abajo. Lleva el id "contacto" para el menú. Única excepción a la
- * regla de una palabra en itálica: la segunda línea completa.
+ * email abajo. Lleva el id "contacto" para el menú.
  */
 export default function CierreSection() {
   return (
@@ -28,12 +27,7 @@ export default function CierreSection() {
 
       <div className="relative flex min-h-svh flex-col justify-end px-5 pt-32 pb-16 sm:px-8 lg:px-12 lg:pb-24">
         <div id="cierre-title" className="max-w-5xl">
-          <LineReveal text={CIERRE.headline} className="text-h1 font-semibold" />
-          <m.p initial="hidden" whileInView="show" viewport={VIEWPORT} className="block overflow-hidden pb-[0.12em] text-h1">
-            <m.em variants={lineUp} className="accent block leading-[1.05]">
-              {CIERRE.accentLine}
-            </m.em>
-          </m.p>
+          <LineReveal text={CIERRE.headline.text} lowFrom={CIERRE.headline.lowFrom} className="text-h1 font-headline" />
         </div>
 
         <m.div
@@ -57,9 +51,9 @@ export default function CierreSection() {
               href={DEMO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-accent px-6 py-4 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
+              className="btn-primary"
             >
-              {CIERRE.ctaPrimary} <span aria-hidden="true">→</span>
+              {CIERRE.ctaPrimary} <span aria-hidden="true">↗</span>
             </a>
             <a
               href={whatsappUrl(WHATSAPP.message)}

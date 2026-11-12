@@ -5,7 +5,7 @@ import { m, useMotionTemplate, useMotionValueEvent, useScroll } from 'framer-mot
 import AutoplayVideo from '@/components/AutoplayVideo'
 import HeroMap from '@/components/hero/HeroMap'
 import RotatingWords from '@/components/hero/RotatingWords'
-import { LineContent } from '@/components/LineReveal'
+import { lineTone } from '@/components/LineReveal'
 import { MAP_PINS, MAP_VIEWBOX } from '@/components/hero/coneSur'
 import { MessageIcon } from '@/components/product/icons'
 import { DEMO_URL, HERO, WHATSAPP, whatsappUrl } from '@/content'
@@ -126,10 +126,10 @@ export default function HeroSection() {
               </p>
               {/* Tamaño relativo al ancho de la columna (cqw): en desktop la línea más
                   larga del titular entra entera; en mobile el texto fluye sin cortes fijos. */}
-              <h1 className="intro-solid mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance text-ink-inverse lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
-                {propositionLines.map((line) => (
-                  <span key={line} className="lg:block">
-                    <LineContent line={line} accent={HERO.proposition.accent} />{' '}
+              <h1 className="intro-solid mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-headline tracking-[-0.04em] text-balance text-ink-inverse lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
+                {propositionLines.map((line, i) => (
+                  <span key={line} className={`lg:block ${lineTone(i, HERO.proposition.lowFrom)}`}>
+                    {line}{' '}
                   </span>
                 ))}
               </h1>
@@ -141,9 +141,9 @@ export default function HeroSection() {
                   href={DEMO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-accent px-5 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
+                  className="btn-primary"
                 >
-                  {HERO.ctaPrimary} <span aria-hidden="true">→</span>
+                  {HERO.ctaPrimary} <span aria-hidden="true">↗</span>
                 </a>
                 <a
                   href={whatsappUrl(WHATSAPP.message)}
@@ -164,7 +164,7 @@ export default function HeroSection() {
                   style={{ animationDelay: `${500 + i * 80}ms` }}
                   className="intro border-b border-line-inverse py-4 pr-4 sm:border-b-0"
                 >
-                  <span className="font-mono text-[11px] text-caption tabular-nums">{c.n}</span>
+                  <span className="text-xs text-caption tabular-nums">{c.n}</span>
                   <span className="mt-2 block font-medium text-ink-inverse">{c.name}</span>
                   {'note' in c && <span className="mt-1 block text-sm text-ink-inverse-muted">{c.note}</span>}
                 </li>
@@ -222,16 +222,16 @@ export default function HeroSection() {
               initial={isScrollMotion ? false : 'hidden'}
               whileInView={isScrollMotion ? undefined : 'show'}
               viewport={VIEWPORT}
-              className="text-[clamp(1.625rem,0.5rem+3.6vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.04em] text-ink-inverse lg:col-span-8"
+              className="text-[clamp(1.625rem,0.5rem+3.6vw,4.5rem)] leading-[1.02] font-headline tracking-[-0.04em] text-ink-inverse lg:col-span-8"
             >
               {lines.map((line, i) => (
                 <span key={line} className={MASK}>
                   <m.span
                     variants={isScrollMotion ? undefined : lineUp}
                     style={isScrollMotion ? { y: lineStyles[i] } : undefined}
-                    className="block"
+                    className={`block ${lineTone(i, HERO.headline.lowFrom)}`}
                   >
-                    <LineContent line={line} accent={HERO.headline.accent} />
+                    {line}
                   </m.span>
                 </span>
               ))}
@@ -247,9 +247,9 @@ export default function HeroSection() {
                   href={DEMO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-accent px-5 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
+                  className="btn-primary"
                 >
-                  {HERO.ctaPrimary} <span aria-hidden="true">→</span>
+                  {HERO.ctaPrimary} <span aria-hidden="true">↗</span>
                 </a>
                 <a href={HERO.ctaSecondary.href} className="link-line text-sm font-medium text-ink-inverse">
                   {HERO.ctaSecondary.label} <span aria-hidden="true">→</span>

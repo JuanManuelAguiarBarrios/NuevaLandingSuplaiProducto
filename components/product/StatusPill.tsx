@@ -2,8 +2,9 @@ import { CONTROL_STATES } from '@/content'
 import type { FlowState } from '@/content'
 
 /**
- * Píldora de estado de Suplai Control: punto de color y etiqueta. El color
- * va solo en el punto; el texto queda en tinta para mantener el contraste.
+ * Etiqueta de estado del sistema gráfico: punto de color y texto en
+ * mayúscula chica, dentro de una caja de línea fina. El color va solo en el
+ * punto; el texto queda en tinta para mantener el contraste.
  */
 
 const DOT: Record<FlowState, string> = {
@@ -26,7 +27,7 @@ export function StateDot({ state, className = '' }: { state: FlowState; classNam
 export default function StatusPill({ state, label, className = '' }: StatusPillProps) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-white px-2 py-0.5 text-[11px] leading-4 font-medium whitespace-nowrap text-ink ${className}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-md border border-line bg-white px-2 py-1 text-[10px] leading-none font-medium tracking-[0.1em] whitespace-nowrap text-ink uppercase ${className}`}
     >
       <StateDot state={state} />
       {label ?? CONTROL_STATES[state]}

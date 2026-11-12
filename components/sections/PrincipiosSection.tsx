@@ -80,8 +80,8 @@ export default function PrincipiosSection() {
           <div id="principios-title">
             <LineReveal
               text={PRINCIPIOS.headline.text}
-              accent={PRINCIPIOS.headline.accent}
-              className="text-h1 font-semibold"
+              lowFrom={PRINCIPIOS.headline.lowFrom}
+              className="text-h1 font-headline"
             />
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function PrincipiosSection() {
                 className="border-b border-line py-8 sm:px-8 sm:even:border-l sm:odd:pl-0 lg:py-10"
               >
                 <Icon />
-                <h3 className="mt-6 text-xl font-semibold">{item.title}</h3>
+                <h3 className="mt-6 text-xl font-headline">{item.title}</h3>
                 <p className="mt-3 text-ink-muted">{item.body}</p>
               </m.li>
             )

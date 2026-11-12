@@ -29,8 +29,8 @@ export default function ProblemaSection() {
           <div id="problema-title">
             <LineReveal
               text={PROBLEMA.headline.text}
-              accent={PROBLEMA.headline.accent}
-              className="mt-6 text-h1 font-semibold"
+              lowFrom={PROBLEMA.headline.lowFrom}
+              className="mt-6 text-h1 font-headline"
             />
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function ProblemaSection() {
                 aria-hidden="true"
                 className="absolute inset-x-0 top-0 h-px origin-left bg-line-inverse"
               />
-              <span className="font-mono text-[11px] text-caption tabular-nums md:col-span-1 md:pt-2">
+              <span className="text-xs text-caption tabular-nums md:col-span-1 md:pt-2">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <p className="text-h3 font-medium md:col-span-5">

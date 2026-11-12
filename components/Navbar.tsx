@@ -133,12 +133,12 @@ export default function Navbar() {
           href={DEMO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
+          className="btn-primary"
         >
           {/* En mobile el texto corto, para que entre al lado de "Menú". */}
           <span className="sm:hidden">{NAV.ctaShort}</span>
           <span className="hidden sm:inline">{NAV.cta}</span>
-          <span aria-hidden="true">→</span>
+          <span aria-hidden="true">↗</span>
         </a>
         <button
           ref={toggleRef}

@@ -43,7 +43,7 @@ export function Bubble({ message, author }: { message: ChatMessage; author?: str
         }`}
       >
         <p>{keepCodesTogether(message.text)}</p>
-        <span className="mt-0.5 block text-right font-mono text-[10px] text-ink-muted tabular-nums">{message.time}</span>
+        <span className="mt-0.5 block text-right text-[10px] text-ink-muted tabular-nums">{message.time}</span>
       </div>
     </div>
   )

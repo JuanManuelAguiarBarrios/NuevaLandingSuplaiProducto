@@ -27,7 +27,7 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
   return (
     // En tablet, foto y dolores van lado a lado: apilada, la foto ocupa toda la pantalla.
     <div className="md:grid md:grid-cols-2 md:items-start md:gap-8 lg:block">
-      <div className="relative aspect-[4/3] overflow-hidden bg-night">
+      <div className="chamfer relative aspect-[4/3] overflow-hidden bg-night">
         <AnimatePresence initial={false}>
           <m.div
             key={item.key}
@@ -46,7 +46,7 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
             </m.div>
           </m.div>
         </AnimatePresence>
-        <p aria-hidden="true" className="absolute top-5 right-5 z-10 bg-paper px-2.5 py-1 font-mono text-[11px] text-ink tabular-nums">
+        <p aria-hidden="true" className="absolute top-5 right-5 z-10 bg-paper px-2.5 py-1 text-xs text-ink tabular-nums">
           {String(index + 1).padStart(2, '0')} de {TOTAL}
         </p>
       </div>
@@ -110,8 +110,8 @@ export default function IndustriasSection() {
           <div id="industrias-title">
             <LineReveal
               text={INDUSTRIAS.headline.text}
-              accent={INDUSTRIAS.headline.accent}
-              className="mt-5 text-h1 font-semibold"
+              lowFrom={INDUSTRIAS.headline.lowFrom}
+              className="mt-5 text-h1 font-headline"
             />
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function IndustriasSection() {
                 onKeyDown={handleKeyDown}
                 className={`group flex w-full items-baseline gap-6 border-t border-line py-5 text-left transition-colors duration-300 ${isActive ? 'text-ink' : 'text-ink-muted hover:text-ink'}`}
               >
-                <span className="font-mono text-[11px] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="text-xs tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                 <span className="flex-1 text-h3 font-medium">{industry.title}</span>
                 <span
                   aria-hidden="true"
@@ -185,7 +185,7 @@ export default function IndustriasSection() {
                   onClick={() => setActive(i)}
                   className={`flex w-full items-baseline gap-5 py-5 text-left transition-colors duration-300 ${isOpen ? 'text-ink' : 'text-ink-muted'}`}
                 >
-                  <span className="font-mono text-[11px] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-xs tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <span className="flex-1 text-h3 font-medium">{industry.title}</span>
                   <span aria-hidden="true" className={`text-ink transition-transform duration-500 ease-editorial ${isOpen ? 'rotate-90' : ''}`}>
                     →

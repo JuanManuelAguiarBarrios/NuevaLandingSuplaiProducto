@@ -10,7 +10,7 @@ export default function DeliveryMockup({ className }: { className?: string }) {
     <MockupPanel label={delivery.label} className={className}>
       <div className="px-3 py-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="flex items-center gap-1.5 font-mono text-xs font-semibold">
+          <span className="flex items-center gap-1.5 text-xs font-semibold">
             <PackageIcon className="size-3.5 text-ink-muted" />
             {delivery.order}
           </span>

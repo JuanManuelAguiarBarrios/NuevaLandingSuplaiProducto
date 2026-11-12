@@ -9,8 +9,8 @@ import { DURATION, EASE } from '@/lib/motion'
 /**
  * Overlay full-screen del menú. Entra con un wipe de arriba hacia abajo
  * (clip-path) y los ítems suben escalonados. En hover/foco, la fila se
- * invierte a fondo claro y el label corre en loop junto a una imagen en
- * píldora. Lo monta/desmonta el Navbar dentro de AnimatePresence.
+ * invierte a fondo claro y el label corre en loop junto a una imagen
+ * recortada en chaflán. Lo monta/desmonta el Navbar dentro de AnimatePresence.
  */
 
 interface MenuOverlayProps {
@@ -39,7 +39,7 @@ function ItemMarquee({ item }: { item: MenuItem }) {
               sizes="160px"
               quality={90}
               loading="eager"
-              className="shrink-0 h-[clamp(2.4rem,4.6vw,4.4rem)] w-[clamp(5.5rem,10vw,10rem)] rounded-full object-cover"
+              className="chamfer h-[clamp(2.4rem,4.6vw,4.4rem)] w-[clamp(5.5rem,10vw,10rem)] shrink-0 object-cover [--chamfer:clamp(0.7rem,1.3vw,1.25rem)]"
             />
           </span>
         ))}
@@ -71,7 +71,7 @@ export default function MenuOverlay({ id, onNavigate }: MenuOverlayProps) {
               <a
                 href={item.href}
                 onClick={onNavigate}
-                className="group relative flex items-center justify-between py-[clamp(0.75rem,2.6vh,2rem)] text-[clamp(2.25rem,4.8vw,4.75rem)] leading-none font-semibold tracking-[-0.04em] outline-none"
+                className="group relative flex items-center justify-between py-[clamp(0.75rem,2.6vh,2rem)] text-[clamp(2.25rem,4.8vw,4.75rem)] leading-none font-headline tracking-[-0.04em] outline-none"
               >
                 <span className="whitespace-nowrap">{item.label}</span>
                 <span aria-hidden="true" className="text-[0.45em] text-caption">→</span>

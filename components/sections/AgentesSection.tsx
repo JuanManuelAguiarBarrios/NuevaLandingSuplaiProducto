@@ -36,10 +36,10 @@ function AgentCard({ agent }: { agent: Agent }) {
       </div>
 
       <div className={`flex flex-1 flex-col ${isWide ? 'mt-6 sm:mt-0' : 'mt-6'}`}>
-        <p aria-hidden="true" className="font-mono text-[11px] text-caption tabular-nums">
+        <p aria-hidden="true" className="text-xs text-caption tabular-nums">
           {agent.n} de {TOTAL}
         </p>
-        <h3 className="mt-3 text-h3 font-semibold text-ink-inverse">{agent.name}</h3>
+        <h3 className="mt-3 text-h3 font-headline text-ink-inverse">{agent.name}</h3>
         <div className="mt-4 flex flex-1 flex-col items-start justify-between">
           <ul className="space-y-2 text-ink-inverse-muted">
             {agent.bullets.map((bullet) => (
@@ -75,8 +75,8 @@ export default function AgentesSection() {
           <div id="agentes-title">
             <LineReveal
               text={AGENTES.headline.text}
-              accent={AGENTES.headline.accent}
-              className="mt-5 text-h1 font-semibold"
+              lowFrom={AGENTES.headline.lowFrom}
+              className="mt-5 text-h1 font-headline"
             />
           </div>
         </div>

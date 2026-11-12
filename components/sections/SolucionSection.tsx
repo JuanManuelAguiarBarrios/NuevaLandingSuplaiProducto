@@ -39,7 +39,7 @@ export default function SolucionSection() {
 
         <div className="lg:col-span-5 lg:col-start-8 lg:self-center">
           <div id="solucion-title">
-            <LineReveal text={SOLUCION.headline.text} accent={SOLUCION.headline.accent} className="text-h2 font-semibold" />
+            <LineReveal text={SOLUCION.headline.text} lowFrom={SOLUCION.headline.lowFrom} className="text-h2 font-headline" />
           </div>
           <m.ol variants={stagger} initial="hidden" whileInView="show" viewport={VIEWPORT} className="mt-10">
             {SOLUCION.steps.map((step) => (
@@ -50,10 +50,10 @@ export default function SolucionSection() {
                 onMouseLeave={() => setActivePlane(null)}
                 className="grid grid-cols-[3rem_1fr] gap-4 border-t border-line py-6"
               >
-                <span className="font-mono text-[11px] text-ink-muted tabular-nums">{step.n}</span>
+                <span className="text-xs text-ink-muted tabular-nums">{step.n}</span>
                 <div>
                   <p className="eyebrow text-ink-muted">{step.label}</p>
-                  <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
+                  <h3 className="mt-2 text-lg font-headline">{step.title}</h3>
                   <p className="mt-2 text-ink-muted">{step.body}</p>
                 </div>
               </m.li>
@@ -65,7 +65,7 @@ export default function SolucionSection() {
       <div className="mt-20 grid gap-10 border-t border-line px-5 pt-16 sm:px-8 lg:mt-28 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:pt-20">
         <m.div variants={fadeUp} initial="hidden" whileInView="show" viewport={VIEWPORT} className="lg:col-span-4">
           <p className="eyebrow text-ink-muted">{SOLUCION.control.eyebrow}</p>
-          <h3 className="mt-5 text-h3 font-semibold">{SOLUCION.control.title}</h3>
+          <h3 className="mt-5 text-h3 font-headline">{SOLUCION.control.title}</h3>
           <p className="mt-4 max-w-sm text-ink-muted">{SOLUCION.control.body}</p>
           <dl className="mt-8 border-t border-line">
             {SOLUCION.control.legend.map((entry) => (

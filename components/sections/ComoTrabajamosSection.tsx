@@ -48,7 +48,7 @@ function StepContent({ step }: { step: Step }) {
         <span className="tabular-nums">{step.n}</span>
         <span>{step.label}</span>
       </p>
-      <h3 id={titleId} className="mt-5 text-h1 font-semibold text-ink-inverse">
+      <h3 id={titleId} className="mt-5 text-h1 font-headline text-ink-inverse">
         {step.title.split('\n').map((line) => (
           <span key={line} className="block">
             {line}
@@ -124,9 +124,9 @@ function StepCounter({ active, progress }: { active: number; progress: MotionVal
   const scaleX = useScrollRange(progress, [0, TRAVEL], [1 / STEPS.length, 1])
   return (
     <div aria-hidden="true" className="absolute right-12 bottom-20 z-20 w-56 text-right">
-      <p className="font-sans text-[clamp(3rem,5vw,4.5rem)] leading-none font-light tracking-[-0.04em] text-ink-inverse tabular-nums">
+      <p className="text-[clamp(3rem,5vw,4.5rem)] leading-none font-headline tracking-[-0.04em] text-ink-inverse tabular-nums">
         {step.n}
-        <span className="ml-1 align-top font-mono text-xs tracking-normal text-caption">
+        <span className="ml-1 align-top text-xs tracking-normal text-caption">
           de {String(STEPS.length).padStart(2, '0')}
         </span>
       </p>
@@ -159,8 +159,8 @@ export default function ComoTrabajamosSection() {
           <div id="como-title">
             <LineReveal
               text={COMO_TRABAJAMOS.headline.text}
-              accent={COMO_TRABAJAMOS.headline.accent}
-              className="mt-5 text-h1 font-semibold"
+              lowFrom={COMO_TRABAJAMOS.headline.lowFrom}
+              className="mt-5 text-h1 font-headline"
             />
           </div>
         </div>
