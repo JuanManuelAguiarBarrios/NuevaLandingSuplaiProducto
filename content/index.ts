@@ -430,6 +430,23 @@ export const CONTROL_STATES: Record<FlowState, string> = {
   escalated: 'Escalación',
 }
 
+/**
+ * Línea de ejecución: canal por donde entra el pedido, sistema donde queda
+ * cargado y estado. Solo canales, sistemas y estados que existen en el
+ * producto; no se inventan códigos, horarios ni cifras para decorar.
+ */
+export interface ExecutionStep {
+  channel: string
+  system: string
+  state: FlowState
+}
+
+export const EXECUTION = {
+  label: 'Línea de ejecución',
+  hero: { channel: 'WhatsApp', system: 'TMS', state: 'resolved' } satisfies ExecutionStep,
+  cierre: { channel: 'Llamadas', system: 'TMS', state: 'resolved' } satisfies ExecutionStep,
+}
+
 export type ChannelKey = 'whatsapp' | 'voice' | 'email'
 
 export interface ActivityItem {

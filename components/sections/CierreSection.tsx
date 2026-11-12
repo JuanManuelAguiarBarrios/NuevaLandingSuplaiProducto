@@ -3,7 +3,8 @@
 import { m } from 'framer-motion'
 import LineReveal from '@/components/LineReveal'
 import ParallaxImage from '@/components/ParallaxImage'
-import { CIERRE, CONTACT_EMAIL, DEMO_URL, WHATSAPP, whatsappUrl } from '@/content'
+import ExecutionLine from '@/components/product/ExecutionLine'
+import { CIERRE, CONTACT_EMAIL, DEMO_URL, EXECUTION, WHATSAPP, whatsappUrl } from '@/content'
 import { fadeUp, VIEWPORT } from '@/lib/motion'
 
 /**
@@ -26,6 +27,7 @@ export default function CierreSection() {
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-night via-night/40 to-night/20" />
 
       <div className="relative flex min-h-svh flex-col justify-end px-5 pt-32 pb-16 sm:px-8 lg:px-12 lg:pb-24">
+        <ExecutionLine step={EXECUTION.cierre} tone="dark" className="mb-8" />
         <div id="cierre-title" className="max-w-5xl">
           <LineReveal text={CIERRE.headline.text} lowFrom={CIERRE.headline.lowFrom} className="text-h1 font-headline" />
         </div>

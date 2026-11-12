@@ -7,8 +7,9 @@ import HeroMap from '@/components/hero/HeroMap'
 import RotatingWords from '@/components/hero/RotatingWords'
 import { lineTone } from '@/components/LineReveal'
 import { MAP_PINS, MAP_VIEWBOX } from '@/components/hero/coneSur'
+import ExecutionLine from '@/components/product/ExecutionLine'
 import { MessageIcon } from '@/components/product/icons'
-import { DEMO_URL, HERO, WHATSAPP, whatsappUrl } from '@/content'
+import { DEMO_URL, EXECUTION, HERO, WHATSAPP, whatsappUrl } from '@/content'
 import { lineUp, stagger, VIEWPORT } from '@/lib/motion'
 import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
@@ -126,7 +127,7 @@ export default function HeroSection() {
               </p>
               {/* Tamaño relativo al ancho de la columna (cqw): en desktop la línea más
                   larga del titular entra entera; en mobile el texto fluye sin cortes fijos. */}
-              <h1 className="intro-solid mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-headline tracking-[-0.04em] text-balance text-ink-inverse lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
+              <h1 className="intro-solid mt-4 text-[clamp(1.875rem,8.6cqw,3rem)] leading-[1.04] font-headline tracking-[-0.045em] text-balance text-ink-inverse lg:mt-5 lg:text-[clamp(2rem,6.8cqw,4.25rem)] lg:text-wrap">
                 {propositionLines.map((line, i) => (
                   <span key={line} className={`lg:block ${lineTone(i, HERO.proposition.lowFrom)}`}>
                     {line}{' '}
@@ -217,12 +218,16 @@ export default function HeroSection() {
           </m.div>
 
           <div className="absolute inset-x-0 bottom-0 grid gap-8 px-5 pb-10 sm:px-8 lg:grid-cols-12 lg:items-end lg:px-12 lg:pb-14">
+            <div className="lg:col-span-8">
+              <m.div style={isScrollMotion ? { opacity: restOpacity } : undefined}>
+                <ExecutionLine step={EXECUTION.hero} tone="dark" className="mb-6" />
+              </m.div>
             <m.h2
               variants={stagger}
               initial={isScrollMotion ? false : 'hidden'}
               whileInView={isScrollMotion ? undefined : 'show'}
               viewport={VIEWPORT}
-              className="text-[clamp(1.625rem,0.5rem+3.6vw,4.5rem)] leading-[1.02] font-headline tracking-[-0.04em] text-ink-inverse lg:col-span-8"
+              className="text-[clamp(1.625rem,0.5rem+3.6vw,4.5rem)] leading-[1.02] font-headline tracking-[-0.045em] text-ink-inverse"
             >
               {lines.map((line, i) => (
                 <span key={line} className={MASK}>
@@ -236,6 +241,7 @@ export default function HeroSection() {
                 </span>
               ))}
             </m.h2>
+            </div>
 
             <m.div
               style={isScrollMotion ? { opacity: restOpacity, y: restY } : undefined}
