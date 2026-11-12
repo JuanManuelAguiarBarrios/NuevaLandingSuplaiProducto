@@ -120,12 +120,20 @@
 
   /* Link editorial con hairline que se completa en hover. */
   .link-line {
+    position: relative;
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 100% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
     padding-bottom: 3px;
     transition: background-size 0.5s var(--ease-editorial);
+  }
+
+  /* Área táctil de 44 px sin cambiar cómo se ve el link. */
+  .link-line::after {
+    content: "";
+    position: absolute;
+    inset: -0.65rem 0;
   }
 
   .link-line:hover {

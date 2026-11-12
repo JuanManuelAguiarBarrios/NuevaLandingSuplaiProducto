@@ -20,13 +20,13 @@ export default function Footer() {
           {FOOTER.columns.map((column) => (
             <div key={column.title}>
               <h2 className="eyebrow text-caption">{column.title}</h2>
-              <ul className="mt-5 space-y-3 text-sm">
+              <ul className="mt-3 text-sm">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       {...('arrow' in link ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="text-ink-inverse-muted transition-colors hover:text-ink-inverse"
+                      className="inline-block py-2 text-ink-inverse-muted transition-colors hover:text-ink-inverse"
                     >
                       {link.label}
                       {'arrow' in link && <span aria-hidden="true"> {link.arrow}</span>}
@@ -42,10 +42,10 @@ export default function Footer() {
       <div className="mt-20 flex flex-col gap-4 border-t border-line-inverse pt-6 text-xs text-caption sm:flex-row sm:items-center sm:justify-between">
         <p>{FOOTER.legal}</p>
         <div className="flex gap-6">
-          <a href={`mailto:${CONTACT_EMAIL}`} className="transition-colors hover:text-ink-inverse">
+          <a href={`mailto:${CONTACT_EMAIL}`} className="py-2 transition-colors hover:text-ink-inverse">
             {CONTACT_EMAIL}
           </a>
-          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-ink-inverse">
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="py-2 transition-colors hover:text-ink-inverse">
             LinkedIn <span aria-hidden="true">↗</span>
           </a>
         </div>

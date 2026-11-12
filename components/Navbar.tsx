@@ -107,7 +107,7 @@ export default function Navbar() {
         href="#inicio"
         aria-label={NAV.homeLabel}
         onClick={() => setIsMenuOpen(false)}
-        className="pointer-events-auto relative mt-2 block h-6 w-[89px]"
+        className="pointer-events-auto relative mt-2.5 block h-6 w-[89px] after:absolute after:-inset-2.5"
       >
         <Image
           src="/brand/suplai-lockup-white.png"
@@ -131,7 +131,7 @@ export default function Navbar() {
           href={DEMO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
+          className="inline-flex min-h-11 items-center gap-2 bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
         >
           {/* En mobile el texto corto, para que entre al lado de "Menú". */}
           <span className="sm:hidden">{NAV.ctaShort}</span>
@@ -144,7 +144,7 @@ export default function Navbar() {
           aria-expanded={isMenuOpen}
           aria-controls={MENU_ID}
           onClick={() => setIsMenuOpen((open) => !open)}
-          className={`inline-flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-300 ${plate}`}
+          className={`inline-flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-300 ${plate}`}
         >
           {menuLabel}
           <span aria-hidden="true" className="relative block h-2.5 w-4">
