@@ -115,12 +115,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}
         />
 
-        {/* Google tag (gtag.js) con afterInteractive, para no competir con el LCP del hero */}
+        {/* Google tag (gtag.js) con lazyOnload: baja cuando el navegador queda libre,
+            después de la carga de la página, y no compite con el contenido. */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-MP07NLY22V"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
