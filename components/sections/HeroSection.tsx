@@ -195,11 +195,14 @@ export default function HeroSection() {
           </m.p>
         </div>
 
-        {/* ── Acto 2: la operación ── */}
+        {/* ── Acto 2: la operación ──
+            El recorte en cero va también por clase: Framer aplica el clip-path del
+            style un frame después de que el acto pasa a cubrir el escenario, y en
+            ese frame el poster del video tapaba el hero (parpadeo y salto de layout). */}
         <m.div
           inert={isActTwoInert}
           style={isScrollMotion ? { clipPath } : undefined}
-          className="relative min-h-[92svh] overflow-hidden group-data-[motion=on]/hero:absolute group-data-[motion=on]/hero:inset-0 group-data-[motion=on]/hero:min-h-0"
+          className="relative min-h-[92svh] overflow-hidden group-data-[motion=on]/hero:absolute group-data-[motion=on]/hero:inset-0 group-data-[motion=on]/hero:min-h-0 group-data-[motion=on]/hero:[clip-path:circle(0%)]"
         >
           <m.div
             style={isScrollMotion ? { scale: mediaScale } : undefined}
