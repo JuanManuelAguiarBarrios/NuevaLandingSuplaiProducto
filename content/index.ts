@@ -142,7 +142,7 @@ export interface ClientLogo {
 }
 
 export const CLIENTES = {
-  title: 'Trabajamos con operaciones logísticas de la región',
+  title: 'Ya trabajan con Suplai',
   logos: [
     { name: 'Costa Oriental', src: '/clientes/costa-oriental.svg', ratio: 1376 / 289 },
     { name: 'El Naranjo', src: '/clientes/el-naranjo.svg', ratio: 1500 / 340 },
@@ -166,10 +166,10 @@ export const APOYOS = {
 export const PROBLEMA = {
   eyebrow: 'El problema',
   headline: {
-    text: 'Tener los datos no alcanza.\nAlguien tiene que actuar\nsobre ellos.',
-    accent: 'actuar',
+    text: 'Tu equipo pasa el día\nrespondiendo lo mismo.',
+    accent: 'mismo',
   } satisfies Headline,
-  intro: 'Tu equipo pasa el día respondiendo lo mismo, persiguiendo choferes y pasando datos de un sistema a otro.',
+  intro: 'Consultas por WhatsApp, llamadas de choferes y datos que alguien pasa a mano de un sistema a otro.',
   labels: { problema: 'Qué pasa hoy', costo: 'Qué cuesta' },
   rows: [
     {
@@ -181,7 +181,7 @@ export const PROBLEMA = {
       costo: 'Retrasos y menor nivel de servicio',
     },
     {
-      problema: 'Coordinación constante entre equipos y conductores',
+      problema: 'Coordinación constante entre equipos y choferes',
       costo: 'Difícil escalar la operación sin sumar más gente',
     },
   ],
@@ -218,7 +218,7 @@ export const AGENTES = {
       n: '01',
       name: 'Atención por WhatsApp',
       bullets: [
-        'Responde 24/7 sin sumar personas',
+        'Responde a toda hora sin sumar personas',
         'Deriva solo lo que necesita criterio humano',
         'Cada conversación queda trazada en el panel',
       ],
@@ -238,11 +238,11 @@ export const AGENTES = {
     {
       key: 'conductores',
       n: '03',
-      name: 'Coordinación con conductores',
+      name: 'Coordinación con choferes',
       bullets: [
         'Confirma entregas sin perseguir choferes',
         'Detecta demoras apenas ocurren',
-        'El conductor usa el canal que ya conoce',
+        'El chofer usa el canal que ya conoce',
       ],
       link: 'Quiero este agente',
     },
@@ -263,7 +263,7 @@ export const AGENTES = {
       name: 'Seguimiento de incidencias',
       bullets: [
         'Detecta la excepción antes de que el cliente llame',
-        'Escala a la persona correcta, solo',
+        'Avisa a la persona indicada sin que nadie lo pida',
         'Registro completo de cada evento',
       ],
       link: 'Quiero este agente',
@@ -426,7 +426,7 @@ export const SOLUCION = {
   /** Diagrama de tres planos apilados (canales, Suplai, sistemas). */
   diagram: {
     label: 'Diagrama de tres planos. Arriba tus canales, en el medio Suplai y abajo tus sistemas, conectados entre sí.',
-    canales: { title: 'Tus canales', items: ['WhatsApp', 'Voz', 'Email'] },
+    canales: { title: 'Tus canales', items: ['WhatsApp', 'Llamadas', 'Mail'] },
     suplai: { title: 'Suplai', caption: 'Agentes de IA' },
     sistemas: { title: 'Tus sistemas', items: ['TMS', 'WMS', 'ERP', 'Planillas'] },
     /** Eventos que viajan entre planos, con los estados de Suplai Control. */
@@ -474,15 +474,15 @@ export const SOLUCION = {
       n: '02',
       label: 'Atiende',
       plane: 'canales',
-      title: 'El agente opera en tiempo real',
-      body: 'Los agentes atienden llamadas, responden mensajes y capturan datos en tiempo real.',
+      title: 'El agente atiende',
+      body: 'Contesta llamadas, WhatsApp y mails con los datos de tus sistemas, a cualquier hora.',
     },
     {
       n: '03',
       label: 'Resuelve',
       plane: 'suplai',
-      title: 'La operación se coordina sola',
-      body: 'Estados, envíos e incidencias se actualizan y coordinan solos. Vos supervisás las excepciones.',
+      title: 'Todo queda cargado',
+      body: 'Estados, envíos e incidencias se actualizan en tus sistemas. A tu equipo le llegan solo las excepciones.',
     },
   ] satisfies { n: string; label: string; plane: PlaneKey; title: string; body: string }[],
 }
