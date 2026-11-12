@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
-import { Newsreader } from 'next/font/google'
-import { GeistMono } from 'geist/font/mono'
+import { Geist_Mono, Newsreader } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import WhatsappFloat from '@/components/WhatsappFloat'
@@ -19,14 +18,23 @@ const inter = Inter({
 // Newsreader es el fallback serif editorial más cercano (mismo espíritu).
 // Cuando tengás la licencia de PP Editorial New, reemplazá esta línea
 // con localFont() apuntando a los archivos en public/fonts/.
-// Solo se usa peso 400 (normal + italic) en toda la landing — ver `font-normal`
-// en cada `font-editorial`. Pedir 300/500 acá descargaría variantes sin uso.
+// Solo se usa la itálica en peso 400 (clase `.accent`). Pedir la redonda u
+// otros pesos descargaría variantes sin uso.
 const newsreader = Newsreader({
   subsets: ['latin'],
   variable: '--font-newsreader',
   display: 'swap',
-  style: ['normal', 'italic'],
+  style: ['italic'],
   weight: ['400'],
+})
+
+// Solo para numeración chica (índices, horas): no se precarga, así no
+// compite con Inter y la itálica en la carga inicial.
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
+  display: 'swap',
+  preload: false,
 })
 
 const SITE_URL = 'https://getsuplai.com'
@@ -87,7 +95,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="es-UY"
-      className={`${inter.variable} ${newsreader.variable} ${GeistMono.variable}`}
+      className={`${inter.variable} ${newsreader.variable} ${geistMono.variable}`}
     >
       <body className="bg-paper font-sans text-ink antialiased">
         <a
