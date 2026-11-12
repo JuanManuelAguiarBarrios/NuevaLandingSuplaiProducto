@@ -164,6 +164,15 @@
   animation: intro-slide 0.9s var(--ease-editorial) both;
 }
 
+/* Palabra que rota en el hero: sube desde abajo dentro de su máscara. */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(70%); }
+}
+
+.word-in {
+  animation: word-in 0.6s var(--ease-editorial) both;
+}
+
 /* Pulso de los puntos del mapa. */
 @keyframes pin-pulse {
   0%   { opacity: 0.7; transform: scale(1); }
@@ -184,6 +193,7 @@
 @media (prefers-reduced-motion: reduce) {
   .intro,
   .intro-solid,
+  .word-in,
   .pin-pulse {
     animation: none !important;
   }
