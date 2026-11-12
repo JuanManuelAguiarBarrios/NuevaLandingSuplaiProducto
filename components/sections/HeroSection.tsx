@@ -18,7 +18,7 @@ import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
  *  2. Operación: al scrollear, el mapa hace zoom hacia Uruguay y el video
  *     se abre en un círculo desde ese punto (clip-path); después suben las
  *     dos líneas del titular.
- * En desktop sin reduced-motion la sección mide 240svh con un escenario
+ * En desktop sin reduced-motion la sección mide 180svh con un escenario
  * sticky. En mobile / reduced-motion los dos actos se apilan.
  * El video se ve desde el primer momento, sin poster: arranca con
  * preload="auto" y el MP4 tiene el moov al principio (faststart).
@@ -87,7 +87,7 @@ export default function HeroSection() {
       data-tone="dark"
       data-motion={isScrollMotion ? 'on' : 'off'}
       aria-label="Inicio"
-      className="group/hero relative bg-night text-ink-inverse data-[motion=on]:h-[240svh]"
+      className="group/hero relative bg-night text-ink-inverse data-[motion=on]:h-[180svh]"
     >
       <div
         ref={stageRef}

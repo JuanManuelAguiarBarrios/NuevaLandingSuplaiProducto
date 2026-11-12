@@ -187,7 +187,6 @@ export const AGENTES = {
   subtitle:
     'Elegí el proceso que más te cuesta y empezá por ese agente.',
   allLink: 'Agendá una demo',
-  progressLabel: 'Progreso de la lista de agentes',
   items: [
     {
       key: 'whatsapp',
