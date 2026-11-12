@@ -22,7 +22,8 @@ type Industry = (typeof ITEMS)[number]
 /** Imagen de la vertical (entra con un wipe) y sus dolores escalonados. */
 function IndustryPanel({ item, index }: { item: Industry; index: number }) {
   return (
-    <>
+    // En tablet, foto y dolores van lado a lado: apilada, la foto ocupa toda la pantalla.
+    <div className="md:grid md:grid-cols-2 md:items-start md:gap-8 lg:block">
       <div className="relative aspect-[4/3] overflow-hidden bg-night">
         <AnimatePresence initial={false}>
           <m.div
@@ -47,7 +48,7 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-[10rem_1fr]">
+      <div className="mt-8 grid gap-4 sm:grid-cols-[10rem_1fr] md:mt-0 md:grid-cols-1 lg:mt-8 lg:grid-cols-[10rem_1fr]">
         <p className="eyebrow pt-1 text-ink-muted">{INDUSTRIAS.painsLabel}</p>
         <m.ul key={item.key} variants={stagger} initial="hidden" animate="show" className="space-y-3">
           {item.pains.map((pain) => (
@@ -57,7 +58,7 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
           ))}
         </m.ul>
       </div>
-    </>
+    </div>
   )
 }
 

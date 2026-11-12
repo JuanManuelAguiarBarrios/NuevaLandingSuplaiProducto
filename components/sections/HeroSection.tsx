@@ -172,14 +172,15 @@ export default function HeroSection() {
             </ol>
           </m.div>
 
-          <div className="relative flex items-center justify-center lg:col-span-5">
+          {/* Solo en desktop: en pantallas chicas la lista de países ya dice lo mismo. */}
+          <div className="relative hidden items-center justify-center lg:col-span-5 lg:flex">
             <m.div
               style={
                 isScrollMotion
                   ? { scale: mapScale, opacity: mapOpacity, transformOrigin: MAP_ORIGIN }
                   : undefined
               }
-              className="intro relative aspect-[491/790] w-full max-w-[15rem] [animation-delay:250ms] sm:max-w-[20rem] lg:h-[min(76svh,820px)] lg:w-auto lg:max-w-none"
+              className="intro relative aspect-[491/790] h-[min(76svh,820px)] [animation-delay:250ms]"
             >
               <HeroMap labels={HERO.countries} sedeRef={sedeRef} />
             </m.div>
