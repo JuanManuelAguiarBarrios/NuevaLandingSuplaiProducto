@@ -9,8 +9,8 @@ Next.js 15 (App Router) landing page for **Suplai** — a logistics AI platform.
 - **Framework**: Next.js 15 App Router (`app/`), React 19
 - **Language**: TypeScript (`.tsx` / `.ts`)
 - **Styling**: Tailwind CSS v4 (CSS-first, `@theme` en `app/globals.css`)
-- **Animation**: Framer Motion (`m` + `LazyMotion`) para las secciones · entrada del hero por CSS (`.hero-rise`) · smooth scroll con Lenis
-- **Fonts**: `next/font` (Inter, Newsreader como fallback de PP Editorial New, Geist Mono)
+- **Animation**: Framer Motion (`m` + `LazyMotion`) para las secciones · entrada del hero por CSS (`.intro`, y `.intro-solid` sin opacidad para el titular, que es el LCP) · smooth scroll con Lenis
+- **Fonts**: `next/font/google` (Inter, Newsreader solo en itálica como fallback de PP Editorial New, Geist Mono sin precarga)
 - **Package manager**: npm
 
 ## File Layout
@@ -20,6 +20,9 @@ app/             Next.js routes, layout, icon.svg, opengraph-image.tsx
 components/
   Navbar.tsx
   sections/      One file per page section
+  product/       Piezas de las vistas de producto (MockupPanel, StatusPill, ControlPanel, íconos)
+  agents/        Mockup de cada agente
+  solucion/      Diagrama de tres planos (SVG en desktop, versión vertical en mobile)
 content/         Todo el copy centralizado (index.ts)
 lib/             providers.tsx (Lenis + MotionConfig)
 ```
@@ -31,6 +34,7 @@ lib/             providers.tsx (Lenis + MotionConfig)
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
 | `npx tsc --noEmit` | Type-check only |
+| `npm run lint` | ESLint (CLI) |
 
 ## Slash Commands (ECC)
 
