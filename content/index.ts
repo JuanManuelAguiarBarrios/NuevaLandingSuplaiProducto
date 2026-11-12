@@ -189,7 +189,7 @@ export const PROBLEMA = {
 
 /* ── Agentes ────────────────────────────────── */
 
-export type AgentKey = 'whatsapp' | 'voice' | 'conductores' | 'agenda' | 'incidencias' | 'custom'
+export type AgentKey = 'whatsapp' | 'voice' | 'conductores' | 'agenda' | 'incidencias' | 'documentos' | 'custom'
 
 export interface Agent {
   key: AgentKey
@@ -269,8 +269,19 @@ export const AGENTES = {
       link: 'Quiero este agente',
     },
     {
-      key: 'custom',
+      key: 'documentos',
       n: '06',
+      name: 'Facturas y documentos por mail',
+      bullets: [
+        'Lee las facturas y documentos que llegan por mail',
+        'Extrae los datos y los deja cargados',
+        'Marca para revisar lo que no cierra',
+      ],
+      link: 'Quiero este agente',
+    },
+    {
+      key: 'custom',
+      n: '07',
       name: '¿No lo ves acá? Lo construimos',
       bullets: [
         'Cada operación es distinta.',
@@ -338,6 +349,16 @@ export const MOCKUPS = {
       { time: '11:00', title: 'Reprogramado por el agente', who: 'Daniel Acosta', state: 'resolved' },
     ] satisfies { time: string; title: string; who: string; state: FlowState }[],
     free: { time: '12:30', title: 'Horario disponible' },
+  },
+  documentos: {
+    label: 'Vista de facturas procesadas. Llegan por mail, el agente extrae los datos y marca la que una persona tiene que revisar.',
+    title: 'Facturas procesadas',
+    source: 'Recibidas por mail',
+    rows: [
+      { title: 'Factura de fletes', detail: 'Datos cargados en la planilla', state: 'resolved', status: 'Resuelta' },
+      { title: 'Factura de combustible', detail: 'Para revisar por una persona', state: 'escalated', status: 'Requiere verificación' },
+      { title: 'Factura de repuestos', detail: 'Leyendo el documento', state: 'running', status: 'En curso' },
+    ] satisfies { title: string; detail: string; state: FlowState; status: string }[],
   },
   incidencias: {
     label: 'Vista de una incidencia. El agente detecta una demora, avisa al cliente y la escala a una persona del equipo.',

@@ -3,11 +3,12 @@ import CallMockup from '@/components/agents/mockups/CallMockup'
 import ChatMockup from '@/components/agents/mockups/ChatMockup'
 import DeliveryMockup from '@/components/agents/mockups/DeliveryMockup'
 import IncidentMockup from '@/components/agents/mockups/IncidentMockup'
+import InvoiceMockup from '@/components/agents/mockups/InvoiceMockup'
 import type { AgentKey } from '@/content'
 
 /**
  * Vista de cada agente en su card: mockups de producto fieles a Suplai
- * Control para los cinco agentes de la lista. El agente a medida no tiene
+ * Control para los seis agentes de la lista. El agente a medida no tiene
  * pantalla propia y conserva una viñeta de línea.
  */
 
@@ -33,6 +34,7 @@ const VIEWS: Record<AgentKey, (props: { className?: string }) => React.ReactNode
   conductores: DeliveryMockup,
   agenda: AgendaMockup,
   incidencias: IncidentMockup,
+  documentos: InvoiceMockup,
   custom: CustomVignette,
 }
 

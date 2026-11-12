@@ -8,27 +8,38 @@ import type { Agent } from '@/content'
 import { fadeUp, stagger } from '@/lib/motion'
 
 /**
- * Agentes: 6 cards numeradas en una grilla de 1, 2 y 3 columnas. Sin pin
+ * Agentes: cards numeradas en una grilla de 1, 2 y 3 columnas. La última,
+ * el agente a medida, cierra la grilla a todo el ancho. Sin pin
  * ni scroll horizontal: la sección se recorre con el scroll normal de la
  * página, para llegar rápido a Industrias.
  */
 
 const TOTAL = String(AGENTES.items.length).padStart(2, '0')
 
+const isCustom = (agent: Agent) => agent.key === 'custom'
+
 function AgentCard({ agent }: { agent: Agent }) {
+  const isWide = isCustom(agent)
   return (
-    <article className="flex h-full flex-col">
-      <div className="flex min-h-80 items-center justify-center border border-line-inverse bg-night-raised p-5 sm:h-[27rem] sm:p-6">
+    <article
+      id={`agente-${agent.key}`}
+      className={`flex h-full scroll-mt-24 flex-col ${isWide ? 'sm:flex-row sm:items-center sm:gap-8 lg:gap-12' : ''}`}
+    >
+      <div
+        className={`flex items-center justify-center border border-line-inverse bg-night-raised p-5 sm:p-6 ${
+          isWide ? 'min-h-48 sm:h-56 sm:w-1/3 sm:shrink-0' : 'min-h-80 sm:h-[27rem]'
+        }`}
+      >
         <div className="w-full max-w-[19rem]">
           <AgentVignette agentKey={agent.key} />
         </div>
       </div>
 
-      <p aria-hidden="true" className="mt-6 font-mono text-[11px] text-caption tabular-nums">
-        {agent.n} de {TOTAL}
-      </p>
-      <div className="mt-3 flex flex-1 flex-col">
-        <h3 className="text-h3 font-semibold text-ink-inverse">{agent.name}</h3>
+      <div className={`flex flex-1 flex-col ${isWide ? 'mt-6 sm:mt-0' : 'mt-6'}`}>
+        <p aria-hidden="true" className="font-mono text-[11px] text-caption tabular-nums">
+          {agent.n} de {TOTAL}
+        </p>
+        <h3 className="mt-3 text-h3 font-semibold text-ink-inverse">{agent.name}</h3>
         <div className="mt-4 flex flex-1 flex-col items-start justify-between">
           <ul className="space-y-2 text-ink-inverse-muted">
             {agent.bullets.map((bullet) => (
@@ -90,7 +101,7 @@ export default function AgentesSection() {
         className="mt-16 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3"
       >
         {AGENTES.items.map((agent) => (
-          <m.li key={agent.key} variants={fadeUp}>
+          <m.li key={agent.key} variants={fadeUp} className={isCustom(agent) ? 'sm:col-span-2 lg:col-span-3' : undefined}>
             <AgentCard agent={agent} />
           </m.li>
         ))}
