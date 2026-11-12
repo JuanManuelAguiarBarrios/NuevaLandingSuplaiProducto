@@ -1,6 +1,6 @@
 # AUDIT — landing de Suplai
 
-Estado real del repo al 2026-11-11, en la rama `mejora/marca-premium` (sale de `mejora/revision-integral`, que a su vez sale de `mejora/producto-conversion`).
+Estado real del repo al 2026-11-11. Todo está en `main` y publicado en https://suplai-landing-editorial.vercel.app (proyecto `suplai-landing-editorial` de Vercel, que despliega `main` solo).
 Stack: Next.js 15.5.29 (App Router), React 19, Tailwind v4, Framer Motion 12, Lenis 1.3.
 Página única, 100% estática.
 
@@ -104,8 +104,9 @@ Abierto:
 
 ## Pendiente
 
-### Bloquea la publicación
-- Cuatro `[COMPLETAR ...]` en `FAQ` (`content/index.ts`): sistemas con integración probada, tratamiento de datos, modelo de precios y qué se necesita del cliente. Se ven tal cual en la página.
+### Contenido por completar
+- Cuatro `[COMPLETAR ...]` en `FAQ` (`content/index.ts`): sistemas con integración probada, tratamiento de datos, modelo de precios y qué se necesita del cliente. No se publican: la página oculta los párrafos pendientes y la pregunta de precios, que no tiene otra respuesta. Al completarlos en `content/index.ts` vuelven a aparecer solos.
+- El dominio getsuplai.com no está en la cuenta de Vercel que despliega este repo. Esta versión no está publicada ahí.
 
 ### Para validar
 - El mapeo industria → agente es una propuesta editorial: logística → voz, distribuidoras → choferes, importadoras → facturas y documentos, portuarias → agenda y turnos, flota propia → incidencias, centros de distribución → WhatsApp.
