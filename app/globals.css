@@ -176,25 +176,15 @@
   animation: pin-pulse 2.4s var(--ease-signature) infinite;
 }
 
-/* Marquee: la pista contiene el contenido duplicado; -50% cierra el loop. */
+/* Loop horizontal: la pista lleva el contenido duplicado; -50% cierra el loop. */
 @keyframes marquee {
   to { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  animation: marquee var(--marquee-duration, 40s) linear infinite;
-}
-
-.marquee[data-paused="true"] .marquee-track,
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .intro,
   .intro-solid,
-  .pin-pulse,
-  .marquee-track {
+  .pin-pulse {
     animation: none !important;
   }
 }
