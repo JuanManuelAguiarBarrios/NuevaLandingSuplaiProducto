@@ -33,7 +33,6 @@ export default async function OpengraphImage() {
           padding: '80px',
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse solo admite <img> */}
         <img src={logoSrc} width={LOGO.width} height={LOGO.height} alt="" />
 
         <div

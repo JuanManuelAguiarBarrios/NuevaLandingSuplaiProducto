@@ -125,8 +125,10 @@ export const HERO = {
   ctaPrimary: 'Agendá una demo',
   ctaWhatsapp: WHATSAPP.cta,
   ctaSecondary: { label: 'Ver agentes', href: '#agentes' },
+  /** Video del segundo acto y su poster (el primer cuadro del mismo video). */
   video: {
-    mp4: '/empresas/logistica.mp4',
+    mp4: '/hero/operacion.mp4',
+    poster: '/hero/operacion-poster.webp',
   },
 }
 

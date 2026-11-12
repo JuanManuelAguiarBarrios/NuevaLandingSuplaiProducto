@@ -21,8 +21,9 @@ import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
  *     dos líneas del titular.
  * En desktop sin reduced-motion la sección mide 180svh con un escenario
  * sticky. En mobile / reduced-motion los dos actos se apilan.
- * El video se ve desde el primer momento, sin poster: arranca con
- * preload="auto" y el MP4 tiene el moov al principio (faststart).
+ * El video lleva poster y no se descarga hasta que se acerca a la pantalla
+ * (ver AutoplayVideo): en mobile, donde el segundo acto queda debajo del
+ * primero, la carga inicial no lo incluye.
  */
 
 const SEDE = MAP_PINS.uruguay
@@ -191,13 +192,8 @@ export default function HeroSection() {
             className="absolute inset-0"
             aria-hidden="true"
           >
-            <AutoplayVideo
-              loop
-              preload="auto"
-              className="absolute inset-0 h-full w-full object-cover"
-            >
-              {/* #t=0.001 fuerza a Safari a pintar el primer frame enseguida. */}
-              <source src={`${HERO.video.mp4}#t=0.001`} type="video/mp4" />
+            <AutoplayVideo loop poster={HERO.video.poster} className="absolute inset-0 h-full w-full object-cover">
+              <source src={HERO.video.mp4} type="video/mp4" />
             </AutoplayVideo>
             <div className="absolute inset-0 bg-night/40" />
             <div className="absolute inset-0 bg-gradient-to-t from-night via-night/50 to-night/10" />

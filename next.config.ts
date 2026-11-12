@@ -1,5 +1,8 @@
 import type { NextConfig } from 'next'
 
+const ONE_DAY = 60 * 60 * 24
+const PUBLIC_ASSET_CACHE = `public, max-age=${ONE_DAY}, stale-while-revalidate=${ONE_DAY * 7}`
+
 const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   images: {
@@ -11,11 +14,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // Assets estáticos versionados por contenido (logos, fotos, videos) — cache agresivo.
+        // Los archivos de public/ no llevan hash en el nombre: si se reemplaza
+        // uno, la URL es la misma. Caché de un día y, pasado ese plazo, se sirve
+        // la copia guardada mientras se revalida en segundo plano (hasta una semana).
         source: '/:path*.(webp|png|jpg|jpeg|svg|mp4|webm)',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
+        headers: [{ key: 'Cache-Control', value: PUBLIC_ASSET_CACHE }],
       },
     ]
   },
