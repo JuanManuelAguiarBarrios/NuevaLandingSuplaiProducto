@@ -15,22 +15,21 @@ import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
  * abajo. En mobile / reduced-motion las cards se apilan.
  */
 
+const TOTAL = String(AGENTES.items.length).padStart(2, '0')
+
 function AgentCard({ agent }: { agent: Agent }) {
   return (
     <article className="flex w-full max-w-[860px] shrink-0 flex-col group-data-[motion=on]/agentes:w-[min(52vw,820px)]">
-      <div className="relative aspect-[16/9] overflow-hidden border border-line-inverse bg-night-raised group-data-[motion=on]/agentes:aspect-auto group-data-[motion=on]/agentes:h-[32svh]">
-        <span
-          aria-hidden="true"
-          className="absolute top-5 left-6 font-sans text-[clamp(4rem,8vw,7.5rem)] leading-none font-light tracking-[-0.04em] text-transparent [-webkit-text-stroke:1px_var(--color-caption)]"
-        >
-          {agent.n}
-        </span>
-        <div className="absolute right-[8%] bottom-[14%] w-[44%]">
+      <div className="flex min-h-80 items-center justify-center border border-line-inverse bg-night-raised p-5 sm:p-6">
+        <div className="w-full max-w-[19rem]">
           <AgentVignette agentKey={agent.key} />
         </div>
       </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 sm:gap-8">
+      <p aria-hidden="true" className="mt-6 font-mono text-[11px] text-caption tabular-nums">
+        {agent.n} de {TOTAL}
+      </p>
+      <div className="mt-3 grid gap-5 sm:grid-cols-2 sm:gap-8">
         <h3 className="text-h3 font-semibold text-ink-inverse">{agent.name}</h3>
         <div>
           <ul className="space-y-2 text-ink-inverse-muted">
@@ -92,7 +91,7 @@ export default function AgentesSection() {
       className="group/agentes relative bg-night text-ink-inverse"
     >
       <div className="group-data-[motion=on]/agentes:sticky group-data-[motion=on]/agentes:top-0 group-data-[motion=on]/agentes:flex group-data-[motion=on]/agentes:h-svh group-data-[motion=on]/agentes:flex-col group-data-[motion=on]/agentes:justify-between group-data-[motion=on]/agentes:overflow-hidden">
-        <header className="grid gap-8 px-5 pt-24 sm:px-8 lg:grid-cols-12 lg:px-12">
+        <header className="grid gap-8 px-5 pt-24 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-28">
           <div className="lg:col-span-7">
             <p className="eyebrow text-caption">{AGENTES.eyebrow}</p>
             <div id="agentes-title">
@@ -134,7 +133,7 @@ export default function AgentesSection() {
 
         <div className="hidden px-12 pb-8 group-data-[motion=on]/agentes:block" aria-hidden="true">
           <div className="h-px bg-line-inverse">
-            <m.div style={{ scaleX: progress }} className="h-px origin-left bg-accent-inverse" />
+            <m.div style={{ scaleX: progress }} className="h-px origin-left bg-ink-inverse" />
           </div>
         </div>
       </div>

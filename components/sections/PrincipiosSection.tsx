@@ -7,7 +7,7 @@ import { fadeUp, stagger, VIEWPORT } from '@/lib/motion'
 
 /**
  * Principios: titular a la izquierda, grilla 2×2 con hairlines a la
- * derecha. Íconos de línea propios (stroke fino, azul). Sección clara.
+ * derecha. Íconos de línea propios (stroke fino, en tinta). Sección clara.
  */
 
 const ICON_PROPS = {
@@ -17,7 +17,7 @@ const ICON_PROPS = {
   fill: 'none',
   strokeWidth: 1.25,
   'aria-hidden': true,
-  className: 'stroke-accent',
+  className: 'stroke-ink',
 } as const
 
 /** Sin migraciones: dos sistemas unidos sin moverse. */

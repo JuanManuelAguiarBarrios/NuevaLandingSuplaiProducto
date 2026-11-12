@@ -10,6 +10,10 @@
  *    texto visible. Cada frase se escribe para leerse bien sin ellos.
  *  - Datos sin verificar quedan como placeholder entre corchetes:
  *    [LOGO CLIENTE]. No inventar cifras, logos ni años.
+ *  - Las vistas de producto (MOCKUPS, SOLUCION.control) usan los datos
+ *    ficticios de la demo (Andarivel Logística, envío AND-1042), nunca
+ *    clientes reales. Las horas y los códigos de envío son datos de interfaz
+ *    y conservan su formato (10:42, AND-1042).
  */
 
 export const DEMO_URL = 'https://calendly.com/mateo-getsuplai/30min'
@@ -235,7 +239,80 @@ export const AGENTES = {
   ] satisfies Agent[],
 }
 
+/* ── Vistas de producto de cada agente ──────── */
+
+export interface ChatMessage {
+  from: 'contact' | 'agent'
+  text: string
+  time: string
+}
+
+export const MOCKUPS = {
+  agentLabel: 'Agente',
+  whatsapp: {
+    label: 'Vista de una conversación de WhatsApp. Una clienta consulta por su envío y el agente le responde con el estado y la llegada estimada.',
+    contact: 'María Pérez',
+    initials: 'MP',
+    channel: 'WhatsApp',
+    attendedBy: 'Atendida por el agente',
+    messages: [
+      { from: 'contact', text: 'Hola, quiero saber por dónde viene mi envío AND-1042', time: '10:41' },
+      { from: 'agent', text: 'Tu envío AND-1042 está en camino de Montevideo a Salto. Llega mañana.', time: '10:41' },
+      { from: 'contact', text: 'Perfecto, gracias', time: '10:42' },
+    ] satisfies ChatMessage[],
+    state: 'resolved' as FlowState,
+  },
+  voice: {
+    label: 'Vista de una llamada atendida por el agente, con la transcripción de lo que se habló.',
+    status: 'En llamada',
+    caller: 'María Pérez',
+    detail: 'Consulta por el pedido AND-1042',
+    transcript: 'Transcripción',
+    turns: [
+      { from: 'contact', text: 'Buenas, ¿cuándo llega mi pedido?', time: '11:05' },
+      { from: 'agent', text: 'Ya salió del depósito y llega hoy por la tarde.', time: '11:05' },
+    ] satisfies ChatMessage[],
+    state: 'running' as FlowState,
+  },
+  conductores: {
+    label: 'Vista de un pedido. El chofer avisa por WhatsApp que descargó y el agente deja la entrega confirmada.',
+    order: 'AND-1042',
+    destination: 'Salto',
+    driver: 'Raúl Sosa',
+    updated: 'Actualizado',
+    stageFrom: 'En camino',
+    stageTo: 'Descargado',
+    message: { from: 'contact', text: 'Listo, ya descargué en Salto', time: '15:20' } satisfies ChatMessage,
+    confirmation: 'Entrega confirmada',
+    state: 'resolved' as FlowState,
+  },
+  agenda: {
+    label: 'Vista de la agenda de turnos del día, con turnos confirmados, uno en curso y un horario libre.',
+    title: 'Turnos de hoy',
+    slots: [
+      { time: '08:00', title: 'Descarga de contenedor', who: 'Raúl Sosa', state: 'resolved' },
+      { time: '09:30', title: 'Retiro de mercadería', who: 'Lucía Benítez', state: 'running' },
+      { time: '11:00', title: 'Reprogramado por el agente', who: 'Daniel Acosta', state: 'resolved' },
+    ] satisfies { time: string; title: string; who: string; state: FlowState }[],
+    free: { time: '12:30', title: 'Horario disponible' },
+  },
+  incidencias: {
+    label: 'Vista de una incidencia. El agente detecta una demora, avisa al cliente y la escala a una persona del equipo.',
+    title: 'Demora en el envío AND-1042',
+    detail: 'El chofer avisó que llega más tarde de lo previsto',
+    timeline: ['Demora detectada por el agente', 'Cliente avisado por WhatsApp', 'Escalada a tu equipo'],
+    action: 'Tomar conversación',
+    state: 'escalated' as FlowState,
+  },
+}
+
 /* ── Cómo trabajamos ────────────────────────── */
+
+/** Cada paso lleva una foto o una vista de producto. */
+export type ProcessStep = { n: string; label: string; title: string; body: string } & (
+  | { image: MediaImage }
+  | { mockup: 'whatsapp' | 'control' }
+)
 
 export const COMO_TRABAJAMOS = {
   eyebrow: 'Cómo trabajamos',
@@ -262,16 +339,16 @@ export const COMO_TRABAJAMOS = {
       label: 'Implementamos',
       title: 'Activamos el agente\nsobre tus sistemas.',
       body: 'Trabajamos junto a tu equipo y lo ponemos a andar sin cortar el día a día.',
-      image: { src: '/proceso/implementamos.webp', alt: 'Camiones con las luces encendidas circulando por un playón mojado' },
+      mockup: 'whatsapp',
     },
     {
       n: '04',
       label: 'Mejoramos',
       title: 'Medimos, ajustamos\ny escalamos.',
       body: 'Evaluamos y ajustamos el agente con el tiempo, y lo llevamos a más procesos.',
-      image: { src: '/proceso/mejoramos.webp', alt: 'Grúa portuaria levantando un contenedor sobre un camión' },
+      mockup: 'control',
     },
-  ],
+  ] satisfies ProcessStep[],
 }
 
 /* ── Solución (posicionamiento) ─────────────── */
@@ -279,6 +356,23 @@ export const COMO_TRABAJAMOS = {
 export type PlaneKey = 'canales' | 'suplai' | 'sistemas'
 /** Estados de Suplai Control usados en el diagrama. */
 export type FlowState = 'running' | 'resolved' | 'escalated'
+
+/** Etiquetas de los tres estados, tal como se ven en Suplai Control. */
+export const CONTROL_STATES: Record<FlowState, string> = {
+  running: 'En curso',
+  resolved: 'Resuelto',
+  escalated: 'Escalación',
+}
+
+export type ChannelKey = 'whatsapp' | 'voice' | 'email'
+
+export interface ActivityItem {
+  channel: ChannelKey
+  title: string
+  detail: string
+  state: FlowState
+  time: string
+}
 
 export const SOLUCION = {
   eyebrow: 'Solución',
@@ -300,6 +394,30 @@ export const SOLUCION = {
       lookup: { label: 'Datos del pedido', state: 'running' },
     } satisfies Record<string, { label: string; state: FlowState }>,
     escalation: { label: 'Tu equipo', caption: 'Solo las excepciones' },
+  },
+  /** Vista del panel Suplai Control con los tres estados. */
+  control: {
+    eyebrow: 'Suplai Control',
+    title: 'Todo lo que hacen los agentes queda a la vista.',
+    body: 'Desde el panel seguís cada conversación, llamada y documento, y tomás el caso cuando hace falta una persona.',
+    label: 'Vista del panel Suplai Control con la actividad reciente de los agentes. Cada evento muestra su estado, que puede ser en curso, resuelto o escalación.',
+    nav: ['Inicio', 'Llamadas', 'Conversaciones', 'Mensajes de voz', 'Facturas procesadas'],
+    page: 'Inicio',
+    live: 'Actualización automática',
+    heading: 'Así viene la operación hoy',
+    feedTitle: 'Actividad reciente',
+    feedBody: 'Lo último que resolvieron los agentes.',
+    items: [
+      { channel: 'whatsapp', title: 'María Pérez', detail: 'Consultó el estado del envío AND-1042', state: 'resolved', time: '10:42' },
+      { channel: 'voice', title: 'Llamada a Raúl Sosa', detail: 'Seguimiento del pedido AND-1042', state: 'running', time: '10:38' },
+      { channel: 'email', title: 'Factura de un proveedor', detail: 'Llegó por mail y quedó cargada', state: 'resolved', time: '10:15' },
+      { channel: 'whatsapp', title: '099 000 102', detail: 'Pidió hablar con una persona', state: 'escalated', time: '09:57' },
+    ] satisfies ActivityItem[],
+    legend: [
+      { state: 'running', body: 'El agente lo está atendiendo ahora.' },
+      { state: 'resolved', body: 'Quedó cerrado y registrado.' },
+      { state: 'escalated', body: 'Pasó a una persona de tu equipo.' },
+    ] satisfies { state: FlowState; body: string }[],
   },
   steps: [
     {

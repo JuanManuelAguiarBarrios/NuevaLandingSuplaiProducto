@@ -66,7 +66,7 @@ export default function ProblemaSection() {
                 <span className="sr-only">{PROBLEMA.labels.problema}, </span>
                 {row.problema}
               </p>
-              <span aria-hidden="true" className="hidden text-h3 text-accent-inverse md:col-span-1 md:block">
+              <span aria-hidden="true" className="hidden text-h3 text-caption md:col-span-1 md:block">
                 →
               </span>
               <p className="text-lead text-ink-inverse-muted md:col-span-5 md:pt-1">

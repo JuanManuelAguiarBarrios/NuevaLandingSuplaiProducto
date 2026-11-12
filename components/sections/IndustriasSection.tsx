@@ -141,7 +141,7 @@ export default function IndustriasSection() {
                 <span className="flex-1 text-h3 font-medium">{industry.title}</span>
                 <span
                   aria-hidden="true"
-                  className={`text-accent transition-[opacity,transform] duration-500 ease-editorial ${isActive ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`}
+                  className={`text-ink transition-[opacity,transform] duration-500 ease-editorial ${isActive ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`}
                 >
                   →
                 </span>
@@ -177,7 +177,7 @@ export default function IndustriasSection() {
                 >
                   <span className="font-mono text-[11px] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <span className="flex-1 text-h3 font-medium">{industry.title}</span>
-                  <span aria-hidden="true" className={`text-accent transition-transform duration-500 ease-editorial ${isOpen ? 'rotate-90' : ''}`}>
+                  <span aria-hidden="true" className={`text-ink transition-transform duration-500 ease-editorial ${isOpen ? 'rotate-90' : ''}`}>
                     →
                   </span>
                 </button>

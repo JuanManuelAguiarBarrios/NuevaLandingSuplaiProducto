@@ -4,8 +4,11 @@ import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { m, useMotionValueEvent, useScroll } from 'framer-motion'
 import type { MotionValue } from 'framer-motion'
+import ChatMockup from '@/components/agents/mockups/ChatMockup'
 import LineReveal from '@/components/LineReveal'
+import ControlPanel from '@/components/product/ControlPanel'
 import { COMO_TRABAJAMOS, DEMO_URL } from '@/content'
+import type { ProcessStep } from '@/content'
 import { fadeUp, VIEWPORT } from '@/lib/motion'
 import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
@@ -14,12 +17,13 @@ import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
  * queda fijo; cada paso nuevo entra con un wipe de abajo hacia arriba
  * (clip-path) sobre el anterior, con la imagen en parallax, y el contador
  * de abajo a la derecha sigue al paso activo. En mobile / reduced-motion
- * los pasos se apilan.
+ * los pasos se apilan. Los pasos 01 y 02 llevan foto; el 03 y el 04, una
+ * vista de producto (la conversación y el panel).
  */
 
-type Step = (typeof COMO_TRABAJAMOS)['steps'][number]
+type Step = ProcessStep
 
-const STEPS = COMO_TRABAJAMOS.steps
+const STEPS: Step[] = COMO_TRABAJAMOS.steps
 const TRANSITIONS = STEPS.length - 1
 /** Parte del recorrido que ocupan las transiciones; el resto es pausa final. */
 const TRAVEL = 0.88
@@ -35,7 +39,7 @@ function StepContent({ step }: { step: Step }) {
   const titleId = `paso-${step.n}`
   return (
     <div className="relative z-10 max-w-3xl px-5 pb-16 sm:px-8 lg:px-12 lg:pb-20">
-      <p className="eyebrow flex gap-4 text-accent-inverse">
+      <p className="eyebrow flex gap-4 text-caption">
         <span className="tabular-nums">{step.n}</span>
         <span>{step.label}</span>
       </p>
@@ -59,7 +63,21 @@ function StepContent({ step }: { step: Step }) {
   )
 }
 
+/** Vista de producto del paso: arriba del texto en mobile, a la derecha en desktop. */
+function StepMockup({ kind }: { kind: 'whatsapp' | 'control' }) {
+  return (
+    <div className="relative z-10 px-5 pt-16 pb-10 sm:px-8 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-1/2 lg:items-center lg:justify-center lg:px-12 lg:py-0">
+      {kind === 'whatsapp' ? (
+        <ChatMockup className="w-full max-w-[19rem] lg:[zoom:1.3]" />
+      ) : (
+        <ControlPanel isCompact className="w-full max-w-[24rem] lg:[zoom:1.2]" />
+      )}
+    </div>
+  )
+}
+
 function StepMedia({ step, sizes }: { step: Step; sizes: string }) {
+  if ('mockup' in step) return <div aria-hidden="true" className="absolute inset-0 bg-night-raised" />
   return (
     <>
       <Image src={step.image.src} alt={step.image.alt} fill sizes={sizes} className="object-cover" />
@@ -86,6 +104,7 @@ function PinnedStep({ step, index, progress }: { step: Step; index: number; prog
       <m.div style={{ scale: imageScale, y: imageY }} className="absolute inset-0">
         <StepMedia step={step} sizes="100vw" />
       </m.div>
+      {'mockup' in step && <StepMockup kind={step.mockup} />}
       <m.div style={index === 0 ? undefined : { opacity: contentOpacity, y: contentY }}>
         <StepContent step={step} />
       </m.div>
@@ -105,7 +124,7 @@ function StepCounter({ active, progress }: { active: number; progress: MotionVal
         </span>
       </p>
       <div className="mt-4 h-px bg-line-inverse">
-        <m.div style={{ scaleX }} className="h-px origin-left bg-accent-inverse" />
+        <m.div style={{ scaleX }} className="h-px origin-left bg-ink-inverse" />
       </div>
       <p className="mt-3 text-sm text-caption">{step.label}</p>
     </div>
@@ -134,7 +153,7 @@ export default function ComoTrabajamosSection() {
             <LineReveal
               text={COMO_TRABAJAMOS.headline.text}
               accent={COMO_TRABAJAMOS.headline.accent}
-              className="mt-5 text-display font-semibold"
+              className="mt-5 text-h1 font-semibold"
             />
           </div>
         </div>
@@ -164,11 +183,12 @@ export default function ComoTrabajamosSection() {
             <article
               key={step.n}
               aria-labelledby={`paso-${step.n}`}
-              className="relative isolate flex min-h-[86svh] items-end overflow-hidden"
+              className="relative isolate flex min-h-[86svh] flex-col justify-end overflow-hidden"
             >
               <div className="absolute inset-0">
                 <StepMedia step={step} sizes="100vw" />
               </div>
+              {'mockup' in step && <StepMockup kind={step.mockup} />}
               <m.div variants={fadeUp} initial="hidden" whileInView="show" viewport={VIEWPORT}>
                 <StepContent step={step} />
               </m.div>

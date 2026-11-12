@@ -160,8 +160,8 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   const planeClass = (key: PlaneKey) => {
-    if (key === 'suplai') return active === 'suplai' ? 'fill-white stroke-accent' : 'fill-white stroke-accent/60'
-    return active === key ? 'fill-white stroke-accent' : 'fill-white stroke-line'
+    if (key === 'suplai') return active === 'suplai' ? 'fill-white stroke-ink' : 'fill-white stroke-ink/50'
+    return active === key ? 'fill-white stroke-ink' : 'fill-white stroke-line'
   }
 
   const gap1 = { from: PLANE_Y.canales + PLANE.h + 16, to: PLANE_Y.suplai - 16 }
@@ -199,7 +199,7 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
           y2={PLANE_Y.sistemas + PLANE.h / 2}
           strokeWidth={1}
           strokeDasharray={u === LANE.center ? undefined : '2 5'}
-          className={u === LANE.center ? 'stroke-accent' : 'stroke-ink/25'}
+          className={u === LANE.center ? 'stroke-ink/50' : 'stroke-ink/25'}
           variants={drawIn}
           custom={i}
         />
@@ -238,7 +238,7 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
             </>
           ) : (
             <>
-              <Chips y={PLANE_Y[key]} items={D[key].items} dotClass={key === 'canales' ? 'fill-accent' : 'fill-ink/35'} />
+              <Chips y={PLANE_Y[key]} items={D[key].items} dotClass={key === 'canales' ? 'fill-ink' : 'fill-ink/35'} />
               <PlaneTitle y={PLANE_Y[key]} text={D[key].title} />
             </>
           )}
