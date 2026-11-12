@@ -12,7 +12,7 @@ export default function Footer() {
     <footer data-tone="dark" className="border-t border-line-inverse bg-night px-5 pt-20 pb-8 text-ink-inverse sm:px-8 lg:px-12">
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-4">
-          <Image src="/brand/suplai-lockup-white.png" alt="Suplai" width={110} height={30} quality={90} className="h-[30px] w-auto" />
+          <Image src="/brand/suplai-lockup-white.svg" alt="Suplai" width={112} height={30} unoptimized className="h-[30px] w-auto" />
           <p className="mt-6 max-w-xs text-ink-inverse-muted">{FOOTER.tagline}</p>
         </div>
 

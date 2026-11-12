@@ -44,7 +44,7 @@ export default function PlanesStack({ className = '' }: { className?: string }) 
         <Chips title={D.canales.title} items={D.canales.items} />
         <Link down={D.flow.inbound} up={D.flow.reply} />
         <div className="rounded-xl border border-ink/50 bg-white p-4 shadow-sm">
-          <Image src="/brand/suplai-lockup-black.png" alt="" width={110} height={30} quality={90} className="h-[30px] w-auto" />
+          <Image src="/brand/suplai-lockup-black.svg" alt="" width={112} height={30} unoptimized className="h-[30px] w-auto" />
           <p className="mt-2 text-sm text-ink-muted">{D.suplai.caption}</p>
           <p className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-3 text-xs text-ink-muted">
             <StatusPill state="escalated" label={D.escalation.label} />

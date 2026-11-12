@@ -17,7 +17,7 @@ import { getLenis } from '@/lib/providers'
 type Tone = 'dark' | 'light'
 
 const LOGO_H = 24
-const LOGO_W = 89 // lockup 426×116
+const LOGO_W = 90 // lockup vectorial 396,8×106
 const MENU_ID = 'menu-principal'
 /** Línea de muestreo del tono: a la altura del centro del header. */
 const PROBE_Y = 36
@@ -107,23 +107,23 @@ export default function Navbar() {
         href="#inicio"
         aria-label={NAV.homeLabel}
         onClick={() => setIsMenuOpen(false)}
-        className="pointer-events-auto relative mt-2.5 block h-6 w-[89px] after:absolute after:-inset-2.5"
+        className="pointer-events-auto relative mt-2.5 block h-6 w-[90px] after:absolute after:-inset-2.5"
       >
         <Image
-          src="/brand/suplai-lockup-white.png"
+          src="/brand/suplai-lockup-white.svg"
           alt=""
           width={LOGO_W}
           height={LOGO_H}
-          quality={90}
+          unoptimized
           priority
           className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${isDark ? 'opacity-100' : 'opacity-0'}`}
         />
         <Image
-          src="/brand/suplai-lockup-black.png"
+          src="/brand/suplai-lockup-black.svg"
           alt=""
           width={LOGO_W}
           height={LOGO_H}
-          quality={90}
+          unoptimized
           className={`absolute inset-0 h-full w-auto transition-opacity duration-300 ${isDark ? 'opacity-0' : 'opacity-100'}`}
         />
       </a>

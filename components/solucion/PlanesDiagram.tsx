@@ -28,7 +28,7 @@ const PLANE_Y: Record<PlaneKey, number> = { canales: 20, suplai: 230, sistemas: 
 const LANE = { down: 0.2, center: 0.5, up: 0.8 }
 const CHIP = { h: 32, padX: 14, dot: 3.5, charW: 8.8, gap: 10, font: 15 }
 const PILL = { h: 26, padX: 12, charW: 6.9, font: 12.5 }
-const LOCKUP = { w: 150, h: 41 } // /brand/suplai-lockup-black.png, 426×116
+const LOCKUP = { w: 150, h: 40 } // /brand/suplai-lockup-black.svg, 396,8×106
 
 const D = SOLUCION.diagram
 
@@ -231,7 +231,7 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
           {key === 'suplai' ? (
             <>
               <image
-                href="/brand/suplai-lockup-black.png"
+                href="/brand/suplai-lockup-black.svg"
                 x={logo.x - LOCKUP.w / 2}
                 y={logo.y - LOCKUP.h / 2}
                 width={LOCKUP.w}
