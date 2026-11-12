@@ -6,6 +6,7 @@ import LineReveal from '@/components/LineReveal'
 import ControlPanel from '@/components/product/ControlPanel'
 import StatusPill from '@/components/product/StatusPill'
 import PlanesDiagram from '@/components/solucion/PlanesDiagram'
+import PlanesStack from '@/components/solucion/PlanesStack'
 import { SOLUCION } from '@/content'
 import type { PlaneKey } from '@/content'
 import { fadeUp, stagger, VIEWPORT } from '@/lib/motion'
@@ -29,7 +30,9 @@ export default function SolucionSection() {
       <div className="grid gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12">
         <div className="lg:col-span-6">
           <p className="eyebrow text-ink-muted">{SOLUCION.eyebrow}</p>
-          <div className="mt-8 max-w-[40rem] lg:mt-10">
+          {/* En pantallas chicas el diagrama en perspectiva no se lee: va su versión vertical. */}
+          <PlanesStack className="mt-8 sm:hidden" />
+          <div className="mt-8 hidden max-w-[40rem] sm:block lg:mt-10">
             <PlanesDiagram active={activePlane} />
           </div>
         </div>
