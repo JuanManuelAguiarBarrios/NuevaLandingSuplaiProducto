@@ -27,6 +27,9 @@ const STEPS: Step[] = COMO_TRABAJAMOS.steps
 const TRANSITIONS = STEPS.length - 1
 /** Parte del recorrido que ocupan las transiciones; el resto es pausa final. */
 const TRAVEL = 0.88
+/** Recorrido de scroll por paso y pausa final, en svh. */
+const STEP_SCROLL = 65
+const END_HOLD = 40
 
 /** Ventana de scroll [inicio, fin] en la que entra el paso i (i ≥ 1). */
 function windowFor(i: number): [number, number] {
@@ -173,7 +176,7 @@ export default function ComoTrabajamosSection() {
       </header>
 
       {isScrollMotion ? (
-        <div ref={stageRef} style={{ height: `${STEPS.length * 100 + 40}svh` }} className="relative">
+        <div ref={stageRef} style={{ height: `${STEPS.length * STEP_SCROLL + END_HOLD}svh` }} className="relative">
           <div className="sticky top-0 h-svh overflow-hidden">
             {STEPS.map((step, i) => (
               <PinnedStep key={step.n} step={step} index={i} progress={p} />
