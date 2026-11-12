@@ -1,6 +1,6 @@
 # AUDIT — landing de Suplai
 
-Estado real del repo al 2026-11-11, en la rama `mejora/revision-integral` (sale de `mejora/producto-conversion`).
+Estado real del repo al 2026-11-11, en la rama `mejora/marca-premium` (sale de `mejora/revision-integral`, que a su vez sale de `mejora/producto-conversion`).
 Stack: Next.js 15.5.29 (App Router), React 19, Tailwind v4, Framer Motion 12, Lenis 1.3.
 Página única, 100% estática.
 
@@ -9,7 +9,7 @@ Página única, 100% estática.
 | Chequeo | Resultado |
 |---|---|
 | `npx tsc --noEmit` | Pasa |
-| `npm run build` | Pasa. `/` pesa 18,8 kB, First Load JS 151 kB |
+| `npm run build` | Pasa. `/` pesa 19 kB, First Load JS 152 kB |
 | `npm run lint` (CLI de ESLint) | Sin errores ni warnings |
 | Overflow horizontal en 375, 768 y 1440 px | Ninguno |
 | Texto cortado en 375, 768 y 1440 px | Ninguno (solo los `sr-only`) |
@@ -30,7 +30,7 @@ Medido contra `localhost` con el build de producción y throttling simulado. No 
 | LCP | 6,4 s | 0,9 s | 0,8 s | 0,2 s |
 | TBT | 10 ms | 30 a 50 ms | 0 ms | 0 ms |
 | CLS | 0 | 0 | 0 | 0 |
-| Peso transferido | 991 KB | 920 KB | 2.096 KB | 917 KB |
+| Peso transferido | 991 KB | 841 KB | 2.096 KB | 841 KB |
 
 "Antes" es el estado de `mejora/producto-conversion`. No hay tests automatizados; las verificaciones se corrieron con scripts de Playwright y Lighthouse que no forman parte del repo.
 
@@ -47,7 +47,27 @@ Medido contra `localhost` con el build de producción y throttling simulado. No 
 9. **Preguntas frecuentes** (blanco).
 10. **Cierre y contacto** (oscuro) y footer.
 
-## Qué cambió en esta rama
+## Sistema de marca v2 (kit Premium-Suplai)
+
+Aplicado en `mejora/marca-premium` a partir de `CAMBIOS.md` y del manual de marca.
+
+- **Color**: Hueso como fondo principal y Lino de apoyo; Noche y Marino en los oscuros; Arena en las líneas; Piedra en el texto secundario. Problema y Agentes pasaron a fondo claro.
+- **Tipografía**: Geist como única familia (una sola fuente, 29 KB). Titulares en peso 460 y en dos tonos. Se fueron Inter, Newsreader y Geist Mono.
+- **Estados**: Azul o Celeste para Resuelto, Lavanda para En curso y Baliza para Escalado, como etiquetas en mayúscula chica.
+- **Recursos**: botón principal con esquina en chaflán, chaflán en las fotos de Industrias y del menú, y línea de ejecución en el hero y el cierre.
+- **Logo**: lockups e isotipo vectoriales del kit; el favicon ya es el isotipo.
+- **Documentación**: `CLAUDE.md` y `PRODUCT.md` describen el sistema nuevo.
+
+No se aplicó, por decisión: el copy del kit ("Queda hecho. Y queda registrado.", "plataforma de agentes de IA", "Escalado a tu equipo") y la quita de logos de clientes.
+
+Abierto:
+- Los colores de estado de la landing ya no coinciden con los de Suplai Control (verde y violeta). Falta decidir si el producto adopta los del kit.
+- Los puntos de Lavanda y Baliza sobre blanco tienen menos de 3 a 1 de contraste. Siempre van acompañados del texto del estado, así que no son el único indicador.
+- El kit advierte que el nombre "Suplai" del logo está calcado de un PNG. Sirve para pantalla; para imprenta hace falta el vector original.
+- La imagen Open Graph y el schema.org siguen usando los lockups en PNG.
+- `CAMBIOS.md` dice que con Costa Oriental hay NDA y que El Naranjo no figura en el contexto del proyecto. Los tres logos de clientes siguen publicados por decisión explícita.
+
+## Qué cambió en la revisión integral
 
 ### Performance
 - El titular del hero ya no entra desde `opacity: 0`. Chrome no contaba ese texto como LCP y el LCP en mobile daba 6,4 s.
@@ -94,7 +114,6 @@ Medido contra `localhost` con el build de producción y throttling simulado. No 
 
 ### Necesita assets o decisiones
 - Logos de clientes y apoyos en vector. Hoy son PNG embebidos en SVG (512 KB en total) y son lo más pesado de la carga inicial.
-- `app/icon.svg` (el favicon) es un ícono genérico azul, no el isotipo de Suplai. El `apple-icon` nuevo sí usa el isotipo, recortado del lockup. Con el isotipo en SVG se reemplaza el favicon.
 - Video del producto real para el hero, en lugar del de stock.
 - Link a la demo del producto, si se puede mostrar a prospectos.
 - Contenido real sobre el equipo y algún caso de cliente.
@@ -108,5 +127,4 @@ Medido contra `localhost` con el build de producción y throttling simulado. No 
 ### Deuda técnica
 - Sin tests. Las reglas del repo piden TDD y 80% de cobertura; no existe la infraestructura.
 - La página mide 23 pantallas en mobile. Sumar el agente nuevo y el diagrama vertical la alargó un poco.
-- PP Editorial New sigue sin licencia; Newsreader es el reemplazo.
-- La imagen OG no carga una fuente serif: la palabra en acento va en celeste pero no en itálica.
+- La imagen OG usa la fuente por defecto de `next/og`, no Geist.
