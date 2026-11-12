@@ -1,6 +1,7 @@
 'use client'
 
-import { m } from 'framer-motion'
+import { useRef } from 'react'
+import { m, useInView } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { SOLUCION } from '@/content'
 import type { FlowState, PlaneKey } from '@/content'
@@ -158,6 +159,9 @@ interface PlanesDiagramProps {
 
 export default function PlanesDiagram({ active }: PlanesDiagramProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
+  // Los eventos en loop solo corren mientras el diagrama está en pantalla.
+  const svgRef = useRef<SVGSVGElement>(null)
+  const isInView = useInView(svgRef)
 
   const planeClass = (key: PlaneKey) => {
     if (key === 'suplai') return active === 'suplai' ? 'fill-white stroke-ink' : 'fill-white stroke-ink/50'
@@ -174,6 +178,7 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
 
   return (
     <m.svg
+      ref={svgRef}
       viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}
       role="img"
       aria-label={D.label}
@@ -252,7 +257,7 @@ export default function PlanesDiagram({ active }: PlanesDiagramProps) {
         </text>
       </m.g>
 
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && isInView && (
         <>
           <FlowPill lane={LANE.down} from={gap1.from} to={gap1.to} event={D.flow.inbound} delay={1.4} />
           <FlowPill lane={LANE.up} from={gap1.to} to={gap1.from} event={D.flow.reply} delay={3.6} />
