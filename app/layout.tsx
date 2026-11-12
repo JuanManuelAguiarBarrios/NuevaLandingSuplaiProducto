@@ -5,6 +5,7 @@ import { Newsreader } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import Navbar from '@/components/Navbar'
+import WhatsappFloat from '@/components/WhatsappFloat'
 import { CONTACT_EMAIL, LINKEDIN_URL, POSITIONING } from '@/content'
 import { SmoothScrollProvider } from '@/lib/providers'
 
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScrollProvider>
           <Navbar />
           {children}
+          <WhatsappFloat />
         </SmoothScrollProvider>
 
         <script

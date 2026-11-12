@@ -3,7 +3,7 @@
 import { m } from 'framer-motion'
 import AgentVignette from '@/components/agents/AgentVignette'
 import LineReveal from '@/components/LineReveal'
-import { AGENTES, DEMO_URL } from '@/content'
+import { AGENTES, agentWhatsappUrl, DEMO_URL } from '@/content'
 import type { Agent } from '@/content'
 import { fadeUp, stagger } from '@/lib/motion'
 
@@ -36,7 +36,7 @@ function AgentCard({ agent }: { agent: Agent }) {
             ))}
           </ul>
           <a
-            href={DEMO_URL}
+            href={agentWhatsappUrl(agent)}
             target="_blank"
             rel="noopener noreferrer"
             className="link-line mt-6 inline-block text-sm font-medium text-ink-inverse"

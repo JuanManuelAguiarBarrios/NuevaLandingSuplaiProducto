@@ -3,7 +3,7 @@
 import { m } from 'framer-motion'
 import LineReveal from '@/components/LineReveal'
 import ParallaxImage from '@/components/ParallaxImage'
-import { CIERRE, CONTACT_EMAIL, DEMO_URL, WHATSAPP_URL } from '@/content'
+import { CIERRE, CONTACT_EMAIL, DEMO_URL, WHATSAPP, whatsappUrl } from '@/content'
 import { fadeUp, lineUp, VIEWPORT } from '@/lib/motion'
 
 /**
@@ -62,7 +62,7 @@ export default function CierreSection() {
               {CIERRE.ctaPrimary} <span aria-hidden="true">→</span>
             </a>
             <a
-              href={WHATSAPP_URL}
+              href={whatsappUrl(WHATSAPP.message)}
               target="_blank"
               rel="noopener noreferrer"
               className="link-line text-sm font-medium text-ink-inverse"

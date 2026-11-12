@@ -7,12 +7,13 @@ import AgentesSection from '@/components/sections/AgentesSection'
 import IndustriasSection from '@/components/sections/IndustriasSection'
 import ComoTrabajamosSection from '@/components/sections/ComoTrabajamosSection'
 import PrincipiosSection from '@/components/sections/PrincipiosSection'
+import FaqSection from '@/components/sections/FaqSection'
 import CierreSection from '@/components/sections/CierreSection'
 
 /**
  * Recorrido: qué es y para quién (hero) → quién confía → el problema → la
  * solución → los agentes → por industria → cómo empezamos → cómo
- * acompañamos → cierre con contacto. Los tonos alternan claro y oscuro.
+ * acompañamos → preguntas frecuentes → cierre con contacto. Los tonos alternan claro y oscuro.
  */
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <IndustriasSection />
         <ComoTrabajamosSection />
         <PrincipiosSection />
+        <FaqSection />
         <CierreSection />
       </main>
       <Footer />

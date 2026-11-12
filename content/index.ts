@@ -23,6 +23,21 @@ export const LINKEDIN_URL = 'https://linkedin.com/company/getsuplai'
 export const WHATSAPP_NUMBER = '59894412389'
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
+/** Link a WhatsApp con el mensaje ya escrito (wa.me con ?text=). */
+export function whatsappUrl(message: string): string {
+  return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`
+}
+
+export const WHATSAPP = {
+  cta: 'Escribinos por WhatsApp',
+  /** Texto del botón flotante. En mobile solo se ve el ícono y esto queda como nombre accesible. */
+  floatLabel: 'Escribinos por WhatsApp',
+  /** Mensaje precargado de los accesos generales (hero y botón flotante). */
+  message: 'Hola, quiero saber más sobre los agentes de Suplai.',
+  /** Mensaje precargado de cada "Quiero este agente". {agente} se reemplaza por el nombre. */
+  agentMessage: 'Hola, me interesa el agente de {agente} para mi operación.',
+}
+
 export interface Headline {
   text: string
   accent?: string
@@ -108,6 +123,7 @@ export const HERO = {
   headline: { text: 'Mientras tu equipo opera,\nlos agentes responden.', accent: 'responden' },
   subtitle: 'Atienden consultas, confirman entregas y agendan turnos todo el día.',
   ctaPrimary: 'Agendá una demo',
+  ctaWhatsapp: WHATSAPP.cta,
   ctaSecondary: { label: 'Ver agentes', href: '#agentes' },
   video: {
     mp4: '/empresas/logistica.mp4',
@@ -179,6 +195,13 @@ export interface Agent {
   name: string
   bullets: string[]
   link: string
+  /** Mensaje de WhatsApp propio. Si falta, se arma con WHATSAPP.agentMessage y el nombre. */
+  message?: string
+}
+
+/** Link de WhatsApp de un agente, con el mensaje que lo nombra. */
+export function agentWhatsappUrl(agent: Agent): string {
+  return whatsappUrl(agent.message ?? WHATSAPP.agentMessage.replace('{agente}', agent.name))
 }
 
 export const AGENTES = {
@@ -252,6 +275,7 @@ export const AGENTES = {
         'Si tu proceso necesita un agente que no está en la lista, lo diseñamos a medida para tu operación.',
       ],
       link: 'Contanos qué necesitás',
+      message: 'Hola, necesito un agente a medida para mi operación.',
     },
   ] satisfies Agent[],
 }
@@ -532,6 +556,51 @@ export const PRINCIPIOS = {
   ],
 }
 
+/* ── Preguntas frecuentes ───────────────────── */
+
+/**
+ * Solo se responde con lo que ya está respaldado en PRODUCT.md, el copy de
+ * la landing o la demo. Lo que falta va entre corchetes para completar.
+ */
+export const FAQ = {
+  eyebrow: 'Preguntas frecuentes',
+  headline: { text: 'Lo que conviene saber\nantes de arrancar.', accent: 'arrancar' } satisfies Headline,
+  items: [
+    {
+      question: '¿Con qué sistemas se integra?',
+      answer: [
+        'Con los que ya usás. Nos conectamos a tu TMS, WMS, ERP, planillas y herramientas internas, y los agentes atienden por WhatsApp, llamadas y mail. No hace falta migrar nada ni cambiar tu forma de trabajar.',
+        '[COMPLETAR sistemas y marcas con integración ya probada]',
+      ],
+    },
+    {
+      question: '¿Qué pasa con mis datos?',
+      answer: [
+        'Queda el registro completo de lo que hizo cada agente y por qué, y lo ves en el panel.',
+        '[COMPLETAR dónde se alojan los datos, quién puede verlos, cuánto tiempo se guardan y qué acuerdo de confidencialidad se firma]',
+      ],
+    },
+    {
+      question: '¿Qué pasa cuando el agente no sabe o se equivoca?',
+      answer: [
+        'Lo repetitivo lo resuelve el agente. Lo que se sale del guion pasa a una persona de tu equipo. En el panel aparece como escalación, tomás la conversación, respondés vos y después se la devolvés al agente.',
+        'Con el registro de cada caso evaluamos y ajustamos el agente con el tiempo.',
+      ],
+    },
+    {
+      question: '¿Cómo se cobra?',
+      answer: ['[COMPLETAR modelo de precios, qué incluye y cómo cambia al sumar más agentes]'],
+    },
+    {
+      question: '¿Qué necesita mi equipo para arrancar?',
+      answer: [
+        'Elegir un proceso. Primero entendemos cómo operás hoy y qué sistemas usás, después activamos el agente junto a tu equipo, sin cortar el día a día.',
+        '[COMPLETAR accesos, personas y dedicación que necesitamos de tu lado]',
+      ],
+    },
+  ] satisfies { question: string; answer: string[] }[],
+}
+
 /* ── Cierre y contacto ────────────────────── */
 
 export const CIERRE = {
@@ -540,7 +609,7 @@ export const CIERRE = {
   accentLine: 'El resto lo sumamos juntos.',
   subtitle: 'En 30 minutos miramos tu operación y te decimos por dónde arrancaría el primer agente.',
   ctaPrimary: 'Agendá 30 minutos',
-  ctaWhatsapp: 'Escribinos por WhatsApp',
+  ctaWhatsapp: WHATSAPP.cta,
   emailLabel: 'O escribinos a',
   image: { src: '/cierre.webp', alt: 'Terminal portuaria iluminada al anochecer, con grúas y un buque en la bahía' },
 }
@@ -557,6 +626,7 @@ export const FOOTER = {
         { label: 'Agentes', href: '#agentes' },
         { label: 'Industrias', href: '#industrias' },
         { label: 'Cómo trabajamos', href: '#como-trabajamos' },
+        { label: 'Preguntas frecuentes', href: '#preguntas' },
       ],
     },
     {
@@ -564,7 +634,7 @@ export const FOOTER = {
       links: [
         { label: 'Contacto', href: '#contacto' },
         { label: 'Agendá una demo', href: DEMO_URL, arrow: '→' },
-        { label: 'Escribinos por WhatsApp', href: WHATSAPP_URL, arrow: '→' },
+        { label: WHATSAPP.cta, href: whatsappUrl(WHATSAPP.message), arrow: '→' },
         { label: 'LinkedIn', href: LINKEDIN_URL, arrow: '↗' },
       ],
     },

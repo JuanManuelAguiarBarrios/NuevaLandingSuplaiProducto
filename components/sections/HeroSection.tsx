@@ -7,7 +7,8 @@ import HeroMap from '@/components/hero/HeroMap'
 import RotatingWords from '@/components/hero/RotatingWords'
 import { LineContent } from '@/components/LineReveal'
 import { MAP_PINS, MAP_VIEWBOX } from '@/components/hero/coneSur'
-import { DEMO_URL, HERO } from '@/content'
+import { MessageIcon } from '@/components/product/icons'
+import { DEMO_URL, HERO, WHATSAPP, whatsappUrl } from '@/content'
 import { lineUp, stagger, VIEWPORT } from '@/lib/motion'
 import { useScrollMotion, useScrollRange } from '@/lib/useScrollMotion'
 
@@ -130,6 +131,15 @@ export default function HeroSection() {
                   className="inline-flex items-center gap-3 bg-accent px-5 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-accent-strong"
                 >
                   {HERO.ctaPrimary} <span aria-hidden="true">→</span>
+                </a>
+                <a
+                  href={whatsappUrl(WHATSAPP.message)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 py-3.5 text-sm font-medium text-ink-inverse"
+                >
+                  <MessageIcon className="size-4" />
+                  <span className="link-line">{HERO.ctaWhatsapp}</span>
                 </a>
               </div>
             </div>
