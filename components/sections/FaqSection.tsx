@@ -1,5 +1,5 @@
 import LineReveal from '@/components/LineReveal'
-import { FAQ } from '@/content'
+import { FAQ, isPlaceholder } from '@/content'
 
 /**
  * Preguntas frecuentes antes del cierre. Acordeón con <details> nativo:
@@ -8,6 +8,24 @@ import { FAQ } from '@/content'
  */
 
 const GROUP = 'preguntas-frecuentes'
+
+/**
+ * Datos estructurados (schema.org FAQPage). Solo entran las preguntas con
+ * la respuesta completa: las que todavía tienen un pendiente entre
+ * corchetes se suman solas cuando se complete el contenido.
+ */
+const ANSWERED = FAQ.items.filter((item) => !item.answer.some(isPlaceholder))
+const FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: ANSWERED.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer.join(' ') },
+  })),
+}
+/** El contenido sale de content/index.ts; se escapa "<" para que no pueda cerrar el script. */
+const FAQ_SCHEMA_JSON = JSON.stringify(FAQ_SCHEMA).replace(/</g, '\\u003c')
 
 export default function FaqSection() {
   return (
@@ -49,6 +67,10 @@ export default function FaqSection() {
           ))}
         </div>
       </div>
+
+      {ANSWERED.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_SCHEMA_JSON }} />
+      )}
     </section>
   )
 }

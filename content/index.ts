@@ -632,6 +632,9 @@ export const FAQ = {
   ] satisfies { question: string; answer: string[] }[],
 }
 
+/** Un párrafo entre corchetes es un pendiente de contenido, no una respuesta. */
+export const isPlaceholder = (text: string): boolean => text.trim().startsWith('[')
+
 /* ── Cierre y contacto ────────────────────── */
 
 export const CIERRE = {
