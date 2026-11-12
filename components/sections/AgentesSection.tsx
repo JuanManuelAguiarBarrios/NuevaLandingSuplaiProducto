@@ -26,7 +26,7 @@ function AgentCard({ agent }: { agent: Agent }) {
       className={`flex h-full scroll-mt-24 flex-col ${isWide ? 'sm:flex-row sm:items-center sm:gap-8 lg:gap-12' : ''}`}
     >
       <div
-        className={`flex items-center justify-center border border-line-inverse bg-night-raised p-5 sm:p-6 ${
+        className={`flex items-center justify-center border border-line bg-linen p-5 sm:p-6 ${
           isWide ? 'min-h-48 sm:h-56 sm:w-1/3 sm:shrink-0' : 'min-h-80 sm:h-[27rem]'
         }`}
       >
@@ -36,12 +36,12 @@ function AgentCard({ agent }: { agent: Agent }) {
       </div>
 
       <div className={`flex flex-1 flex-col ${isWide ? 'mt-6 sm:mt-0' : 'mt-6'}`}>
-        <p aria-hidden="true" className="text-xs text-caption tabular-nums">
+        <p aria-hidden="true" className="text-xs text-ink-muted tabular-nums">
           {agent.n} de {TOTAL}
         </p>
-        <h3 className="mt-3 text-h3 font-headline text-ink-inverse">{agent.name}</h3>
+        <h3 className="mt-3 text-h3 font-headline text-ink">{agent.name}</h3>
         <div className="mt-4 flex flex-1 flex-col items-start justify-between">
-          <ul className="space-y-2 text-ink-inverse-muted">
+          <ul className="space-y-2 text-ink-muted">
             {agent.bullets.map((bullet) => (
               <li key={bullet}>{bullet}</li>
             ))}
@@ -50,7 +50,7 @@ function AgentCard({ agent }: { agent: Agent }) {
             href={agentWhatsappUrl(agent)}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-line mt-6 inline-block text-sm font-medium text-ink-inverse"
+            className="link-line mt-6 inline-block text-sm font-medium text-ink"
           >
             {agent.link} <span aria-hidden="true">→</span>
             <span className="sr-only"> sobre {agent.name}</span>
@@ -65,13 +65,13 @@ export default function AgentesSection() {
   return (
     <section
       id="agentes"
-      data-tone="dark"
+      data-tone="light"
       aria-labelledby="agentes-title"
-      className="bg-night px-5 py-24 text-ink-inverse sm:px-8 lg:px-12 lg:py-36"
+      className="bg-paper px-5 py-24 text-ink sm:px-8 lg:px-12 lg:py-36"
     >
       <header className="grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="eyebrow text-caption">{AGENTES.eyebrow}</p>
+          <p className="eyebrow text-ink-muted">{AGENTES.eyebrow}</p>
           <div id="agentes-title">
             <LineReveal
               text={AGENTES.headline.text}
@@ -81,7 +81,7 @@ export default function AgentesSection() {
           </div>
         </div>
         <div className="lg:col-span-4 lg:col-start-9 lg:self-end">
-          <p className="text-ink-inverse-muted">{AGENTES.subtitle}</p>
+          <p className="text-ink-muted">{AGENTES.subtitle}</p>
           <a
             href={DEMO_URL}
             target="_blank"

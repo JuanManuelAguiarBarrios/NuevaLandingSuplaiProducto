@@ -19,13 +19,13 @@ export default function ProblemaSection() {
   return (
     <section
       id="problema"
-      data-tone="dark"
+      data-tone="light"
       aria-labelledby="problema-title"
-      className="bg-night px-5 py-24 text-ink-inverse sm:px-8 lg:px-12 lg:py-36"
+      className="bg-paper px-5 py-24 text-ink sm:px-8 lg:px-12 lg:py-36"
     >
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-8">
-          <p className="eyebrow text-caption">{PROBLEMA.eyebrow}</p>
+          <p className="eyebrow text-ink-muted">{PROBLEMA.eyebrow}</p>
           <div id="problema-title">
             <LineReveal
               text={PROBLEMA.headline.text}
@@ -39,14 +39,14 @@ export default function ProblemaSection() {
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="max-w-sm text-lead text-ink-inverse-muted lg:col-span-4 lg:self-end"
+          className="max-w-sm text-lead text-ink-muted lg:col-span-4 lg:self-end"
         >
           {PROBLEMA.intro}
         </m.p>
       </div>
 
       <div className="mt-20 lg:mt-28">
-        <div aria-hidden="true" className="eyebrow hidden grid-cols-12 gap-8 pb-4 text-caption md:grid">
+        <div aria-hidden="true" className="eyebrow hidden grid-cols-12 gap-8 pb-4 text-ink-muted md:grid">
           <span className="col-span-5 col-start-2">{PROBLEMA.labels.problema}</span>
           <span className="col-span-5 col-start-8">{PROBLEMA.labels.costo}</span>
         </div>
@@ -57,25 +57,25 @@ export default function ProblemaSection() {
               <m.span
                 variants={rowLine}
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-px origin-left bg-line-inverse"
+                className="absolute inset-x-0 top-0 h-px origin-left bg-line"
               />
-              <span className="text-xs text-caption tabular-nums md:col-span-1 md:pt-2">
+              <span className="text-xs text-ink-muted tabular-nums md:col-span-1 md:pt-2">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <p className="text-h3 font-medium md:col-span-5">
                 <span className="sr-only">{PROBLEMA.labels.problema}, </span>
                 {row.problema}
               </p>
-              <span aria-hidden="true" className="hidden text-h3 text-caption md:col-span-1 md:block">
+              <span aria-hidden="true" className="hidden text-h3 text-ink-muted md:col-span-1 md:block">
                 →
               </span>
-              <p className="text-lead text-ink-inverse-muted md:col-span-5 md:pt-1">
+              <p className="text-lead text-ink-muted md:col-span-5 md:pt-1">
                 <span className="sr-only">{PROBLEMA.labels.costo}, </span>
                 {row.costo}
               </p>
             </m.li>
           ))}
-          <li aria-hidden="true" className="h-px bg-line-inverse" />
+          <li aria-hidden="true" className="h-px bg-line" />
         </m.ol>
       </div>
     </section>

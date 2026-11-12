@@ -12,8 +12,8 @@ import type { AgentKey } from '@/content'
  * pantalla propia y conserva una viñeta de línea.
  */
 
-const BASE_STROKE = 'stroke-ink-inverse/30'
-const ACCENT_STROKE = 'stroke-ink-inverse'
+const BASE_STROKE = 'stroke-ink/30'
+const ACCENT_STROKE = 'stroke-ink'
 
 /** A medida: módulos existentes y uno nuevo que se suma. */
 function CustomVignette() {

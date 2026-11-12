@@ -13,7 +13,8 @@ import CierreSection from '@/components/sections/CierreSection'
 /**
  * Recorrido: qué es y para quién (hero) → quién confía → el problema → la
  * solución → los agentes → por industria → cómo empezamos → cómo
- * acompañamos → preguntas frecuentes → cierre con contacto. Los tonos alternan claro y oscuro.
+ * acompañamos → preguntas frecuentes → cierre con contacto. Hueso es el fondo
+ * principal y Lino el de apoyo; Noche queda para el hero, Cómo trabajamos y el cierre.
  */
 export default function Home() {
   return (

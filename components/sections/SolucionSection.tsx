@@ -25,7 +25,7 @@ export default function SolucionSection() {
       id="solucion"
       data-tone="light"
       aria-labelledby="solucion-title"
-      className="overflow-hidden bg-paper py-24 text-ink lg:py-36"
+      className="overflow-hidden bg-linen py-24 text-ink lg:py-36"
     >
       <div className="grid gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12">
         <div className="lg:col-span-6">

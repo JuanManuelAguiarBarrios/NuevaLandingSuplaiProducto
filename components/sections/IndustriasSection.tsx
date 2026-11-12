@@ -102,7 +102,7 @@ export default function IndustriasSection() {
       id="industrias"
       data-tone="light"
       aria-labelledby="industrias-title"
-      className="bg-paper px-5 py-24 text-ink sm:px-8 lg:px-12 lg:py-36"
+      className="bg-linen px-5 py-24 text-ink sm:px-8 lg:px-12 lg:py-36"
     >
       <div className="grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-7">
