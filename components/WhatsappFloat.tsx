@@ -6,18 +6,25 @@ import { WHATSAPP, whatsappUrl } from '@/content'
 
 /**
  * Acceso flotante a WhatsApp. Aparece al salir del hero y se retira en el
- * cierre, donde ya están los botones de contacto. En mobile es solo el
- * ícono, abajo a la derecha y respetando el área segura; en desktop suma
- * la etiqueta. Tono neutro: el azul queda para el CTA primario.
+ * cierre, donde ya están los botones de contacto. En desktop queda fijo
+ * con su etiqueta. En pantallas chicas es solo el ícono y se muestra
+ * únicamente al scrollear hacia arriba: mientras se lee hacia abajo no
+ * tapa el contenido del margen derecho. Tono neutro: el azul queda para
+ * el CTA primario.
  */
 
 /** Secciones que ya ofrecen contacto: mientras se ven, el botón se oculta. */
 const HIDE_OVER = ['#inicio', '#contacto']
 /** Una sección cuenta como visible recién cuando pasa el 40% inferior de la pantalla. */
 const OBSERVER_OPTIONS: IntersectionObserverInit = { rootMargin: '0px 0px -40% 0px' }
+const DESKTOP_QUERY = '(min-width: 1024px)'
+/** Movimiento mínimo, en px, para tomar un cambio de dirección del scroll. */
+const DIRECTION_THRESHOLD = 12
 
 export default function WhatsappFloat() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isClearOfSections, setIsClearOfSections] = useState(false)
+  const [isScrollingUp, setIsScrollingUp] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
     const targets = HIDE_OVER.map((selector) => document.querySelector(selector)).filter(
@@ -29,11 +36,32 @@ export default function WhatsappFloat() {
         if (entry.isIntersecting) onScreen.add(entry.target)
         else onScreen.delete(entry.target)
       }
-      setIsVisible(onScreen.size === 0)
+      setIsClearOfSections(onScreen.size === 0)
     }, OBSERVER_OPTIONS)
     targets.forEach((target) => observer.observe(target))
-    return () => observer.disconnect()
+
+    const desktop = window.matchMedia(DESKTOP_QUERY)
+    const onDesktopChange = () => setIsDesktop(desktop.matches)
+    onDesktopChange()
+    desktop.addEventListener('change', onDesktopChange)
+
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const delta = window.scrollY - lastY
+      if (Math.abs(delta) < DIRECTION_THRESHOLD) return
+      setIsScrollingUp(delta < 0)
+      lastY = window.scrollY
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return () => {
+      observer.disconnect()
+      desktop.removeEventListener('change', onDesktopChange)
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
+
+  const isVisible = isClearOfSections && (isDesktop || isScrollingUp)
 
   return (
     <a
