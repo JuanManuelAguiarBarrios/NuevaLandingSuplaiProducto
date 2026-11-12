@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { m, useMotionTemplate, useScroll } from 'framer-motion'
+import { m, useMotionTemplate, useMotionValueEvent, useScroll } from 'framer-motion'
 import AutoplayVideo from '@/components/AutoplayVideo'
 import HeroMap from '@/components/hero/HeroMap'
 import RotatingWords from '@/components/hero/RotatingWords'
@@ -30,6 +30,8 @@ const SEDE = MAP_PINS.uruguay
 const MAP_ORIGIN = `${(SEDE.x / MAP_VIEWBOX.width) * 100}% ${(SEDE.y / MAP_VIEWBOX.height) * 100}%`
 
 const MASK = 'block overflow-hidden pb-[0.12em] -mb-[0.12em]'
+/** Punto del recorrido en que el segundo acto ya tapa al primero. */
+const ACT_TWO_AT = 0.4
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -39,6 +41,7 @@ export default function HeroSection() {
 
   const [center, setCenter] = useState({ x: 0, y: 0 })
   const [isStatementHovered, setIsStatementHovered] = useState(false)
+  const [isActTwo, setIsActTwo] = useState(false)
 
   const { scrollYProgress: p } = useScroll({
     target: sectionRef,
@@ -59,6 +62,15 @@ export default function HeroSection() {
   const line2Y = useScrollRange(p, [0.6, 0.77], ['110%', '0%'])
   const restOpacity = useScrollRange(p, [0.68, 0.82], [0, 1])
   const restY = useScrollRange(p, [0.68, 0.82], [20, 0])
+
+  // Con el escenario fijo los dos actos están superpuestos: el que no se ve
+  // queda inerte, para que el foco de teclado no caiga en botones invisibles.
+  useMotionValueEvent(p, 'change', (v) => {
+    const next = v >= ACT_TWO_AT
+    if (next !== isActTwo) setIsActTwo(next)
+  })
+  const isActOneInert = isScrollMotion && isActTwo
+  const isActTwoInert = isScrollMotion && !isActTwo
 
   // Centro del círculo = posición del punto de la sede dentro del escenario.
   // El mapa escala con origen en ese punto, así que su posición no cambia.
@@ -96,7 +108,7 @@ export default function HeroSection() {
         className="relative group-data-[motion=on]/hero:sticky group-data-[motion=on]/hero:top-0 group-data-[motion=on]/hero:h-svh group-data-[motion=on]/hero:overflow-hidden"
       >
         {/* ── Acto 1: intro ── */}
-        <div className="relative grid min-h-svh grid-cols-1 gap-12 px-5 pt-28 pb-10 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:pt-32 lg:pb-12">
+        <div inert={isActOneInert} className="relative grid min-h-svh grid-cols-1 gap-12 px-5 pt-28 pb-10 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:pt-32 lg:pb-12">
           <m.div
             style={isScrollMotion ? { y: introY, opacity: introOpacity } : undefined}
             className="relative z-10 flex flex-col justify-between gap-12 lg:col-span-7"
@@ -184,6 +196,7 @@ export default function HeroSection() {
 
         {/* ── Acto 2: la operación ── */}
         <m.div
+          inert={isActTwoInert}
           style={isScrollMotion ? { clipPath } : undefined}
           className="relative min-h-[92svh] overflow-hidden group-data-[motion=on]/hero:absolute group-data-[motion=on]/hero:inset-0 group-data-[motion=on]/hero:min-h-0"
         >
