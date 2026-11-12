@@ -10,9 +10,17 @@ import { FAQ, isPlaceholder } from '@/content'
 const GROUP = 'preguntas-frecuentes'
 
 /**
+ * Lo que se publica: los párrafos pendientes (entre corchetes) no se
+ * muestran, y una pregunta que solo tiene pendientes queda afuera. Todo
+ * vuelve a aparecer solo cuando se complete el contenido en content/index.ts.
+ */
+const PUBLISHED = FAQ.items
+  .map((item) => ({ ...item, answer: item.answer.filter((paragraph) => !isPlaceholder(paragraph)) }))
+  .filter((item) => item.answer.length > 0)
+
+/**
  * Datos estructurados (schema.org FAQPage). Solo entran las preguntas con
- * la respuesta completa: las que todavía tienen un pendiente entre
- * corchetes se suman solas cuando se complete el contenido.
+ * la respuesta completa, sin ningún pendiente.
  */
 const ANSWERED = FAQ.items.filter((item) => !item.answer.some(isPlaceholder))
 const FAQ_SCHEMA = {
@@ -44,7 +52,7 @@ export default function FaqSection() {
         </div>
 
         <div className="border-b border-line lg:col-span-7">
-          {FAQ.items.map((item, i) => (
+          {PUBLISHED.map((item, i) => (
             <details key={item.question} name={GROUP} open={i === 0} className="group border-t border-line">
               <summary className="flex cursor-pointer list-none items-baseline gap-5 py-6 [&::-webkit-details-marker]:hidden">
                 <span aria-hidden="true" className="text-xs text-ink-muted tabular-nums">
