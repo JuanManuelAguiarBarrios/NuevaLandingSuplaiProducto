@@ -101,7 +101,7 @@ export default function IndustriasSection() {
             <LineReveal
               text={INDUSTRIAS.headline.text}
               accent={INDUSTRIAS.headline.accent}
-              className="mt-5 text-display font-semibold"
+              className="mt-5 text-h1 font-semibold"
             />
           </div>
         </div>

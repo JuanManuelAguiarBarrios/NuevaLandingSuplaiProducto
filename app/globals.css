@@ -49,10 +49,6 @@
   --color-state-escalated: #7C3AED; /* Escalación */
 
   /* ── Escala tipográfica fluida ── */
-  --text-display: clamp(2.75rem, 6.2vw, 6.25rem);
-  --text-display--line-height: 0.98;
-  --text-display--letter-spacing: -0.045em;
-
   --text-h1: clamp(1.625rem, 0.75rem + 3.9vw, 4.75rem);
   --text-h1--line-height: 1.02;
   --text-h1--letter-spacing: -0.04em;
@@ -142,17 +138,8 @@
    Entrada del hero (CSS: corre en el primer
    paint, no depende de la hidratación).
 ──────────────────────────────────────────── */
-@keyframes intro-line {
-  from { opacity: 0; transform: translateY(55%); }
-}
-
 @keyframes intro-rise {
   from { opacity: 0; transform: translateY(0.75rem); }
-}
-
-.intro-line {
-  display: block;
-  animation: intro-line 1.1s var(--ease-editorial) both;
 }
 
 .intro {
@@ -187,7 +174,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .intro,
-  .intro-line,
   .pin-pulse,
   .marquee-track {
     animation: none !important;
