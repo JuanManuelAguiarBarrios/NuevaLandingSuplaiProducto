@@ -5,7 +5,7 @@ import type { KeyboardEvent } from 'react'
 import Image from 'next/image'
 import { AnimatePresence, m } from 'framer-motion'
 import LineReveal from '@/components/LineReveal'
-import { INDUSTRIAS } from '@/content'
+import { AGENTES, INDUSTRIAS } from '@/content'
 import { DURATION, EASE, fadeUp, stagger, VIEWPORT } from '@/lib/motion'
 
 /**
@@ -19,7 +19,10 @@ const TOTAL = String(ITEMS.length).padStart(2, '0')
 
 type Industry = (typeof ITEMS)[number]
 
-/** Imagen de la vertical (entra con un wipe) y sus dolores escalonados. */
+/** Nombre del agente con el que conviene empezar en una industria. */
+const agentName = (key: Industry['agent']) => AGENTES.items.find((agent) => agent.key === key)?.name
+
+/** Imagen de la vertical (entra con un wipe), sus dolores escalonados y el agente para empezar. */
 function IndustryPanel({ item, index }: { item: Industry; index: number }) {
   return (
     // En tablet, foto y dolores van lado a lado: apilada, la foto ocupa toda la pantalla.
@@ -57,6 +60,12 @@ function IndustryPanel({ item, index }: { item: Industry; index: number }) {
             </m.li>
           ))}
         </m.ul>
+        <p className="eyebrow pt-4 text-ink-muted">{INDUSTRIAS.startLabel}</p>
+        <p className="pt-3">
+          <a href={`#agente-${item.agent}`} className="link-line text-lg font-medium">
+            {agentName(item.agent)} <span aria-hidden="true">→</span>
+          </a>
+        </p>
       </div>
     </div>
   )

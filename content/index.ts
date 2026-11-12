@@ -515,44 +515,52 @@ export const INDUSTRIAS = {
   headline: { text: 'Lo que resolvemos\nen tu industria.', accent: 'industria' } satisfies Headline,
   subtitle: 'Elegí la tuya y mirá qué resuelve primero.',
   painsLabel: 'Dónde duele hoy',
+  /** Etiqueta del agente con el que conviene empezar en cada industria. */
+  startLabel: 'Por dónde empezar',
   items: [
     {
       key: 'logistica',
+      agent: 'voice',
       title: 'Empresas de logística',
       pains: ['Llamadas cruzadas con choferes', 'Clientes preguntando por su pedido', 'Estados que nadie actualiza'],
       image: { src: '/empresas/logistica.webp', alt: 'Camión con semirremolque en una ruta de montaña' },
     },
     {
       key: 'distribuidoras',
+      agent: 'conductores',
       title: 'Distribuidoras',
       pains: ['Cientos de entregas por confirmar', 'Remitos perdidos', 'Cierres del día trabados'],
       image: { src: '/empresas/distribuidoras.webp', alt: 'Vista aérea de un depósito de distribuidora con camiones en los muelles' },
     },
     {
       key: 'importadoras',
+      agent: 'documentos',
       title: 'Importadoras',
       pains: ['Miles de facturas y documentos', 'Llamadas a navieras y despachantes', 'Trámites dispersos en mails'],
       image: { src: '/empresas/importadoras.webp', alt: 'Contenedores de carga y un buque en una terminal portuaria' },
     },
     {
       key: 'portuarias',
+      agent: 'agenda',
       title: 'Empresas portuarias',
       pains: ['Turnos de camiones por teléfono', 'Movimientos sin registrar', 'Coordinación con agencias a mano'],
       image: { src: '/empresas/portuarias.webp', alt: 'Grúa portuaria recortada contra el cielo al atardecer' },
     },
     {
       key: 'flota',
+      agent: 'incidencias',
       title: 'Flota propia',
       pains: ['Choferes que no reportan', 'Demoras descubiertas tarde', 'Planillas de viajes a mano'],
       image: { src: '/empresas/flota.webp', alt: 'Flota de camiones propia estacionada en un centro logístico' },
     },
     {
       key: 'cds',
+      agent: 'whatsapp',
       title: 'Centros de distribución',
       pains: ['Remitos en papel', 'Ingresos sin registrar en el WMS', 'Coordinación con proveedores por WhatsApp'],
       image: { src: '/empresas/cds.webp', alt: 'Centro de distribución con estanterías de ingreso y egreso de mercadería' },
     },
-  ],
+  ] satisfies { key: string; agent: AgentKey; title: string; pains: string[]; image: MediaImage }[],
 }
 
 /* ── Principios ─────────────────────────────── */
